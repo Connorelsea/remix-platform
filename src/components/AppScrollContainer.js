@@ -6,17 +6,20 @@ const Link = Routing.Link
 
 import Header from "./Header"
 import { ScrollView } from "react-native"
+import styles from "../utilities/styles"
 
 export default class AppScrollContainer extends Component {
   render() {
+    const { user } = this.props
     return (
       <Container>
         <Header
+          user={user}
           backText={this.props.backText || "Back"}
           title={this.props.title || "Remix"}
         />
         <ScrollView
-          contentContainerStyle={{ margin: 15, marginTop: 130 }}
+          contentContainerStyle={{ margin: 15, marginTop: 165 }}
           ref={scroll => {
             this.scrollView = scroll
           }}
@@ -30,6 +33,7 @@ export default class AppScrollContainer extends Component {
 
 const Container = styled.View`
   flex: 1;
+  background-color: ${styles.colors.grey[100]};
 `
 
 const Text = styled.Text`

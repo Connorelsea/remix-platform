@@ -12,8 +12,10 @@ import TextInput from "../components/TextInput"
 import { query, mutate } from "../utilities/gql_util"
 
 import { bind } from "decko"
+import { get, set } from "../utilities/storage"
+import { withRouter } from "react-router"
 
-export default class UserLogin extends Component {
+class UserLogin extends Component {
   attemptEmailLogin(email, password) {
     mutate(
       `
@@ -24,7 +26,7 @@ export default class UserLogin extends Component {
       }
     `,
       { email, password }
-    )
+    ).then(this.processLoginResponse)
   }
 
   attemptPhoneLogin(phone_number, password) {
@@ -37,7 +39,16 @@ export default class UserLogin extends Component {
       }
     `,
       { phone_number, password }
-    )
+    ).then(this.processLoginResponse)
+  }
+
+  @bind
+  async processLoginResponse(props) {
+    const { data: { loginUserWithEmail: { id, token } } } = props
+    await set("token", token)
+    await set("userId", id)
+    this.props.setUser({ id, token })
+    this.props.history.replace("/", "")
   }
 
   state = {
@@ -83,6 +94,8 @@ export default class UserLogin extends Component {
     )
   }
 }
+
+export default withRouter(UserLogin)
 
 const Text = styled.Text`
   font-size: 17px;

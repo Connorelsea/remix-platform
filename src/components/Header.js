@@ -20,9 +20,10 @@ class Header extends Component {
   }
 
   render() {
-    const { backText, title } = this.props
+    const { backText, title, user } = this.props
     return (
       <Container>
+        <Spacing height={50} />
         <Upper>
           {backText !== "remove" && (
             <Back onPress={this.onBackPress}>
@@ -31,6 +32,17 @@ class Header extends Component {
           )}
           <Title>{title || "Remix"}</Title>
         </Upper>
+        {user && (
+          <Actions>
+            <ActionButton>
+              <ActionText>New Friend</ActionText>
+            </ActionButton>
+            <ActionButton>
+              <ActionText>New Group</ActionText>
+            </ActionButton>
+          </Actions>
+        )}
+        <Spacing height={10} />
         <LinearGradient
           colors={[styles.colors.grey[100], "rgba(248, 248, 248, 0)"]}
           style={{ height: 40, width: "100%" }}
@@ -42,20 +54,40 @@ class Header extends Component {
 
 export default withRouter(Header)
 
+const Spacing = styled.View`
+  height: ${props => props.height}px;
+  width: 100%;
+  background-color: ${styles.colors.grey[100]};
+`
+
 const Upper = styled.View`
   background-color: ${styles.colors.grey[100]};
-  padding-top: 35px;
-  padding-bottom: 5px;
   padding-left: 15px;
   padding-right: 15px;
-  flex: 1;
-  justify-content: flex-end;
+`
+
+const Actions = styled.View`
+  padding: 0 15px;
+  flex-direction: row;
+  background-color: ${styles.colors.grey[100]};
+`
+
+const ActionButton = styled.TouchableOpacity`
+  background-color: ${styles.colors.grey[200]};
+  padding: 10px 10px;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-right: 10px;
+`
+
+const ActionText = styled.Text`
+  font-size: 15px;
+  font-weight: 600;
 `
 
 const Container = styled.View`
   background-color: transparent;
   width: 100%;
-  height: 140px;
   position: absolute;
   z-index: 9999;
 `
