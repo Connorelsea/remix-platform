@@ -2,16 +2,13 @@ import React, { Component } from "react"
 import { View, Text } from "react-native"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
+import Gradient from "./Gradient"
+import styles from "../utilities/styles"
+import { withRouter } from "react-router"
+import { bind } from "decko"
+
 const Route = Routing.Route
 const Link = Routing.Link
-
-import LinearGradient from "react-native-linear-gradient"
-
-import styles from "../utilities/styles"
-
-import { withRouter } from "react-router"
-
-import { bind } from "decko"
 
 class Header extends Component {
   @bind
@@ -37,9 +34,9 @@ class Header extends Component {
           )}
           <Title>{title || "Remix"}</Title>
         </Upper>
-        <LinearGradient
+        <Gradient
           colors={[styles.colors.grey[100], "rgba(248, 248, 248, 0)"]}
-          style={{ height: 25, width: "100%" }}
+          size={25}
         />
       </Container>
     )

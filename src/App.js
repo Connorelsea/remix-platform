@@ -4,15 +4,11 @@ import { ApolloProvider } from "react-apollo"
 import store from "./utilities/storage/store"
 import TopLevelComponent from "./screens/EntryScreen"
 import Routing, { Router } from "./utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 import { View, Platform, Text } from "react-native"
 
 import gql from "graphql-tag"
 import { query, mutate } from "./utilities/gql_util"
 import { remove } from "./utilities/storage"
-
-import Stack from "react-router-native-stack"
 
 import { client } from "./utilities/apollo"
 
@@ -30,6 +26,11 @@ import FriendNew from "./screens/FriendNew"
 import { bind } from "decko"
 import { get } from "./utilities/storage"
 
+import { Switch } from "react-router"
+
+const Route = Routing.Route
+const Link = Routing.Link
+
 class App extends React.Component {
   state = {
     user: undefined,
@@ -43,8 +44,10 @@ class App extends React.Component {
 
   @bind
   renderWithoutUser() {
+    // const Stack = require("react-router-native-stack").default
+
     return (
-      <Stack>
+      <Switch>
         <Route exact path="/" component={Home} />
         <Route
           exact
@@ -53,15 +56,17 @@ class App extends React.Component {
         />
         <Route exact path="/create" component={UserCreate} />
         <Route exact path="/create/done" component={UserCreateDone} />
-      </Stack>
+      </Switch>
     )
   }
 
   @bind
   renderWithUser() {
     const { user } = this.state
+    // const Stack = require("react-router-native-stack").default
+
     return (
-      <Stack>
+      <Switch>
         <Route
           exact
           path="/"
@@ -72,7 +77,7 @@ class App extends React.Component {
         <Route path="/+:group/#:chat" component={Chat} />
         <Route path="/@:id" component={User} />
         <Route path="/new/friend" component={() => <FriendNew user={user} />} />
-      </Stack>
+      </Switch>
     )
   }
 
@@ -130,8 +135,10 @@ class App extends React.Component {
     switch (Platform.OS) {
       case "ios":
         return this.renderMobileRouting()
+      default:
       case "web":
-        return this.renderWebRouting()
+        // return this.renderWebRouting()
+        return this.renderMobileRouting()
     }
   }
 
@@ -139,8 +146,7 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <Router>
-          {/* <Provider store={store}>{this.renderRouting()}</Provider> */}
-          {this.renderRouting()}
+          <Provider store={store}>{this.renderRouting()}</Provider>
         </Router>
       </ApolloProvider>
     )

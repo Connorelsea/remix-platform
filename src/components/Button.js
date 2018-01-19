@@ -1,11 +1,11 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import styles from "../utilities/styles"
 
+const Route = Routing.Route
+const Link = Routing.Link
 export default class Button extends Component {
   render() {
     const { onPress, to, title } = this.props

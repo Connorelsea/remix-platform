@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query } from "../utilities/gql_util"
@@ -18,6 +16,9 @@ import Spacing from "../components/Spacing"
 import Option from "../components/Option"
 
 import distanceInWords from "date-fns/distance_in_words"
+
+const Route = Routing.Route
+const Link = Routing.Link
 
 export default class Dashboard extends Component {
   @bind

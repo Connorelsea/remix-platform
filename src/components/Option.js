@@ -1,8 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query } from "../utilities/gql_util"
@@ -11,6 +9,9 @@ import { client } from "../utilities/apollo"
 import { bind } from "decko"
 
 import Button from "../components/Button"
+
+const Route = Routing.Route
+const Link = Routing.Link
 
 export default class Option extends Component {
   render() {

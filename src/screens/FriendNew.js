@@ -1,8 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query, mutate } from "../utilities/gql_util"
@@ -16,8 +14,9 @@ import Option from "../components/Option"
 import styles from "../utilities/styles"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
-import * as Animatable from "react-native-animatable"
-
+// import * as Animatable from "react-native-animatable"
+const Route = Routing.Route
+const Link = Routing.Link
 class FriendNew extends Component {
   async onPress({ message, fromUserId, toUserId }) {
     const req = await mutate(

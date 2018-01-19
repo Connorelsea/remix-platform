@@ -1,13 +1,14 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query } from "../utilities/gql_util"
 import { client } from "../utilities/apollo"
 import styles from "../utilities/styles"
+
+const Route = Routing.Route
+const Link = Routing.Link
 
 const tiers = {
   title: {

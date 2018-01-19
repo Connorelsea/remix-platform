@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import { View, Text } from "react-native"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query } from "../utilities/gql_util"
@@ -13,6 +11,9 @@ import { bind } from "decko"
 
 import Button from "../components/Button"
 import styles from "../utilities/styles"
+
+const Route = Routing.Route
+const Link = Routing.Link
 
 export default class Input extends Component {
   render() {

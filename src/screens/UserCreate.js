@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-const Route = Routing.Route
-const Link = Routing.Link
 import { withRouter } from "react-router"
 
 import Button from "../components/Button"
@@ -13,6 +11,9 @@ import TextInput from "../components/TextInput"
 import { query, mutate } from "../utilities/gql_util"
 
 import { bind } from "decko"
+
+const Route = Routing.Route
+const Link = Routing.Link
 
 class UserLogin extends Component {
   attemptCreateUser({
