@@ -36,15 +36,15 @@ class UserLogin extends Component {
         loginUserWithPhone(email: $email, password: $password) {
           id, token
         }
-      }
+      }c
     `,
       { phone_number, password }
     ).then(this.processLoginResponse)
   }
 
   @bind
-  async processLoginResponse(props) {
-    const { data: { loginUserWithEmail: { id, token } } } = props
+  async processLoginResponse(response) {
+    const { data: { loginUserWithEmail: { id, token } } } = response
     await set("token", token)
     await set("userId", id)
     this.props.setUser({ id, token })

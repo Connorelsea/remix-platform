@@ -10,6 +10,7 @@ import { View, Platform, Text } from "react-native"
 
 import gql from "graphql-tag"
 import { query, mutate } from "./utilities/gql_util"
+import { remove } from "./utilities/storage"
 
 import Stack from "react-router-native-stack"
 
@@ -24,6 +25,7 @@ import Dashboard from "./screens/Dashboard"
 import UserLogin from "./screens/UserLogin"
 import UserCreate from "./screens/UserCreate"
 import UserCreateDone from "./screens/UserCreateDone"
+import FriendNew from "./screens/FriendNew"
 
 import { bind } from "decko"
 import { get } from "./utilities/storage"
@@ -69,6 +71,7 @@ class App extends React.Component {
         <Route path="/+:group/" component={Group} />
         <Route path="/+:group/#:chat" component={Chat} />
         <Route path="/@:id" component={User} />
+        <Route path="/new/friend" component={() => <FriendNew user={user} />} />
       </Stack>
     )
   }
@@ -82,7 +85,7 @@ class App extends React.Component {
   }
 
   renderWebRouting() {
-    return
+    return <Text>On the web</Text>
   }
 
   @bind
@@ -93,15 +96,15 @@ class App extends React.Component {
     const id = await get("userId")
     let data
 
+    console.log(token, id)
+
     try {
-      data = await query(
-        client,
-        `
-        { User(id: ${id}) { id } }
-      `
-      )
+      data = await query(`{ User(id: ${id}) { id } }`)
     } catch (e) {
-      console.error(e)
+      remove("token")
+      remove("userId")
+      console.log("errorrrr")
+      console.log(JSON.stringify(e))
     }
 
     if (data) {

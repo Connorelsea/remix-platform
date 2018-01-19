@@ -5,15 +5,26 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 
 import { get } from "./storage"
 
+import { onError } from "apollo-link-error"
+import { ApolloLink } from "apollo-link"
+
+const errorLink = onError(props => {
+  const { graphQLErrors, networkError } = props
+  console.log("ON ERROR", props)
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    )
+  if (networkError) console.log(`[Network error]: ${networkError}`)
+})
+
 const httpLink = createHttpLink({
-  uri: "http://127.0.0.1:3000/graphql",
+  uri: "http://192.168.1.5:3000/graphql",
 })
 
 const authLink = setContext(async (_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  // TODO: Abstract getItem from storage here to work across platforms
-  // Also make sure this works when there is no token available
-  // let token // = localStorage.getItem("token")
   console.log("Attempting to find token")
   let token
   try {
@@ -31,7 +42,9 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
+const link = ApolloLink.from([errorLink, authLink, httpLink])
+
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link,
   cache: new InMemoryCache(),
 })

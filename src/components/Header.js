@@ -19,6 +19,11 @@ class Header extends Component {
     this.props.history.goBack()
   }
 
+  @bind
+  onNewFriendPress() {
+    this.props.history.push("/new/friend")
+  }
+
   render() {
     const { backText, title, user } = this.props
     return (
@@ -32,20 +37,9 @@ class Header extends Component {
           )}
           <Title>{title || "Remix"}</Title>
         </Upper>
-        {user && (
-          <Actions>
-            <ActionButton>
-              <ActionText>New Friend</ActionText>
-            </ActionButton>
-            <ActionButton>
-              <ActionText>New Group</ActionText>
-            </ActionButton>
-          </Actions>
-        )}
-        <Spacing height={10} />
         <LinearGradient
           colors={[styles.colors.grey[100], "rgba(248, 248, 248, 0)"]}
-          style={{ height: 40, width: "100%" }}
+          style={{ height: 25, width: "100%" }}
         />
       </Container>
     )
@@ -66,24 +60,24 @@ const Upper = styled.View`
   padding-right: 15px;
 `
 
-const Actions = styled.View`
-  padding: 0 15px;
-  flex-direction: row;
-  background-color: ${styles.colors.grey[100]};
-`
+// const Actions = styled.View`
+//   padding: 0 15px;
+//   flex-direction: row;
+//   background-color: ${styles.colors.grey[100]};
+// `
 
-const ActionButton = styled.TouchableOpacity`
-  background-color: ${styles.colors.grey[200]};
-  padding: 10px 10px;
-  overflow: hidden;
-  border-radius: 6px;
-  margin-right: 10px;
-`
+// const ActionButton = styled.TouchableOpacity`
+//   background-color: ${styles.colors.grey[200]};
+//   padding: 10px 10px;
+//   overflow: hidden;
+//   border-radius: 6px;
+//   margin-right: 10px;
+// `
 
-const ActionText = styled.Text`
-  font-size: 15px;
-  font-weight: 600;
-`
+// const ActionText = styled.Text`
+//   font-size: 15px;
+//   font-weight: 600;
+// `
 
 const Container = styled.View`
   background-color: transparent;

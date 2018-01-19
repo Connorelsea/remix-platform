@@ -19,7 +19,7 @@ export default class AppScrollContainer extends Component {
           title={this.props.title || "Remix"}
         />
         <ScrollView
-          contentContainerStyle={{ margin: 15, marginTop: 165 }}
+          contentContainerStyle={{ margin: 15, marginTop: 135 }}
           ref={scroll => {
             this.scrollView = scroll
           }}

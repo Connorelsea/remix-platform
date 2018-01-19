@@ -4,6 +4,8 @@ import Routing, { Router } from "../utilities/routing"
 const Route = Routing.Route
 const Link = Routing.Link
 
+import styles from "../utilities/styles"
+
 export default class Button extends Component {
   render() {
     const { onPress, to, title } = this.props
@@ -14,8 +16,8 @@ export default class Button extends Component {
         </StyledLink>
       )
     return (
-      <Opacity onPress={this.props.onPress}>
-        <Text>{this.props.title}</Text>
+      <Opacity small={this.props.small} onPress={this.props.onPress}>
+        <Text small={this.props.small}>{this.props.title}</Text>
       </Opacity>
     )
   }
@@ -23,24 +25,23 @@ export default class Button extends Component {
 
 const StyledLink = styled(Link)`
   padding: 15px;
-  background-color: #0096e7;
-  margin-bottom: 12px;
+  background-color: ${styles.colors.grey[200]};
+  border: 1px ${styles.colors.grey[200]};
   overflow: hidden;
   border-radius: 10px;
 `
 
 const Opacity = styled.TouchableOpacity`
-  padding: 15px;
-  background-color: #0096e7;
-  margin-bottom: 12px;
+  padding: ${({ small }) => (small ? 10 : 15)}px 15px;
+  background-color: ${styles.colors.grey[200]};
   overflow: hidden;
   border-radius: 10px;
 `
 
 const Text = styled.Text`
-  color: white;
+  color: black;
   font-weight: 700;
-  font-size: 17px;
+  font-size: ${props => (props.small ? 15 : 17)}px;
   letter-spacing: -0.3px;
   text-align: center;
 `
