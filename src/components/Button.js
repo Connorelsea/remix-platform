@@ -1,27 +1,32 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
-
+import { withRouter } from "react-router"
 import styles from "../utilities/styles"
+import { bind } from "decko"
 
 const Route = Routing.Route
 const Link = Routing.Link
-export default class Button extends Component {
+class Button extends Component {
+  @bind
+  onLinkPress() {
+    this.props.history.push(this.props.to)
+  }
   render() {
     const { onPress, to, title } = this.props
-    if (to !== undefined)
-      return (
-        <StyledLink to={to}>
-          <Text>{this.props.title}</Text>
-        </StyledLink>
-      )
+
     return (
-      <Opacity small={this.props.small} onPress={this.props.onPress}>
+      <Opacity
+        small={this.props.small}
+        onPress={to === undefined ? this.props.onPress : this.onLinkPress}
+      >
         <Text small={this.props.small}>{this.props.title}</Text>
       </Opacity>
     )
   }
 }
+
+export default withRouter(Button)
 
 const StyledLink = styled(Link)`
   padding: 15px;
@@ -29,6 +34,7 @@ const StyledLink = styled(Link)`
   border: 1px ${styles.colors.grey[200]};
   overflow: hidden;
   border-radius: 10px;
+  display: block;
 `
 
 const Opacity = styled.TouchableOpacity`

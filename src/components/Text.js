@@ -31,7 +31,7 @@ const tiers = {
   },
   requestTitle: {
     size: 16,
-    weight: 800,
+    weight: 700,
     spacing: -0.3,
   },
   requestSubtitle: {

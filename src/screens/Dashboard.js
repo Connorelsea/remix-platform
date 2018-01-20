@@ -14,8 +14,7 @@ import Text from "../components/Text"
 import styles from "../utilities/styles"
 import Spacing from "../components/Spacing"
 import Option from "../components/Option"
-
-import distanceInWords from "date-fns/distance_in_words"
+import FriendRequest from "../components/FriendRequest"
 
 const Route = Routing.Route
 const Link = Routing.Link
@@ -66,53 +65,20 @@ export default class Dashboard extends Component {
 
     return (
       <AppScrollContainer user={user} backText="remove" title="Remix">
-        <Flex row mb={15}>
+        <ActionContainer>
           <Button to="/new/friend" title="New Friend" />
           <Spacing size={15} />
           <Button to="/new/group" title="New Group" />
-        </Flex>
-        {friendRequests.map(r => (
-          <FriendRequest>
-            <Flex jc="space-around">
-              <Text tier="requestTitle">
-                {r.fromUser.name} <Middle>sent a</Middle> Friend Request
-              </Text>
-              <Text tier="requestSubtitle">
-                {distanceInWords(new Date(r.createdAt), new Date())} ago
-              </Text>
-            </Flex>
-            <Option
-              options={[
-                { text: "Accept", color: "black", action: () => {} },
-                { text: "Deny", color: "rgba(0,0,0,0.5)", action: () => {} },
-              ]}
-            />
-          </FriendRequest>
-        ))}
+        </ActionContainer>
+        {friendRequests.map(r => <FriendRequest {...r} />)}
       </AppScrollContainer>
     )
   }
 }
 
-const Flex = styled.View`
-  flex-direction: ${props => (props.row ? "row" : "column")};
-  margin-bottom: ${props => props.mb || 0}px;
-  flex: 1;
-  justify-content: ${props => props.jc || "flex-start"};
-`
-
-const FriendRequest = styled.View`
-  padding: 15px;
-  background-color: ${styles.colors.grey[200]};
-  border-radius: 8px;
+const ActionContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   margin-bottom: 15px;
-`
-
-const Middle = styled.Text`
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: 500;
 `
 
 const Container = styled.View`

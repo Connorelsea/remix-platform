@@ -6,6 +6,8 @@ import Header from "./Header"
 import { ScrollView } from "react-native"
 import styles from "../utilities/styles"
 
+import { Platform } from "react-native"
+
 const Route = Routing.Route
 const Link = Routing.Link
 
@@ -35,8 +37,5 @@ export default class AppScrollContainer extends Component {
 const Container = styled.View`
   flex: 1;
   background-color: ${styles.colors.grey[100]};
-`
-
-const Text = styled.Text`
-  font-size: 17px;
+  ${Platform.OS !== "ios" && "min-height: 100vh"};
 `

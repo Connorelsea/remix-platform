@@ -20,9 +20,15 @@ const errorLink = onError(props => {
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
-const httpLink = createHttpLink({
-  uri: "http://192.168.1.5:3000/graphql",
-})
+const useLocal = true
+
+const httpLink = useLocal
+  ? createHttpLink({
+      uri: "http://localhost:8080/graphql",
+    })
+  : createHttpLink({
+      uri: "https://remix-platform-server.herokuapp.com/graphql",
+    })
 
 const authLink = setContext(async (_, { headers }) => {
   console.log("Attempting to find token")

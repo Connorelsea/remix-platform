@@ -159,7 +159,6 @@ const Body = styled.View`
 
 const Actions = styled.View`
   margin-top: 15px;
-  flex: 1;
   flex-direction: row;
 `
 
