@@ -6,11 +6,9 @@ export default class Gradient extends Component {
     const { colors, size } = this.props
     return (
       <Grad
-        colors={colors}
+        size={size}
         style={{
-          backgroundColor: `linear-gradient(to right, ${colors[0]}, ${
-            colors[1]
-          })`,
+          background: `linear-gradient(to bottom, ${colors[0]}, ${colors[1]})`,
         }}
       >
         {this.props.children}

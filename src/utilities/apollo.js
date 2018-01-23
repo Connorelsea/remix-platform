@@ -2,11 +2,14 @@ import { ApolloClient } from "apollo-client"
 import { createHttpLink } from "apollo-link-http"
 import { setContext } from "apollo-link-context"
 import { InMemoryCache } from "apollo-cache-inmemory"
+import { SubscriptionClient } from "subscriptions-transport-ws"
+import { WebSocketLink } from "apollo-link-ws"
+import { getMainDefinition } from "apollo-utilities"
 
 import { get } from "./storage"
 
 import { onError } from "apollo-link-error"
-import { ApolloLink } from "apollo-link"
+import { ApolloLink, split } from "apollo-link"
 
 const errorLink = onError(props => {
   const { graphQLErrors, networkError } = props
@@ -48,7 +51,27 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
-const link = ApolloLink.from([errorLink, authLink, httpLink])
+const subEndpoint = "ws://localhost:8080/subscriptions"
+const subOptions = { reconnect: true }
+
+const subClient = new SubscriptionClient(subEndpoint, subOptions)
+const subLink = new WebSocketLink(subClient)
+
+// using the ability to split links, you can send data to each link
+// depending on what kind of operation is being sent
+const connectionLink = split(
+  // split based on operation type
+  ({ query }) => {
+    if (query === undefined) console.log("UNDEFINED QUERY")
+    console.log("QUERY", query)
+    const { kind, operation } = getMainDefinition(query)
+    return kind === "OperationDefinition" && operation === "subscription"
+  },
+  subLink,
+  httpLink
+)
+
+const link = ApolloLink.from([errorLink, authLink, connectionLink])
 
 export const client = new ApolloClient({
   link,

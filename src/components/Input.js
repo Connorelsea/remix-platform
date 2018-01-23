@@ -38,4 +38,5 @@ const StyledInput = styled.TextInput`
   padding: 15px;
   font-size: 17px;
   background-color: white;
+  height: 100%;
 `

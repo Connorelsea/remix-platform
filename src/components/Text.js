@@ -12,14 +12,14 @@ const Link = Routing.Link
 
 const tiers = {
   title: {
-    size: 27,
+    size: 30,
     weight: 900,
     spacing: -0.5,
     color: styles.colors.grey[600],
   },
   subtitle: {
     size: 15,
-    weight: 500,
+    weight: 400,
     spacing: 0,
     color: styles.colors.grey[400],
   },
@@ -28,6 +28,17 @@ const tiers = {
     weight: 400,
     spacing: 0,
     color: styles.colors.grey[600],
+  },
+  emphasis: {
+    size: 17,
+    weight: 400,
+    spacing: 0,
+    color: styles.colors.grey[500],
+  },
+  emphasisSubtitle: {
+    size: 15,
+    weight: 300,
+    // TODO
   },
   requestTitle: {
     size: 16,
@@ -47,4 +58,5 @@ export default styled.Text`
   color: ${({ tier }) => tiers[tier].color || "black"};
   margin: 0;
   padding: 0;
+  ${({ center }) => center && "text-align: center"};
 `

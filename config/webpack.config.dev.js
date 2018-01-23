@@ -193,6 +193,16 @@ module.exports = {
             ],
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
+
+          {
+            test: /\.ttf$/,
+            loader: "url-loader", // or directly file-loader
+            include: path.resolve(
+              __dirname,
+              "node_modules/react-native-vector-icons"
+            ),
+          },
+
           // When you `import` an asset, you get its (virtual) filename.
           // In production, they would get copied to the `build` folder.
           // This loader doesn't use a "test" so it will catch all modules

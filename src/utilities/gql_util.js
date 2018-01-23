@@ -2,10 +2,10 @@ import gql from "graphql-tag"
 
 import { client } from "./apollo"
 
-export const query = (gql_query, variables) =>
+export const query = (query, variables) =>
   client.query({
     query: gql`
-      ${gql_query}
+      ${query}
     `,
     variables,
   })
@@ -14,6 +14,14 @@ export const mutate = (mutation, variables) =>
   client.mutate({
     mutation: gql`
       ${mutation}
+    `,
+    variables,
+  })
+
+export const subscribe = (subscription, variables) =>
+  client.subscribe({
+    subscription: gql`
+      ${subscription}
     `,
     variables,
   })

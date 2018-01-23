@@ -6,9 +6,14 @@ import Gradient from "./Gradient"
 import styles from "../utilities/styles"
 import { withRouter } from "react-router"
 import { bind } from "decko"
+import Spacing from "../components/Spacing"
+
+import Icon from "react-native-vector-icons/dist/Feather"
 
 const Route = Routing.Route
 const Link = Routing.Link
+
+const backColor = styles.colors.grey[500]
 
 class Header extends Component {
   @bind
@@ -25,10 +30,12 @@ class Header extends Component {
     const { backText, title, user } = this.props
     return (
       <Container>
-        <Spacing height={50} />
+        <Spacing size={45} />
         <Upper>
           {backText !== "remove" && (
             <Back onPress={this.onBackPress}>
+              <Icon name="arrow-left" size={22} color={backColor} />
+              <Spacing size={5} />
               <BackText>{backText || "Back"}</BackText>
             </Back>
           )}
@@ -45,10 +52,15 @@ class Header extends Component {
 
 export default withRouter(Header)
 
-const Spacing = styled.View`
-  height: ${props => props.height}px;
-  width: 100%;
-  background-color: ${styles.colors.grey[100]};
+const Back = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`
+
+const BackText = styled.Text`
+  color: ${backColor};
+  font-size: 16px;
+  font-weight: 500;
 `
 
 const Upper = styled.View`
@@ -56,25 +68,6 @@ const Upper = styled.View`
   padding-left: 15px;
   padding-right: 15px;
 `
-
-// const Actions = styled.View`
-//   padding: 0 15px;
-//   flex-direction: row;
-//   background-color: ${styles.colors.grey[100]};
-// `
-
-// const ActionButton = styled.TouchableOpacity`
-//   background-color: ${styles.colors.grey[200]};
-//   padding: 10px 10px;
-//   overflow: hidden;
-//   border-radius: 6px;
-//   margin-right: 10px;
-// `
-
-// const ActionText = styled.Text`
-//   font-size: 15px;
-//   font-weight: 600;
-// `
 
 const Container = styled.View`
   background-color: transparent;
@@ -88,12 +81,4 @@ const Title = styled.Text`
   font-size: 40px;
   letter-spacing: -0.5;
   color: black;
-`
-
-const Back = styled.TouchableOpacity``
-
-const BackText = styled.Text`
-  color: gray;
-  font-size: 16px;
-  font-weight: 500;
 `

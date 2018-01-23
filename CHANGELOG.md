@@ -2,7 +2,9 @@
 
 ### Added
 
-* Routing and symbols for
+* User search
+* Friend requests
+* Initial routing and symbols for
   * Group: /+groupName
   * Chat: /+groupName/#chat
   * User: /@username

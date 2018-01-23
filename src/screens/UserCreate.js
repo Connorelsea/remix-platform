@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { View } from "react-native"
 import styled from "styled-components/native"
 import Routing, { Router } from "../utilities/routing"
 import { withRouter } from "react-router"
@@ -81,7 +80,6 @@ class UserLogin extends Component {
         />
         <TextInput
           placeholder="Username"
-          secureTextEntry
           onChangeText={this.onTextChangeFor("username")}
           value={this.state.username}
         />
@@ -93,13 +91,11 @@ class UserLogin extends Component {
         />
         <TextInput
           placeholder="Display or Full Name"
-          secureTextEntry
           onChangeText={this.onTextChangeFor("name")}
           value={this.state.name}
         />
         <TextInput
           placeholder="Description / Bio / Info"
-          secureTextEntry
           onChangeText={this.onTextChangeFor("description")}
           value={this.state.description}
         />

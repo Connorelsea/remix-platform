@@ -14,9 +14,10 @@ import Option from "../components/Option"
 import styles from "../utilities/styles"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
-// import * as Animatable from "react-native-animatable"
-const Route = Routing.Route
-const Link = Routing.Link
+import HelpCard from "../components/HelpCard"
+
+import Icon from "react-native-vector-icons/dist/Feather"
+
 class FriendNew extends Component {
   async onPress({ message, fromUserId, toUserId }) {
     const req = await mutate(
@@ -46,7 +47,7 @@ class FriendNew extends Component {
 
     const results = await query(
       `query($phrase: String!) {
-        users(phrase: $phrase) { id, name, username, description }
+        users(phrase: $phrase) { id, name, username, description, iconUrl }
       }`,
       { phrase }
     )
@@ -71,10 +72,14 @@ class FriendNew extends Component {
         <SearchContainer>
           <Input onChangeText={this.onChangeText} value={phrase} />
           <Spacing size={15} />
-          <Button onPress={this.onSearch} title="Search" />
+          <Button
+            onPress={this.onSearch}
+            title="Search"
+            icon={<Icon name="search" size={25} />}
+          />
         </SearchContainer>
 
-        {results && (
+        {results ? (
           <ResultContainer>
             {results.data.users.map(user => (
               <UserCard
@@ -84,6 +89,8 @@ class FriendNew extends Component {
               />
             ))}
           </ResultContainer>
+        ) : (
+          <HelpCard title="Search for friends by their name or username" />
         )}
       </AppScrollContainer>
     )
@@ -92,26 +99,13 @@ class FriendNew extends Component {
 
 const Card = styled.View`
   background-color: white;
-  padding: 16px 18px;
+  padding: 15px;
   border-radius: 8px;
   shadow-color: black;
-  shadow-radius: 8px;
+  shadow-radius: 22px;
   shadow-offset: 0px 10px;
   shadow-opacity: 0.09;
   margin-bottom: 20px;
-`
-
-const Name = styled.Text`
-  font-size: 24px;
-  color: black;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  flex: 1;
-`
-
-const Bio = styled.Text`
-  font-size: 16px;
-  color: ${styles.colors.grey[400]};
 `
 
 // const options = [
@@ -119,12 +113,19 @@ const Bio = styled.Text`
 //   { text: "Add Friend", action: () => {}, color: "black" },
 // ]
 
-const UserCard = ({ id, name, username, description, addFriendFunc }) => (
+const UserCard = ({
+  id,
+  name,
+  username,
+  description,
+  iconUrl,
+  addFriendFunc,
+}) => (
   <Card animation="fadeInUp" delay={200}>
     <Body>
       <Image
         source={{
-          uri: "https://www.arete.net/Content/Images/nopic.jpg",
+          uri: iconUrl || "https://www.arete.net/Content/Images/nopic.jpg",
         }}
       />
       <Spacing size={15} />
@@ -144,10 +145,13 @@ const UserCard = ({ id, name, username, description, addFriendFunc }) => (
   </Card>
 )
 
+const imageSize = 90
+
 const Image = styled.Image`
-  height: 85px;
-  width: 85px;
-  border-radius: 43;
+  height: ${imageSize}px;
+  width: ${imageSize}px;
+  border-radius: ${imageSize / 2};
+  background-color: ${styles.colors.grey[100]};
   overflow: hidden;
 `
 
@@ -158,8 +162,8 @@ const Body = styled.View`
 `
 
 const Actions = styled.View`
-  margin-top: 15px;
   flex-direction: row;
+  justify-content: flex-end;
 `
 
 const ResultContainer = styled.View`

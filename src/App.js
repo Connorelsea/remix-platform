@@ -2,11 +2,9 @@ import React from "react"
 import { Provider } from "react-redux"
 import { ApolloProvider } from "react-apollo"
 import store from "./utilities/storage/store"
-import TopLevelComponent from "./screens/EntryScreen"
 import Routing, { Router } from "./utilities/routing"
-import { View, Platform, Text } from "react-native"
+import { Platform, Text } from "react-native"
 
-import gql from "graphql-tag"
 import { query, mutate } from "./utilities/gql_util"
 import { remove } from "./utilities/storage"
 
@@ -22,6 +20,7 @@ import UserLogin from "./screens/UserLogin"
 import UserCreate from "./screens/UserCreate"
 import UserCreateDone from "./screens/UserCreateDone"
 import FriendNew from "./screens/FriendNew"
+import GroupCreate from "./screens/GroupCreate"
 
 import { bind } from "decko"
 import { get } from "./utilities/storage"
@@ -77,6 +76,10 @@ class App extends React.Component {
         <Route path="/+:group/#:chat" component={Chat} />
         <Route path="/@:id" component={User} />
         <Route path="/new/friend" component={() => <FriendNew user={user} />} />
+        <Route
+          path="/new/group"
+          component={() => <GroupCreate user={user} />}
+        />
       </Switch>
     )
   }
@@ -151,6 +154,24 @@ class App extends React.Component {
       </ApolloProvider>
     )
   }
+
+  // async registerPushNotifs() {
+  //   const { status: { existingStatus } } = await Permissions.getAsync(
+  //     Permissions.NOTIFICATIONS
+  //   )
+  //   let finalStatus = existingStatus
+
+  //   if (existingStatus !== "granted") {
+  //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+  //     finalStatus = status
+  //   }
+
+  //   if (finalStatus !== "granted") {
+  //     return
+  //   }
+
+  //   let token = await Notifications.getExpoPushTokenAsync()
+  // }
 }
 
 export default App

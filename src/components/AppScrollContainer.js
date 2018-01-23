@@ -7,6 +7,7 @@ import { ScrollView } from "react-native"
 import styles from "../utilities/styles"
 
 import { Platform } from "react-native"
+import Spacing from "./Spacing"
 
 const Route = Routing.Route
 const Link = Routing.Link
@@ -21,8 +22,9 @@ export default class AppScrollContainer extends Component {
           backText={this.props.backText || "Back"}
           title={this.props.title || "Remix"}
         />
+        <Spacing size={120} />
         <ScrollView
-          contentContainerStyle={{ margin: 15, marginTop: 135 }}
+          contentContainerStyle={{ padding: 15 }}
           ref={scroll => {
             this.scrollView = scroll
           }}

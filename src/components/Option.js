@@ -39,6 +39,6 @@ const ActionableOption = styled.TouchableOpacity``
 
 const Text = styled.Text`
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: ${props => props.color};
 `

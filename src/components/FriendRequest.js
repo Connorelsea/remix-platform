@@ -6,10 +6,13 @@ import Text from "../components/Text"
 import distanceInWords from "date-fns/distance_in_words"
 import Option from "../components/Option"
 import { bind } from "decko"
+import { mutate } from "../utilities/gql_util"
+import Spacing from "./Spacing"
 
 class FriendRequest extends Component {
   state = {
     focus: false,
+    accepted: false,
   }
 
   @bind
@@ -22,9 +25,25 @@ class FriendRequest extends Component {
     this.setState({ focus: false })
   }
 
+  @bind
+  onAcceptPress(id) {
+    return async () => {
+      let request = await mutate(
+        `
+        mutation($friendRequestId: ID!) {
+          acceptFriendRequest(friendRequestId: $friendRequestId)
+        }
+      `,
+        { friendRequestId: id }
+      )
+
+      this.setState({ accepted: true })
+    }
+  }
+
   render() {
-    const { createdAt, fromUser } = this.props
-    const { focus } = this.state
+    const { createdAt, fromUser, id } = this.props
+    const { focus, accepted } = this.state
 
     return (
       <Request
@@ -36,18 +55,27 @@ class FriendRequest extends Component {
       >
         <Flex jc="space-around">
           <Text tier="requestTitle">
-            {fromUser.name} <Middle>sent a</Middle> Friend Request
+            {accepted
+              ? [<Middle>You are now friends with </Middle>, fromUser.name]
+              : [fromUser.name, <Middle> sent a</Middle>, " Friend Request"]}
           </Text>
+          <Spacing size={4} />
           <Text tier="requestSubtitle">
             {distanceInWords(new Date(createdAt), new Date())} ago
           </Text>
         </Flex>
-        <Option
-          options={[
-            { text: "Accept", color: "black", action: () => {} },
-            { text: "Deny", color: "rgba(0,0,0,0.5)", action: () => {} },
-          ]}
-        />
+        {!accepted && (
+          <Option
+            options={[
+              {
+                text: "Accept",
+                color: "black",
+                action: this.onAcceptPress(id),
+              },
+              { text: "Deny", color: "rgba(0,0,0,0.5)", action: () => {} },
+            ]}
+          />
+        )}
       </Request>
     )
   }
@@ -59,15 +87,17 @@ const Flex = styled.View`
   flex-direction: ${props => (props.row ? "row" : "column")};
   flex: 1;
   justify-content: ${props => props.jc || "flex-start"};
+  margin-right: 10px;
 `
 
 const Request = styled.View`
   padding: 15px;
   background-color: ${({ focus }) =>
-    focus ? styles.colors.grey[400] : styles.colors.grey[200]};
+    focus ? styles.colors.grey[300] : styles.colors.grey[200]};
   border-radius: 8px;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
 `
 
