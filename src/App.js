@@ -20,6 +20,7 @@ import UserLogin from "./screens/UserLogin"
 import UserCreate from "./screens/UserCreate"
 import UserCreateDone from "./screens/UserCreateDone"
 import FriendNew from "./screens/FriendNew"
+import GroupNew from "./screens/GroupNew"
 import GroupCreate from "./screens/GroupCreate"
 
 import { bind } from "decko"
@@ -77,7 +78,13 @@ class App extends React.Component {
         <Route path="/@:id" component={User} />
         <Route path="/new/friend" component={() => <FriendNew user={user} />} />
         <Route
+          exact
           path="/new/group"
+          component={() => <GroupNew user={user} />}
+        />
+        <Route
+          exact
+          path="/new/group/create"
           component={() => <GroupCreate user={user} />}
         />
       </Switch>

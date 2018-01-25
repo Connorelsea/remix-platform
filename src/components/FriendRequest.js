@@ -8,6 +8,7 @@ import Option from "../components/Option"
 import { bind } from "decko"
 import { mutate } from "../utilities/gql_util"
 import Spacing from "./Spacing"
+import { setTimeout } from "timers"
 
 class FriendRequest extends Component {
   state = {
@@ -28,6 +29,11 @@ class FriendRequest extends Component {
   @bind
   onAcceptPress(id) {
     return async () => {
+      setTimeout(() => {
+        console.log("Attempting to remove friend request")
+        this.props.removeFriendRequest(id)
+      }, 2000)
+
       let request = await mutate(
         `
         mutation($friendRequestId: ID!) {

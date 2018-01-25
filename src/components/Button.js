@@ -14,15 +14,15 @@ class Button extends Component {
     this.props.history.push(this.props.to)
   }
   render() {
-    const { onPress, to, title, icon } = this.props
+    const { onPress, to, title, icon, small } = this.props
 
     return (
       <Opacity
-        small={this.props.small}
-        onPress={to === undefined ? this.props.onPress : this.onLinkPress}
+        small={small}
+        onPress={to === undefined ? onPress : this.onLinkPress}
       >
         <Inner>
-          <Text small={this.props.small}>{this.props.title}</Text>
+          <Text small={small}>{title}</Text>
           {icon && [<Spacing size={10} />, icon]}
         </Inner>
       </Opacity>
@@ -35,6 +35,7 @@ export default withRouter(Button)
 const Inner = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 `
 
 const StyledLink = styled(Link)`
@@ -55,8 +56,8 @@ const Opacity = styled.TouchableOpacity`
 
 const Text = styled.Text`
   color: ${props =>
-    props.small ? styles.colors.grey[500] : styles.colors.grey[700]};
-  font-weight: ${props => (props.small ? 500 : 500)};
+    props.small ? styles.colors.grey[500] : styles.colors.grey[600]};
+  font-weight: ${props => (props.small ? 500 : 600)};
   font-size: ${props => (props.small ? 14 : 17)}px;
   letter-spacing: -0.3px;
   text-align: center;

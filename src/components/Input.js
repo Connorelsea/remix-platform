@@ -17,26 +17,24 @@ const Link = Routing.Link
 
 export default class Input extends Component {
   render() {
-    const { user, onChangeText, value } = this.props
+    const { user, onChangeText, value, placeholder } = this.props
 
     return (
-      <Container>
-        <StyledInput value={value} onChangeText={onChangeText} />
-      </Container>
+      <StyledInput
+        placeholder={placeholder}
+        placeholderTextColor={styles.colors.grey[200]}
+        value={value}
+        onChangeText={onChangeText}
+      />
     )
   }
 }
 
-const Container = styled.View`
-  flex: 1;
-`
-
 const StyledInput = styled.TextInput`
   border: 1px solid ${styles.colors.grey[200]};
-  border-radius: 8px;
+  border-radius: 100px;
   margin: 0px;
   padding: 15px;
   font-size: 17px;
   background-color: white;
-  height: 100%;
 `

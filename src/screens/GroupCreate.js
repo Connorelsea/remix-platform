@@ -11,54 +11,110 @@ import Input from "../components/Input"
 
 import { bind } from "decko"
 import HelpCard from "../components/HelpCard"
+import Icon from "react-native-vector-icons/dist/Feather"
+
+import { TouchableOpacity, Switch } from "react-native"
 
 class GroupCreate extends Component {
   state = {
-    phrase: undefined,
-    results: undefined,
+    groupName: undefined,
+    groupDescription: undefined,
+    chats: ["general", "news", "music"],
+  }
+
+  attemptCreateGroup({ iconUrl, name, description }) {
+    mutate(
+      `
+      mutation createGroup(
+        $iconUrl: String,
+        $name: String,
+        $description: String,
+      ) {
+        createGroup(
+          iconUrl: $iconUrl,
+          name: $name,
+          description: $description,
+        ) {
+          id
+        }
+      }
+    `,
+      { iconUrl, name, description }
+    )
+      .then(() => {
+        this.props.history.push("/create/done")
+      })
+      .catch(error => {})
   }
 
   @bind
-  async onSearch() {
-    const { phrase } = this.state
-
-    const results = await query(
-      `query($phrase: String!) {
-        users(phrase: $phrase) { id, name, username, description, iconUrl }
-      }`,
-      { phrase }
-    )
-
+  onChatAdd(chat) {
     this.setState({
-      results,
+      chats: [...this.state.chats, this.state.chatText],
+      chatText: "",
+    })
+    // this.chatInput.focus()
+  }
+
+  @bind
+  onChangeText(chatText) {
+    this.setState({
+      chatText,
     })
   }
 
   render() {
     const { user } = this.props
-    const { phrase, results } = this.state
+    const { groupName, groupDescription, chats, chatText } = this.state
 
     return (
-      <AppScrollContainer user={user} title="New Group">
-        <SearchContainer>
-          <Input onChangeText={this.onChangeText} value={phrase} />
+      <AppScrollContainer backText="Cancel" user={user} title="Create Group">
+        <Container>
+          <SubHeader>Group Information</SubHeader>
           <Spacing size={15} />
-          <Button onPress={this.onSearch} title="Search" />
-        </SearchContainer>
-
-        {results ? (
-          <ResultContainer>
-            {results.data.users.map(user => (
-              <GroupCard
-                key={user.id}
-                {...user}
-                addFriendFunc={this.addFriendFunc}
-              />
-            ))}
-          </ResultContainer>
-        ) : (
-          <HelpCard title="Search for groups or create your own. A group can be for anyone and anything - your classmates in a college course, your closest friends, or a group of strangers bound by common interests" />
-        )}
+          <Input
+            onChangeText={groupName => this.setState({ groupName })}
+            value={groupName}
+            placeholder="Group Name"
+          />
+          <Spacing size={15} />
+          <Input
+            onChangeText={groupDescription =>
+              this.setState({ groupDescription })
+            }
+            value={groupDescription}
+            placeholder="Group Description"
+          />
+          <Spacing size={15} />
+          {/* TODO: Switch public/private component functionality + design */}
+          {/* <SwitchComp />
+          <Spacing size={15} /> */}
+          <SubHeader>Chats</SubHeader>
+          <Spacing size={10} />
+          <SubHeaderInfo>
+            Sub-categories to help organize your group. We've added some default
+            ones, but feel free to remove them or add more
+          </SubHeaderInfo>
+          <Spacing size={15} />
+          <ChatList>{chats.map(chat => <Chat name={chat} />)}</ChatList>
+          <ChatInput
+            chatText={chatText}
+            onChatAdd={this.onChatAdd}
+            onChangeText={this.onChangeText}
+            inputRef={input => (this.chatInput = input)}
+          />
+          <Spacing size={15} />
+          <SubHeader>Members</SubHeader>
+          <Spacing size={10} />
+          <SubHeaderInfo>
+            Choose some friends to invite to your group
+          </SubHeaderInfo>
+          <Spacing size={15} />
+          <Button
+            title="Create and Invite"
+            icon={<Icon name="users" size={25} />}
+          />
+        </Container>
       </AppScrollContainer>
     )
   }
@@ -66,28 +122,73 @@ class GroupCreate extends Component {
 
 export default GroupCreate
 
-const GroupCard = ({}) => (
-  <Card>
-    <Text tier="title">Hello</Text>
-  </Card>
+const Chat = ({ name }) => [
+  <ChatContainer>
+    <ChatName>{name}</ChatName>
+    <Spacing size={10} />
+    <TouchableOpacity>
+      <Icon name="x" size={25} color={styles.colors.grey[500]} />
+    </TouchableOpacity>
+  </ChatContainer>,
+  <Spacing size={15} />,
+]
+
+const ChatInput = ({ onChatAdd, chatText, onChangeText, inputRef }) => (
+  <InputContainer>
+    <Input onChangeText={onChangeText} value={chatText} ref={inputRef} />
+    <Spacing size={10} />
+    <Button title="Add" onPress={onChatAdd} />
+  </InputContainer>
 )
 
-const Card = styled.View`
-  background-color: white;
-  padding: 15px;
-  border-radius: 8px;
-  shadow-color: black;
-  shadow-radius: 22px;
-  shadow-offset: 0px 10px;
-  shadow-opacity: 0.09;
-  margin-bottom: 20px;
-`
+const SwitchComp = ({}) => (
+  <SwitchContainer>
+    <Switch />
+    <Spacing size={10} />
+    <Text tier="body">Public Chat</Text>
+    <Text tier="body">Currently Private</Text>
+  </SwitchContainer>
+)
 
-const SearchContainer = styled.View`
+const SwitchContainer = styled.View`
   flex-direction: row;
-  margin-bottom: 20px;
 `
 
-const ResultContainer = styled.View`
+const InputContainer = styled.View`
+  flex-direction: row;
+`
+
+const ChatList = styled.View`
+  align-items: flex-start;
+`
+
+const ChatContainer = styled.View`
+  background-color: ${styles.colors.grey[200]};
+  padding: 10px 15px;
+  border-radius: 8px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
+const ChatName = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 2px;
+`
+
+const SubHeader = styled.Text`
+  font-size: 16px;
+  color: ${styles.colors.grey[300]};
+  font-weight: 500;
+`
+
+const SubHeaderInfo = styled.Text`
+  font-size: 16px;
+  color: ${styles.colors.grey[500]};
+  font-weight: 400;
+`
+
+const Container = styled.View`
   flex: 1;
 `

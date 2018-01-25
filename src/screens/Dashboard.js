@@ -1,31 +1,26 @@
 import React, { Component } from "react"
-import { View } from "react-native"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
 
 import AppScrollContainer from "../components/AppScrollContainer"
-import { query, subscribe } from "../utilities/gql_util"
+import { query } from "../utilities/gql_util"
 import { client } from "../utilities/apollo"
 
 import { bind } from "decko"
 
 import Button from "../components/Button"
-import Text from "../components/Text"
-import styles from "../utilities/styles"
 import Spacing from "../components/Spacing"
-import Option from "../components/Option"
 import FriendRequest from "../components/FriendRequest"
 import GroupCard from "../components/GroupCard"
 import gql from "graphql-tag"
-import { request } from "https"
 
 import Icon from "react-native-vector-icons/dist/Feather"
 import HelpCard from "../components/HelpCard"
 
-const Route = Routing.Route
-const Link = Routing.Link
+import { connect } from "react-redux"
 
-export default class Dashboard extends Component {
+import User from "../ducks/user"
+
+class Dashboard extends Component {
   @bind
   fire() {
     query(
@@ -66,6 +61,9 @@ export default class Dashboard extends Component {
       {
         User(id: ${id}) {
           id
+          friends {
+            id
+          }
           friendRequests {
             id
             createdAt
@@ -76,7 +74,10 @@ export default class Dashboard extends Component {
       }
     `)
 
-    this.setState({ friendRequests: requests.data.User.friendRequests })
+    this.setState({
+      friendRequests: requests.data.User.friendRequests,
+      friends: requests.data.User.friends,
+    })
   }
 
   @bind
@@ -104,18 +105,34 @@ export default class Dashboard extends Component {
 
   state = {
     friendRequests: [],
+    friends: [],
     groups: [],
   }
 
   componentDidMount() {
-    this.getFriendRequests()
-    this.getGroups()
-    this.testSubscription()
+    // this.getFriendRequests()
+    // this.getGroups()
+    // this.testSubscription()
+    const {
+      user: { id },
+      loadInitialUser,
+      subscribeToFriendRequests,
+    } = this.props
+
+    loadInitialUser(id)
+    subscribeToFriendRequests(id)
   }
 
   render() {
-    const { user } = this.props
-    const { friendRequests, groups } = this.state
+    const {
+      user,
+      reduxUser,
+      friendRequests,
+      groups,
+      removeFriendRequest,
+    } = this.props
+
+    console.log(friendRequests)
 
     return (
       <AppScrollContainer user={user} backText="remove" title="Remix">
@@ -132,17 +149,44 @@ export default class Dashboard extends Component {
             icon={<Icon name="users" size={25} />}
           />
         </ActionContainer>
-        {friendRequests.map(r => <FriendRequest key={r.id} {...r} />)}
+        {friendRequests.map(r => (
+          <FriendRequest
+            key={r.id}
+            {...r}
+            removeFriendRequest={removeFriendRequest}
+          />
+        ))}
         {groups.map(group => (
           <GroupCard key={group.id} group={group} user={user} />
         ))}
         {groups.length === 0 && (
           <HelpCard title="Add some friends or join some groups to start chatting" />
         )}
+        {/* <HelpCard title={JSON.stringify(reduxUser)} /> */}
       </AppScrollContainer>
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    subscribeToFriendRequests: id => {
+      dispatch(User.creators.subscribeToFriendRequests(id))
+    },
+    loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
+    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    reduxUser: state.user,
+    friendRequests: state.user.friendRequests,
+    groups: state.user.groups,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
 
 const ActionContainer = styled.View`
   flex-direction: row;
