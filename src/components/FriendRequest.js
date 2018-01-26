@@ -30,7 +30,6 @@ class FriendRequest extends Component {
   onAcceptPress(id) {
     return async () => {
       setTimeout(() => {
-        console.log("Attempting to remove friend request")
         this.props.removeFriendRequest(id)
       }, 2000)
 

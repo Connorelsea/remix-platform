@@ -1,15 +1,19 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router"
-import styles from "../utilities/styles"
 import styled from "styled-components/native"
 import Text from "../components/Text"
-import distanceInWords from "date-fns/distance_in_words"
-import Option from "../components/Option"
 import { bind } from "decko"
-import { mutate } from "../utilities/gql_util"
 import { TouchableOpacity } from "react-native"
+import styles from "../utilities/styles"
+import Card from "../components/Card"
 
 class GroupCard extends Component {
+  @bind
+  onPress() {
+    const { id } = this.props.group
+    this.props.history.push(`/+${id}`)
+  }
+
   render() {
     const { id, iconUrl, name, description } = this.props.group
     const { user } = this.props
@@ -17,7 +21,6 @@ class GroupCard extends Component {
     let title = name
 
     if (title === "friend") {
-      console.log(description)
       let friend = description
         .trim()
         .split(",")
@@ -27,14 +30,17 @@ class GroupCard extends Component {
         })
         .filter(part => part.id !== user.id)
 
-      console.log(friend)
-
       title = friend[0].name
     }
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={this.onPress}>
         <Card>
+          <Image
+            source={{
+              uri: iconUrl || "https://www.arete.net/Content/Images/nopic.jpg",
+            }}
+          />
           <Text tier="title">{title}</Text>
         </Card>
       </TouchableOpacity>
@@ -42,15 +48,14 @@ class GroupCard extends Component {
   }
 }
 
-const Card = styled.View`
-  background-color: white;
-  padding: 16px 18px;
-  border-radius: 8px;
-  shadow-color: black;
-  shadow-radius: 8px;
-  shadow-offset: 0px 10px;
-  shadow-opacity: 0.09;
-  margin-bottom: 20px;
-`
-
 export default withRouter(GroupCard)
+
+const imageSize = 90
+
+const Image = styled.Image`
+  height: ${imageSize}px;
+  width: ${imageSize}px;
+  border-radius: ${imageSize / 2};
+  background-color: ${styles.colors.grey[100]};
+  overflow: hidden;
+`

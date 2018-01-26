@@ -15,6 +15,7 @@ import styles from "../utilities/styles"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import HelpCard from "../components/HelpCard"
+import Card from "../components/Card"
 
 import Icon from "react-native-vector-icons/dist/Feather"
 
@@ -96,22 +97,6 @@ class FriendNew extends Component {
     )
   }
 }
-
-const Card = styled.View`
-  background-color: white;
-  padding: 15px;
-  border-radius: 8px;
-  shadow-color: black;
-  shadow-radius: 22px;
-  shadow-offset: 0px 10px;
-  shadow-opacity: 0.09;
-  margin-bottom: 20px;
-`
-
-// const options = [
-//   { text: "Profile", action: () => {}, color: styles.colors.grey[400] },
-//   { text: "Add Friend", action: () => {}, color: "black" },
-// ]
 
 const UserCard = ({
   id,

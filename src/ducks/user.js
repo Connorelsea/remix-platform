@@ -20,9 +20,12 @@ export default new Duck({
   types: [
     "ADD_FRIEND_REQUEST",
     "ADD_FRIEND_REQUESTS",
+    "SET_FRIEND_REQUESTS",
     "REMOVE_FRIEND_REQUEST",
     "ADD_GROUPS",
+    "SET_GROUPS",
     "ADD_MESSAGES",
+    "SET_MESSAGES",
     "ADD_FRIENDS",
   ],
   initialState: {
@@ -32,7 +35,6 @@ export default new Duck({
     messages: [],
   },
   reducer: (state, action, duck) => {
-    console.log(action)
     switch (action.type) {
       case duck.types.ADD_FRIEND_REQUEST: {
         const { friendRequest } = action
@@ -50,11 +52,14 @@ export default new Duck({
         }
       }
 
+      case duck.types.SET_FRIEND_REQUESTS: {
+        const { requests } = action
+        return { ...state, friendRequests: requests }
+      }
+
       case duck.types.REMOVE_FRIEND_REQUEST: {
         const { id } = action
-
         const friendRequests = state.friendRequests.filter(req => req.id !== id)
-
         return { ...state, friendRequests }
       }
 
@@ -63,9 +68,19 @@ export default new Duck({
         return { ...state, groups: [...state.groups, ...groups] }
       }
 
+      case duck.types.SET_GROUPS: {
+        const { groups } = action
+        return { ...state, groups }
+      }
+
       case duck.types.ADD_MESSAGES: {
         const { messages } = action
         return { ...state, messages: [...state.messages, ...messages] }
+      }
+
+      case duck.types.SET_MESSAGES: {
+        const { messages } = action
+        return { ...state, messages }
       }
 
       default:
@@ -102,6 +117,8 @@ export default new Duck({
 
     function loadInitialUser(id) {
       return async dispatch => {
+        console.log("[REDUX] Loading initial user state")
+
         const response = await query(`
           {
             User(id: ${id}) {
@@ -124,6 +141,10 @@ export default new Duck({
                 iconUrl
                 name
                 description
+                chats {
+                  id
+                  name
+                }
               }
               allMessages {
                 id
@@ -137,8 +158,6 @@ export default new Duck({
           }
         `)
 
-        console.log(response)
-
         const {
           User: {
             name,
@@ -150,9 +169,9 @@ export default new Duck({
           },
         } = response.data
 
-        dispatch(addFriendRequests(friendRequests))
-        dispatch(addGroups(groups))
-        dispatch(addMessages(allMessages))
+        dispatch(setFriendRequests(friendRequests))
+        dispatch(setGroups(groups))
+        dispatch(setMessages(allMessages))
 
         // TODO: dispatch and fill store with all this content
         // TODO: subscribe to new messages
@@ -176,6 +195,10 @@ export default new Duck({
       return { type: duck.types.ADD_FRIEND_REQUESTS, requests }
     }
 
+    function setFriendRequests(requests) {
+      return { type: duck.types.SET_FRIEND_REQUESTS, requests }
+    }
+
     function removeFriendRequest(id) {
       return { type: duck.types.REMOVE_FRIEND_REQUEST, id }
     }
@@ -184,8 +207,16 @@ export default new Duck({
       return { type: duck.types.ADD_GROUPS, groups }
     }
 
+    function setGroups(groups) {
+      return { type: duck.types.SET_GROUPS, groups }
+    }
+
     function addMessages(messages) {
       return { type: duck.types.ADD_MESSAGES, messages }
+    }
+
+    function setMessages(messages) {
+      return { type: duck.types.SET_MESSAGES, messages }
     }
 
     return {

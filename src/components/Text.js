@@ -18,8 +18,8 @@ const tiers = {
     color: styles.colors.grey[600],
   },
   subtitle: {
-    size: 15,
-    weight: 400,
+    size: 16,
+    weight: 500,
     spacing: 0,
     color: styles.colors.grey[400],
   },

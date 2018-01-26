@@ -3,7 +3,7 @@ import { Provider } from "react-redux"
 import { ApolloProvider } from "react-apollo"
 import store from "./utilities/storage/store"
 import Routing, { Router } from "./utilities/routing"
-import { Platform, Text } from "react-native"
+import { Platform, Text, View } from "react-native"
 
 import { query, mutate } from "./utilities/gql_util"
 import { remove } from "./utilities/storage"
@@ -66,17 +66,21 @@ class App extends React.Component {
     // const Stack = require("react-router-native-stack").default
 
     return (
-      <Switch>
+      <View>
         <Route
           exact
           path="/"
           component={() => <Dashboard user={user} />}
           animationType="slide-vertical"
         />
-        <Route path="/+:group/" component={Group} />
-        <Route path="/+:group/#:chat" component={Chat} />
-        <Route path="/@:id" component={User} />
-        <Route path="/new/friend" component={() => <FriendNew user={user} />} />
+        <Route exact path="/+:group/" component={Group} />
+        <Route exact path="/+:group/:chat" component={Chat} />
+        {/* <Route exact path="/@:id" component={User} /> */}
+        <Route
+          exact
+          path="/new/friend"
+          component={() => <FriendNew user={user} />}
+        />
         <Route
           exact
           path="/new/group"
@@ -87,7 +91,7 @@ class App extends React.Component {
           path="/new/group/create"
           component={() => <GroupCreate user={user} />}
         />
-      </Switch>
+      </View>
     )
   }
 
