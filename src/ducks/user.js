@@ -75,6 +75,7 @@ export default new Duck({
 
       case duck.types.ADD_MESSAGES: {
         const { messages } = action
+        console.log("ADD MESSAGES", messages)
         return { ...state, messages: [...state.messages, ...messages] }
       }
 
@@ -89,6 +90,34 @@ export default new Duck({
   },
   creators: duck => {
     // ACTION CREATORS
+
+    function subscribeToMessages(userId) {
+      const observable = client.subscribe({
+        query: gql`
+        subscription newMessage {
+          newMessage(forUserId: ${userId}) {
+            id
+            chatId
+            content {
+              type
+              data
+            }
+          }
+        }
+      `,
+      })
+
+      console.log("SUBSCRIBING TO MESSAGES")
+
+      // TODO: Use graphql fragment for friend request
+
+      return dispatch => {
+        return observable.subscribe(response => {
+          console.log("GOT MESSAGE", response)
+          dispatch(addMessages([response.data.newMessage]))
+        })
+      }
+    }
 
     function subscribeToFriendRequests(id) {
       const observable = client.subscribe({
@@ -221,6 +250,7 @@ export default new Duck({
 
     return {
       subscribeToFriendRequests,
+      subscribeToMessages,
       addFriendRequest,
       addFriendRequests,
       loadInitialUser,

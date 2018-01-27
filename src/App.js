@@ -158,11 +158,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <ApolloProvider client={client}>
-        <Router>
-          <Provider store={store}>{this.renderRouting()}</Provider>
-        </Router>
-      </ApolloProvider>
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <Router>{this.renderRouting()}</Router>
+        </ApolloProvider>
+      </Provider>
     )
   }
 

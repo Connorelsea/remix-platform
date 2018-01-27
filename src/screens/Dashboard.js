@@ -117,10 +117,12 @@ class Dashboard extends Component {
       user: { id },
       loadInitialUser,
       subscribeToFriendRequests,
+      subscribeToMessages,
     } = this.props
 
     loadInitialUser(id)
     subscribeToFriendRequests(id)
+    subscribeToMessages(id)
   }
 
   render() {
@@ -172,6 +174,9 @@ function mapDispatchToProps(dispatch) {
   return {
     subscribeToFriendRequests: id => {
       dispatch(User.creators.subscribeToFriendRequests(id))
+    },
+    subscribeToMessages: id => {
+      dispatch(User.creators.subscribeToMessages(id))
     },
     loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
     removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),

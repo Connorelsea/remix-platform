@@ -8,7 +8,12 @@ import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"
 
+import { ScrollView, Platform } from "react-native"
+
 import { List, AutoSizer, CellMeasurer } from "react-virtualized"
+
+import ChatInputArea from "../components/ChatInputArea"
+import { mutate } from "../utilities/gql_util"
 
 class Chat extends Component {
   renderMessage(msg) {
@@ -19,19 +24,47 @@ class Chat extends Component {
     return msg.id
   }
 
-  render() {
+  @bind
+  async updateReadPosition() {
     const { messages } = this.props
+    const response = await mutate(`
+      mutation updateReadPosition {
+        updateReadPosition(
+          forMessageId: ${messages[0].id}
+        ) {
+          id
+        }
+      }
+    `)
+
+    console.log(response)
+  }
+
+  componentDidMount() {
+    this.updateReadPosition()
+  }
+
+  render() {
+    const { messages, foundChat, match } = this.props
+    const { params: { group, chat } } = match
+
     return (
-      <AppScrollContainer title={"name"}>
-        {/* chat header here */}
-        <Container />
-        {/* chat input here */}
-      </AppScrollContainer>
+      <OuterContainer>
+        <ScrollView>
+          {messages.map(msg => <Text tier="body">{JSON.stringify(msg)}</Text>)}
+        </ScrollView>
+        <ChatInputArea chatId={foundChat.id} />
+      </OuterContainer>
     )
   }
 }
 
-const Container = styled.View`
+const OuterContainer = styled.View`
+  flex: 1;
+  ${Platform.OS !== "ios" && "min-height: 100vh"};
+`
+
+const Container = styled.ScrollView`
   flex: 1;
 `
 
@@ -56,6 +89,8 @@ function mapStateToProps(state, props) {
   }
 
   return {
+    foundChat,
+    foundGroup,
     messages: state.user.messages.filter(msg => msg.chatId === foundChat.id),
   }
 }
