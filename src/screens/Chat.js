@@ -7,16 +7,18 @@ import AppScrollContainer from "../components/AppScrollContainer"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"
+import { View } from "react-native"
 
 import { ScrollView, Platform } from "react-native"
-
-import { List, AutoSizer, CellMeasurer } from "react-virtualized"
 
 import ChatInputArea from "../components/ChatInputArea"
 import { mutate } from "../utilities/gql_util"
 import Message from "../components/Message"
 
 import { withRouter } from "react-router"
+
+import Header from "../components/Header"
+import { TransitionMotion, spring } from "react-motion"
 
 class Chat extends Component {
   renderMessage(msg) {
@@ -50,27 +52,61 @@ class Chat extends Component {
 
   @bind
   scrollToEnd() {
-    this.scrollView.scrollToEnd({ animated: false })
+    this.scrollView.scrollToEnd({ animated: true })
+    // this.scrollView.scrollTop = this.scrollView.scrollHeight
+    // TODO: Fix this scroll bullshit
+    this.endComp.scrollIntoView({ block: "end", inline: "nearest" })
   }
 
   render() {
     const { messages, foundChat, match, currentUser } = this.props
     const { params: { group, chat } } = match
 
+    let comp = this
+
     return (
       <OuterContainer>
+        <Header user={currentUser} backText="Back" title={`#${chat}`} light />
         <ScrollView
           ref={view => (this.scrollView = view)}
           contentContainerStyle={{ alignItems: "flex-start", padding: 25 }}
         >
-          {messages.map((msg, i) => (
-            <Message
-              {...msg}
-              key={msg.id}
-              prev={i < 1 ? {} : messages[i - 1]}
-              currentUser={currentUser}
-            />
-          ))}
+          <TransitionMotion
+            willLeave={style => ({
+              // height: spring(0),
+              opacity: spring(0),
+            })}
+            willEnter={style => ({
+              // height: 0,
+              opacity: 0,
+            })}
+            styles={messages.map(msg => ({
+              key: msg.id,
+              style: { opacity: spring(1) },
+              data: { ...msg },
+            }))}
+          >
+            {interpolatedStyles => (
+              <View style={{ flex: 1, width: "100%" }}>
+                {interpolatedStyles.map((config, i) => (
+                  <Message
+                    key={config.key}
+                    style={config.style}
+                    content={config.data.content}
+                    user={config.data.user}
+                    prev={i < 1 ? {} : interpolatedStyles[i - 1].data}
+                    currentUser={currentUser}
+                    ref={
+                      interpolatedStyles.length === i - 1 &&
+                      (c => {
+                        comp = c
+                      })
+                    }
+                  />
+                ))}
+              </View>
+            )}
+          </TransitionMotion>
         </ScrollView>
         <ChatInputArea chatId={foundChat.id} scrollToEnd={this.scrollToEnd} />
       </OuterContainer>

@@ -7,6 +7,8 @@ import { TouchableOpacity } from "react-native"
 import styles from "../utilities/styles"
 import Card from "../components/Card"
 import Spacing from "./Spacing"
+import { connect } from "react-redux"
+import User from "../ducks/user"
 
 class GroupCard extends Component {
   @bind
@@ -16,28 +18,42 @@ class GroupCard extends Component {
   }
 
   render() {
-    const { id, iconUrl, name, description } = this.props.group
+    const {
+      id,
+      iconUrl,
+      name,
+      description,
+      isDirectMessage,
+      members,
+      users,
+    } = this.props.group
     const { user } = this.props
 
     let title = name
 
-    if (title === "friend") {
-      let friend = description
-        .trim()
-        .split(",")
-        .map(part => {
-          let sub = part.split(":")
-          return { id: sub[0], name: sub[1] }
-        })
-        .filter(part => part.id !== user.id)
-
-      title = friend[0].name
+    if (isDirectMessage) {
+      const firstUser = users.find(u => u.id == users[0].id)
+      const secondUser = users.find(u => u.id == users[0].id)
+      if (firstUser.id == user.id) title = firstUser.name
+      else title = secondUser.name
     }
+    // if (title === "friend") {
+    //   let friend = description
+    //     .trim()
+    //     .split(",")
+    //     .map(part => {
+    //       let sub = part.split(":")
+    //       return { id: sub[0], name: sub[1] }
+    //     })
+    //     .filter(part => part.id !== user.id)
+
+    //   title = friend[0].name
+    // }
 
     return (
       <TouchableOpacity onPress={this.onPress}>
         <Card>
-          <Header>
+          <Container>
             <Image
               source={{
                 uri:
@@ -45,15 +61,39 @@ class GroupCard extends Component {
               }}
             />
             <Spacing size={15} />
-            <Text tier="title">{title}</Text>
-          </Header>
+            <Body>
+              <Text tier="title">{title}</Text>
+            </Body>
+          </Container>
         </Card>
       </TouchableOpacity>
     )
   }
 }
 
-export default withRouter(GroupCard)
+function mapDispatchToProps(dispatch) {
+  return {
+    subscribeToFriendRequests: id => {
+      dispatch(User.creators.subscribeToFriendRequests(id))
+    },
+    subscribeToMessages: id => {
+      dispatch(User.creators.subscribeToMessages(id))
+    },
+    loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
+    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    friendRequests: state.user.friendRequests,
+    users: state.user.users,
+  }
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(GroupCard)
+)
 
 const imageSize = 90
 
@@ -65,6 +105,8 @@ const Image = styled.Image`
   overflow: hidden;
 `
 
-const Header = styled.View`
+const Container = styled.View`
   flex-direction: row;
 `
+
+const Body = styled.View``

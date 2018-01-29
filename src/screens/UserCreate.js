@@ -13,6 +13,8 @@ import { bind } from "decko"
 import ColorPicker from "../components/ColorPicker"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
+import styles from "../utilities/styles"
+import Message from "../components/Message"
 
 const Route = Routing.Route
 const Link = Routing.Link
@@ -51,7 +53,7 @@ class UserLogin extends Component {
         }
       }
     `,
-      { email, phone_number, username, password, name, description }
+      { email, phone_number, username, password, name, description, color }
     )
       .then(() => {
         this.props.history.push("/")
@@ -81,19 +83,30 @@ class UserLogin extends Component {
   }
 
   render() {
+    const { name, color } = this.state
+
     return (
       <AppScrollContainer title="New User">
         <Text tier="subtitle">Personal Color</Text>
         <Spacing size={5} />
-        <Text tier="body">
-          What color are you? This will be the color your messages appear to
-          everyone else.
-        </Text>
+        <Text tier="body">What color are you?</Text>
         <Spacing size={15} />
         <ColorPicker onColorChange={this.onColorChange} />
-        <Spacing size={20} />
-        <Text tier="subtitle">Account Credentials</Text>
+        <Spacing size={30} />
+        <Text tier="subtitle">Your Messages</Text>
+        <Spacing size={5} />
+        <Text tier="body">
+          This is what your messages will look like to other users
+        </Text>
         <Spacing size={15} />
+        <Message
+          content={{ type: "remix/text", data: { text: "Message text" } }}
+          user={{ id: -1, name, color }}
+          prev={{}}
+          currentUser={{ id: -2 }}
+        />
+        <Spacing size={30} />
+        <Text tier="subtitle">Account Credentials</Text>
         <TextInput
           placeholder="Email"
           onChangeText={this.onTextChangeFor("email")}
@@ -115,7 +128,7 @@ class UserLogin extends Component {
           onChangeText={this.onTextChangeFor("password")}
           value={this.state.password}
         />
-        <Spacing size={10} />
+        <Spacing size={30} />
         <Text tier="subtitle">About You</Text>
         <TextInput
           placeholder="Display or Full Name"
@@ -127,10 +140,18 @@ class UserLogin extends Component {
           onChangeText={this.onTextChangeFor("description")}
           value={this.state.description}
         />
+        <Spacing size={30} />
         <Button onPress={this.onCreatePress} title="Join Remix" />
       </AppScrollContainer>
     )
   }
 }
+
+const Bubble = styled.View`
+  padding: 10px 12px;
+  border-radius: 20px;
+  background-color: ${({ color }) => color || styles.colors.grey[200]};
+  max-width: 300px;
+`
 
 export default withRouter(UserLogin)

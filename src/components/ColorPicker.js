@@ -11,16 +11,20 @@ import fontColorContrast from "font-color-contrast"
 class ColorPicker extends Component {
   state = {
     colors: [
-      "#7A7F88",
+      "#5A5E64",
       "#D1D5DB",
+      "#FFC0C0",
       "#C94343",
+
+      "#801D1D",
       "#F39D05",
       "#F4D701",
-      "#6CC20E",
+      "#32D561",
+      "#154B25",
+
       "#0079FF",
-      "#74428A",
-      "#721722",
-      "#FFC0C0",
+      "#9DC7F8",
+      "#644F99",
     ],
     selectedIndex: 0,
   }
@@ -73,12 +77,13 @@ const Color = styled.View`
   border: 7px solid
     ${({ isSelected }) =>
       isSelected ? styles.colors.grey[200] : styles.colors.grey[100]};
+  transition: border 0.5s;
 `
 
 const Text = styled.Text`
   color: ${({ color }) => color};
   font-size: 35px;
   text-align: center;
-  font-weight: 300;
+  font-weight: 200;
   padding-top: 5px;
 `

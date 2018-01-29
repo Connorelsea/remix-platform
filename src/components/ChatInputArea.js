@@ -39,7 +39,7 @@ class ChatInputArea extends Component {
       }
     `)
 
-    scrollToEnd()
+    setTimeout(scrollToEnd, 100)
     this.textInput.focus()
 
     console.log(response)

@@ -24,7 +24,7 @@ const tiers = {
     color: styles.colors.grey[400],
   },
   body: {
-    size: 15,
+    size: 16,
     weight: 500,
     spacing: 0,
     color: styles.colors.grey[600],
@@ -65,4 +65,5 @@ export default styled.Text`
   margin: 0;
   padding: 0;
   ${({ center }) => center && "text-align: center"};
+  transition: color 0.9s;
 `

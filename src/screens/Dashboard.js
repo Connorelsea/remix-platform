@@ -134,8 +134,6 @@ class Dashboard extends Component {
       removeFriendRequest,
     } = this.props
 
-    console.log(friendRequests)
-
     return (
       <AppScrollContainer user={user} backText="remove" title="Remix">
         <ActionContainer>

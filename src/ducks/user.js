@@ -191,6 +191,7 @@ export default new Duck({
                 iconUrl
                 name
                 description
+                isDirectMessage
                 chats {
                   id
                   name

@@ -27,11 +27,15 @@ class Header extends Component {
   }
 
   render() {
-    const { backText, title, user } = this.props
+    const { backText, title, user, light } = this.props
     return (
       <Container>
-        <Spacing size={45} />
-        <Upper>
+        <Spacing
+          size={45}
+          color={light ? "white" : styles.colors.grey[100]}
+          fullWidth
+        />
+        <Upper light={light}>
           {backText !== "remove" && (
             <Back onPress={this.onBackPress}>
               <Icon name="arrow-left" size={22} color={backColor} />
@@ -42,7 +46,11 @@ class Header extends Component {
           <Title>{title || "Remix"}</Title>
         </Upper>
         <Gradient
-          colors={[styles.colors.grey[100], "rgba(248, 248, 248, 0)"]}
+          colors={
+            light
+              ? ["white", " rgba(0,0,0,0)"]
+              : [styles.colors.grey[100], "rgba(248, 248, 248, 0)"]
+          }
           size={25}
         />
       </Container>
@@ -64,7 +72,8 @@ const BackText = styled.Text`
 `
 
 const Upper = styled.View`
-  background-color: ${styles.colors.grey[100]};
+  background-color: ${props =>
+    props.light ? "white" : styles.colors.grey[100]};
   padding-left: 15px;
   padding-right: 15px;
 `

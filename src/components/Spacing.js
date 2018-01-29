@@ -1,6 +1,7 @@
 import styled from "styled-components/native"
 
 export default styled.View`
-  width: ${props => props.size}px;
   height: ${props => props.size}px;
+  background-color: ${props => props.color || "transparent"};
+  width: ${props => (props.fullWidth ? "100%" : props.size + "px")};
 `
