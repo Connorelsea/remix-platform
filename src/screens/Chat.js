@@ -1,22 +1,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import styled from "styled-components/native"
-import styles from "../utilities/styles"
-import User from "../ducks/user"
-import AppScrollContainer from "../components/AppScrollContainer"
-import Text from "../components/Text"
-import Spacing from "../components/Spacing"
+import { ScrollView, Platform, View } from "react-native"
 import { bind } from "decko"
-import { View } from "react-native"
-
-import { ScrollView, Platform } from "react-native"
-
-import ChatInputArea from "../components/ChatInputArea"
+import styled from "styled-components/native"
 import { mutate } from "../utilities/gql_util"
+import Text from "../components/Text"
+import ChatInputArea from "../components/ChatInputArea"
 import Message from "../components/Message"
-
+import User from "../ducks/user"
 import { withRouter } from "react-router"
-
 import Header from "../components/Header"
 import { TransitionMotion, spring } from "react-motion"
 
@@ -32,6 +24,7 @@ class Chat extends Component {
   @bind
   async updateReadPosition() {
     const { messages } = this.props
+    if (messages.length < 1) return
     const response = await mutate(`
       mutation updateReadPosition {
         updateReadPosition(
@@ -42,6 +35,7 @@ class Chat extends Component {
       }
     `)
 
+    console.log("[READ POSITION] Updated read position")
     console.log(response)
   }
 
@@ -59,8 +53,8 @@ class Chat extends Component {
   }
 
   render() {
-    const { messages, foundChat, match, currentUser } = this.props
-    const { params: { group, chat } } = match
+    const { messages = [], foundChat, match, currentUser } = this.props
+    const { params: { chat } } = match
 
     let comp = this
 
@@ -69,7 +63,11 @@ class Chat extends Component {
         <Header user={currentUser} backText="Back" title={`#${chat}`} light />
         <ScrollView
           ref={view => (this.scrollView = view)}
-          contentContainerStyle={{ alignItems: "flex-start", padding: 25 }}
+          contentContainerStyle={{
+            alignItems: "flex-start",
+            padding: 25,
+            marginTop: 100,
+          }}
         >
           <TransitionMotion
             willLeave={style => ({
@@ -133,33 +131,16 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-function mapStateToProps(state, props) {
+function newMapStateToProps(state, props) {
   const { match: { params: { group, chat } } } = props
-  const foundGroup = state.user.groups.find(g => g.id === group)
-  const foundChat = foundGroup && foundGroup.chats.find(c => c.name === chat)
-
-  if (foundGroup === undefined) {
-    // TODO: foundGroup === undefined
-    // The group they are trying to access isnt in the store
-  }
-
-  // associate the users from the redux store with the messages
-  // in this chat
-
-  let messages = state.user.messages
-    .filter(msg => msg.chatId === foundChat.id)
-    .map(msg => {
-      return {
-        ...msg,
-        user: state.user.users.find(u => u.id === msg.userId),
-      }
-    })
-
+  console.log(User)
+  console.log("NEW MAP STATE TO PROPS")
+  const foundChat = User.selectors.getChat(state, group, chat)
+  console.log("FOUND CHAT ", foundChat)
   return {
     foundChat,
-    foundGroup,
-    messages,
+    messages: User.selectors.getChatMessages(state, group, foundChat.id),
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat))
+export default withRouter(connect(newMapStateToProps, mapDispatchToProps)(Chat))

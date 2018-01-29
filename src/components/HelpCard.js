@@ -1,7 +1,5 @@
 import React, { Component } from "react"
-import styles from "../utilities/styles"
 import styled from "styled-components/native"
-import { bind } from "decko"
 import Text from "../components/Text"
 
 class HelpCard extends Component {
@@ -9,7 +7,7 @@ class HelpCard extends Component {
     const { title } = this.props
     return (
       <Container>
-        <Text tier="emphasis" center>
+        <Text tier="emphasis" center={1}>
           {title}
         </Text>
       </Container>

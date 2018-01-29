@@ -9,6 +9,7 @@ import Card from "../components/Card"
 import Spacing from "./Spacing"
 import { connect } from "react-redux"
 import User from "../ducks/user"
+import Message from "./Message"
 
 class GroupCard extends Component {
   @bind
@@ -27,7 +28,7 @@ class GroupCard extends Component {
       members,
       users,
     } = this.props.group
-    const { user } = this.props
+    const { user, messages } = this.props
 
     let title = name
 
@@ -63,6 +64,19 @@ class GroupCard extends Component {
             <Spacing size={15} />
             <Body>
               <Text tier="title">{title}</Text>
+              <MessageContainer>
+                {messages
+                  .slice(-4)
+                  .map((msg, i) => (
+                    <Message
+                      prev={msg}
+                      currentUser={{}}
+                      {...msg}
+                      style={{ opacity: 1 }}
+                      small
+                    />
+                  ))}
+              </MessageContainer>
             </Body>
           </Container>
         </Card>
@@ -84,10 +98,11 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     friendRequests: state.user.friendRequests,
     users: state.user.users,
+    messages: User.selectors.getGroupMessages(state, props.group.id),
   }
 }
 
@@ -108,5 +123,7 @@ const Image = styled.Image`
 const Container = styled.View`
   flex-direction: row;
 `
+
+const MessageContainer = styled.View``
 
 const Body = styled.View``

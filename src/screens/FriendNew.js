@@ -1,22 +1,15 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
-
 import AppScrollContainer from "../components/AppScrollContainer"
 import { query, mutate } from "../utilities/gql_util"
-import { client } from "../utilities/apollo"
-
 import { bind } from "decko"
-
 import Button from "../components/Button"
 import Input from "../components/Input"
-import Option from "../components/Option"
 import styles from "../utilities/styles"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import HelpCard from "../components/HelpCard"
 import Card from "../components/Card"
-
 import Icon from "react-native-vector-icons/dist/Feather"
 
 class FriendNew extends Component {

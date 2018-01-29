@@ -1,20 +1,20 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
 import { withRouter } from "react-router"
 import styles from "../utilities/styles"
 import { bind } from "decko"
 import Spacing from "./Spacing"
 
-const Route = Routing.Route
-const Link = Routing.Link
 class Button extends Component {
   @bind
   onLinkPress() {
     this.props.history.push(this.props.to)
   }
+
   render() {
     const { onPress, to, title, icon, small } = this.props
+
+    // const clonedIcon = React.cloneElement(icon, { key: "icon", ...icon })
 
     return (
       <Opacity
@@ -23,7 +23,7 @@ class Button extends Component {
       >
         <Inner>
           <Text small={small}>{title}</Text>
-          {icon && [<Spacing size={10} />, icon]}
+          {icon && [<Spacing key="spacing" size={10} />, icon]}
         </Inner>
       </Opacity>
     )
@@ -36,15 +36,6 @@ const Inner = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-`
-
-const StyledLink = styled(Link)`
-  padding: 15px;
-  background-color: ${styles.colors.grey[200]};
-  border: 1px ${styles.colors.grey[200]};
-  overflow: hidden;
-  border-radius: 10px;
-  display: block;
 `
 
 const Opacity = styled.TouchableOpacity`

@@ -1,23 +1,18 @@
 import React, { Component } from "react"
-import styled from "styled-components/native"
+import LinearGradient from "./LinearGradient"
 
 export default class Gradient extends Component {
   render() {
     const { colors, size } = this.props
     return (
-      <Grad
-        size={size}
-        style={{
-          background: `linear-gradient(to bottom, ${colors[0]}, ${colors[1]})`,
-        }}
+      <LinearGradient
+        colors={colors}
+        style={{ height: size, width: "100%" }}
+        start={{ x: 0.2, y: 0.1 }}
+        end={{ x: 0.2, y: 0.1 }}
       >
         {this.props.children}
-      </Grad>
+      </LinearGradient>
     )
   }
 }
-
-const Grad = styled.View`
-  height: ${props => props.size}px;
-  width: 100%;
-`

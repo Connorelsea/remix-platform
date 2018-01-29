@@ -13,6 +13,7 @@ class Message extends Component {
       prev,
       style,
       currentUser,
+      small,
     } = this.props
     const textColor = fontColorContrast(color) // === "#000000" ? "#FFFFFF" : "#000000"
 
@@ -23,7 +24,7 @@ class Message extends Component {
     return (
       <Container isCurrentUser={isCurrentUser} opacity={style.opacity}>
         {!sameUserAsPrev && [<Text tier="messageName">{name}</Text>, space]}
-        <Bubble color={color}>
+        <Bubble color={color} small={small}>
           <Text tier="body" color={textColor}>
             {data.text}
           </Text>
@@ -48,6 +49,5 @@ const Bubble = styled.View`
   padding: 10px 12px;
   border-radius: 20px;
   background-color: ${({ color }) => color || styles.colors.grey[200]};
-  max-width: 300px;
-  transition: background-color 0.6s;
+  max-width: ${props => (props.small ? 200 : 300)}px;
 `

@@ -1,20 +1,12 @@
 import React, { Component } from "react"
-import { View } from "react-native"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
-
 import Button from "../components/Button"
 import AppScrollContainer from "../components/AppScrollContainer"
 import TextInput from "../components/TextInput"
-
-import { query, mutate } from "../utilities/gql_util"
-
+import { mutate } from "../utilities/gql_util"
 import { bind } from "decko"
-import { get, set } from "../utilities/storage"
+import { set } from "../utilities/storage"
 import { withRouter } from "react-router"
-
-const Route = Routing.Route
-const Link = Routing.Link
 
 class UserLogin extends Component {
   attemptEmailLogin(email, password) {
@@ -70,7 +62,10 @@ class UserLogin extends Component {
 
   @bind
   onLoginPress() {
-    const { loginCredential, loginPassword, loginCredentialType } = this.state
+    const {
+      loginCredential,
+      loginPassword /* loginCredentialType */,
+    } = this.state
     this.attemptEmailLogin(loginCredential, loginPassword)
   }
 

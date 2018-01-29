@@ -1,7 +1,5 @@
 import React, { Component } from "react"
-import { View, Text } from "react-native"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
 import Gradient from "./Gradient"
 import styles from "../utilities/styles"
 import { withRouter } from "react-router"
@@ -9,9 +7,6 @@ import { bind } from "decko"
 import Spacing from "../components/Spacing"
 
 import Icon from "react-native-vector-icons/dist/Feather"
-
-const Route = Routing.Route
-const Link = Routing.Link
 
 const backColor = styles.colors.grey[500]
 
@@ -33,7 +28,7 @@ class Header extends Component {
         <Spacing
           size={45}
           color={light ? "white" : styles.colors.grey[100]}
-          fullWidth
+          fullwidth={1}
         />
         <Upper light={light}>
           {backText !== "remove" && (

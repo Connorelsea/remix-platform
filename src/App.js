@@ -6,7 +6,7 @@ import Routing, { Router } from "./utilities/routing"
 import { Platform, Text, View } from "react-native"
 import styled from "styled-components/native"
 
-import { query, mutate } from "./utilities/gql_util"
+import { query } from "./utilities/gql_util"
 import { remove } from "./utilities/storage"
 
 import { client } from "./utilities/apollo"
@@ -14,12 +14,10 @@ import { client } from "./utilities/apollo"
 import Home from "./screens/Home"
 import Group from "./screens/Group"
 import Chat from "./screens/Chat"
-import User from "./screens/User"
 import Dashboard from "./screens/Dashboard"
 
 import UserLogin from "./screens/UserLogin"
 import UserCreate from "./screens/UserCreate"
-import UserCreateDone from "./screens/UserCreateDone"
 import FriendNew from "./screens/FriendNew"
 import GroupNew from "./screens/GroupNew"
 import GroupCreate from "./screens/GroupCreate"
@@ -31,9 +29,9 @@ import { Switch } from "react-router"
 import { hot } from "react-hot-loader"
 import MediaQuery from "react-responsive"
 import styles from "./utilities/styles"
+import DataManager from "./components/DataManager"
 
 const Route = Routing.Route
-const Link = Routing.Link
 
 class App extends React.Component {
   state = {
@@ -59,7 +57,6 @@ class App extends React.Component {
           component={() => <UserLogin setUser={this.setUser} />}
         />
         <Route exact path="/create" component={UserCreate} />
-        <Route exact path="/create/done" component={UserCreateDone} />
       </Switch>
     )
   }
@@ -71,25 +68,29 @@ class App extends React.Component {
     /* <Route exact path="/@:id" component={User} /> */
 
     const routes = [
-      <Route exact path="/+:group/" component={Group} />,
+      <Route exact path="/+:group/" key="group_show" component={Group} />,
       <Route
         exact
         path="/+:group/:chat"
+        key="chat_show"
         component={() => <Chat currentUser={user} />}
       />,
       <Route
         exact
         path="/new/friend"
+        key="new_friend"
         component={() => <FriendNew user={user} />}
       />,
       <Route
         exact
         path="/new/group"
+        key="new_group"
         component={() => <GroupNew user={user} />}
       />,
       <Route
         exact
         path="/new/group/create"
+        key="new_group_create"
         component={() => <GroupCreate user={user} />}
       />,
     ]
@@ -177,7 +178,9 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <ApolloProvider client={client}>
-          <Router>{this.renderRouting()}</Router>
+          <DataManager user={this.state.user}>
+            <Router>{this.renderRouting()}</Router>
+          </DataManager>
         </ApolloProvider>
       </Provider>
     )
@@ -207,7 +210,8 @@ export default hot(module)(App)
 const Side = styled.View`
   width: 400;
   min-width: 400;
-  border-right: 1px solid ${styles.colors.grey[200]};
+  border-right-color: ${styles.colors.grey[200]};
+  border-right-width: 1px;
 `
 
 const Body = styled.View`

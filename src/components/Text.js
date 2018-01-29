@@ -65,5 +65,4 @@ export default styled.Text`
   margin: 0;
   padding: 0;
   ${({ center }) => center && "text-align: center"};
-  transition: color 0.9s;
 `

@@ -2,6 +2,7 @@ import Duck from "extensible-duck"
 import { client } from "../utilities/apollo"
 import gql from "graphql-tag"
 import { query } from "../utilities/gql_util"
+import createCachedSelector from "re-reselect"
 
 // ACTION CREATORS
 
@@ -28,16 +29,29 @@ export default new Duck({
     "SET_MESSAGES",
     "ADD_FRIENDS",
     "SET_USERS",
+    "SET_USER_META",
+    "START_USER_LOADING",
+    "END_USER_LOADING",
   ],
   initialState: {
+    id: undefined,
     friendRequests: [],
     friends: [],
     groups: [],
     messages: [],
     users: [],
+    loading: true,
   },
   reducer: (state, action, duck) => {
     switch (action.type) {
+      case duck.types.SET_USER_META: {
+        const { id } = action.payload
+        return {
+          ...state,
+          id,
+        }
+      }
+
       case duck.types.ADD_FRIEND_REQUEST: {
         const { friendRequest } = action
         return {
@@ -91,9 +105,82 @@ export default new Duck({
         return { ...state, users }
       }
 
+      case duck.types.START_USER_LOADING: {
+        return { ...state, loading: true }
+      }
+
+      case duck.types.END_USER_LOADING: {
+        return { ...state, loading: true }
+      }
+
       default:
         return state
     }
+  },
+  selectors: {
+    getMessages: state =>
+      state.user.messages.map(m => ({
+        ...m,
+        user: state.user.users.find(u => u.id == m.userId),
+      })),
+    getGroups: state => state.user.groups,
+
+    getChat: (state, groupId, chatName) => {
+      console.log("GET CHAT SELECTOR")
+      console.log(groupId, chatName)
+
+      const foundGroup = state.user.groups.find(g => g.id == groupId)
+      if (!foundGroup) return
+
+      console.log(foundGroup)
+      return foundGroup.chats.find(c => c.name == chatName)
+    },
+
+    getGroupMessages: new Duck.Selector(selectors =>
+      createCachedSelector(
+        [
+          selectors.getMessages,
+          selectors.getGroups,
+          (state, groupId) => groupId,
+        ],
+
+        (messages, groups, groupId) => {
+          console.log("SELECTOR VARS")
+          console.log(messages, groups, groupId)
+          const foundGroup = groups.find(g => g.id == groupId)
+          if (!foundGroup) return []
+
+          const foundMessages = messages.filter(msg =>
+            foundGroup.chats.find(c => c.id == msg.chatId)
+          )
+
+          console.log(foundMessages)
+          return foundMessages
+        }
+      )((state, groupId) => groupId)
+    ),
+
+    getChatMessages: new Duck.Selector(selectors =>
+      createCachedSelector(
+        [
+          (state, groupId, chatId) =>
+            selectors.getGroupMessages(state, groupId),
+          (state, groupId, chatId) => chatId,
+        ],
+        (groupMessages, chatId) => {
+          const foundMessages = groupMessages.filter(m => m.chatId == chatId)
+          console.log(foundMessages, chatId)
+          return foundMessages
+        }
+      )((state, chatId) => chatId)
+    ),
+
+    // getGroupMessages: createSelector(
+    //   [duck.selectors.getAllMessages],
+    //   messages => {
+    //     const foundGroup = state.user.groups.find(g => g.id === group)
+    //   }
+    // ),
   },
   creators: duck => {
     // ACTION CREATORS
@@ -167,6 +254,12 @@ export default new Duck({
     function loadInitialUser(id) {
       return async dispatch => {
         console.log("[REDUX] Loading initial user state")
+        dispatch(startUserLoading())
+
+        // TODO: Move this query into independent file. Use graphql loader
+        // from webpack.
+
+        // TODO: Use try-catch here and handle user failure
 
         const response = await query(`
           {
@@ -231,6 +324,7 @@ export default new Duck({
           relevantUsers = [],
         } = response.data
 
+        dispatch()
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))
         dispatch(setMessages(allMessages))
@@ -248,6 +342,10 @@ export default new Duck({
         // starts scrolling up to see older messages. Then create
         // a scrolling paginated call for an infinite list
       }
+    }
+
+    function setUserMeta(payload) {
+      return { type: duck.types.SET_USER_META, payload }
     }
 
     function addFriendRequest(friendRequest) {
@@ -284,6 +382,14 @@ export default new Duck({
 
     function setUsers(users) {
       return { type: duck.types.SET_USERS, users }
+    }
+
+    function startUserLoading() {
+      return { type: duck.types.START_USER_LOADING }
+    }
+
+    function endUserLoading() {
+      return { type: duck.types.END_USER_LOADING }
     }
 
     return {

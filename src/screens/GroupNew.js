@@ -1,14 +1,11 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import AppScrollContainer from "../components/AppScrollContainer"
-import { query, mutate } from "../utilities/gql_util"
-
-import styles from "../utilities/styles"
+import { query } from "../utilities/gql_util"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import Button from "../components/Button"
 import Input from "../components/Input"
-
 import { bind } from "decko"
 import HelpCard from "../components/HelpCard"
 import Icon from "react-native-vector-icons/dist/Feather"

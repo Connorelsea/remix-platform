@@ -1,16 +1,10 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
-
 import Header from "./Header"
 import { ScrollView } from "react-native"
 import styles from "../utilities/styles"
-
 import { Platform } from "react-native"
 import Spacing from "./Spacing"
-
-const Route = Routing.Route
-const Link = Routing.Link
 
 export default class AppScrollContainer extends Component {
   render() {
