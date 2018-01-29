@@ -27,12 +27,14 @@ export default new Duck({
     "ADD_MESSAGES",
     "SET_MESSAGES",
     "ADD_FRIENDS",
+    "SET_USERS",
   ],
   initialState: {
     friendRequests: [],
     friends: [],
     groups: [],
     messages: [],
+    users: [],
   },
   reducer: (state, action, duck) => {
     switch (action.type) {
@@ -84,6 +86,11 @@ export default new Duck({
         return { ...state, messages }
       }
 
+      case duck.types.SET_USERS: {
+        const { users } = action
+        return { ...state, users }
+      }
+
       default:
         return state
     }
@@ -98,6 +105,7 @@ export default new Duck({
           newMessage(forUserId: ${userId}) {
             id
             chatId
+            userId
             content {
               type
               data
@@ -120,27 +128,39 @@ export default new Duck({
     }
 
     function subscribeToFriendRequests(id) {
+      console.log("SUBSCRIBING WITH ID " + id)
+
       const observable = client.subscribe({
         query: gql`
-        subscription newFriendRequest {
-          newFriendRequest(toUserId: ${id}) {
-            id
-            message
-            createdAt
-            fromUser {
-              name
+          subscription newFriendRequest($toUserId: ID!) {
+            newFriendRequest(toUserId: $toUserId) {
+              id
+              message
+              createdAt
+              fromUser {
+                name
+              }
             }
           }
-        }
-      `,
+        `,
+        variables: {
+          toUserId: id,
+        },
       })
 
       // TODO: Use graphql fragment for friend request
 
       return dispatch => {
-        return observable.subscribe(friendRequest => {
-          dispatch(addFriendRequest(friendRequest.data.newFriendRequest))
-        })
+        return observable.subscribe(
+          friendRequest => {
+            // console.log("NEW FRIEND REQUEST", friendRequest)
+            dispatch(addFriendRequest(friendRequest.data.newFriendRequest))
+          },
+          error => {
+            console.log("why the fuck does god hate me")
+            console.log(error)
+          }
+        )
       }
     }
 
@@ -154,6 +174,7 @@ export default new Duck({
               id
               name
               username
+              color
               friendRequests {
                 id
                 message
@@ -174,15 +195,25 @@ export default new Duck({
                   id
                   name
                 }
+                members {
+                  id
+                }
               }
               allMessages {
                 id
                 chatId
+                userId
                 content {
                   type
                   data
                 }
               }
+            }
+            relevantUsers {
+              id
+              name
+              username
+              color
             }
           }
         `)
@@ -191,16 +222,18 @@ export default new Duck({
           User: {
             name,
             username,
-            friendRequests,
-            friends,
-            groups,
-            allMessages,
+            friendRequests = [],
+            friends = [],
+            groups = [],
+            allMessages = [],
           },
+          relevantUsers = [],
         } = response.data
 
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))
         dispatch(setMessages(allMessages))
+        dispatch(setUsers(relevantUsers))
 
         // TODO: dispatch and fill store with all this content
         // TODO: subscribe to new messages
@@ -246,6 +279,10 @@ export default new Duck({
 
     function setMessages(messages) {
       return { type: duck.types.SET_MESSAGES, messages }
+    }
+
+    function setUsers(users) {
+      return { type: duck.types.SET_USERS, users }
     }
 
     return {

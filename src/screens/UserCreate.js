@@ -10,6 +10,9 @@ import TextInput from "../components/TextInput"
 import { query, mutate } from "../utilities/gql_util"
 
 import { bind } from "decko"
+import ColorPicker from "../components/ColorPicker"
+import Text from "../components/Text"
+import Spacing from "../components/Spacing"
 
 const Route = Routing.Route
 const Link = Routing.Link
@@ -22,6 +25,7 @@ class UserLogin extends Component {
     password,
     name,
     description,
+    color,
   }) {
     mutate(
       `
@@ -32,6 +36,7 @@ class UserLogin extends Component {
         $password: String,
         $name: String,
         $description: String,
+        $color: String,
       ) {
         createUser(
           email: $email,
@@ -40,6 +45,7 @@ class UserLogin extends Component {
           password: $password,
           name: $name,
           description: $description,
+          color: $color
         ) {
           id, token
         }
@@ -48,9 +54,11 @@ class UserLogin extends Component {
       { email, phone_number, username, password, name, description }
     )
       .then(() => {
-        this.props.history.push("/create/done")
+        this.props.history.push("/")
       })
-      .catch(error => {})
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   @bind
@@ -63,21 +71,39 @@ class UserLogin extends Component {
     return value => this.setState({ [name]: value })
   }
 
-  state = {}
+  state = {
+    color: "",
+  }
+
+  @bind
+  onColorChange(color) {
+    this.setState({ color })
+  }
 
   render() {
     return (
       <AppScrollContainer title="New User">
+        <Text tier="subtitle">Personal Color</Text>
+        <Spacing size={5} />
+        <Text tier="body">
+          What color are you? This will be the color your messages appear to
+          everyone else.
+        </Text>
+        <Spacing size={15} />
+        <ColorPicker onColorChange={this.onColorChange} />
+        <Spacing size={20} />
+        <Text tier="subtitle">Account Credentials</Text>
+        <Spacing size={15} />
         <TextInput
           placeholder="Email"
           onChangeText={this.onTextChangeFor("email")}
           value={this.state.email}
         />
-        <TextInput
+        {/* <TextInput
           placeholder="Phone Number"
           onChangeText={this.onTextChangeFor("phone_number")}
           value={this.state.phone_number}
-        />
+        /> */}
         <TextInput
           placeholder="Username"
           onChangeText={this.onTextChangeFor("username")}
@@ -89,6 +115,8 @@ class UserLogin extends Component {
           onChangeText={this.onTextChangeFor("password")}
           value={this.state.password}
         />
+        <Spacing size={10} />
+        <Text tier="subtitle">About You</Text>
         <TextInput
           placeholder="Display or Full Name"
           onChangeText={this.onTextChangeFor("name")}
@@ -106,8 +134,3 @@ class UserLogin extends Component {
 }
 
 export default withRouter(UserLogin)
-
-const Text = styled.Text`
-  font-size: 17px;
-  margin-bottom: 12px;
-`

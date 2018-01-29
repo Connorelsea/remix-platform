@@ -25,7 +25,7 @@ const tiers = {
   },
   body: {
     size: 15,
-    weight: 400,
+    weight: 500,
     spacing: 0,
     color: styles.colors.grey[600],
   },
@@ -49,13 +49,19 @@ const tiers = {
     size: 13,
     color: "rgba(0,0,0,0.5)",
   },
+  messageName: {
+    size: 15,
+    weight: 600,
+    spacing: 0,
+    color: styles.colors.grey[400],
+  },
 }
 
 export default styled.Text`
   font-size: ${({ tier }) => tiers[tier].size}px;
   font-weight: ${({ tier }) => tiers[tier].weight || 500};
   letter-spacing: ${({ tier }) => tiers[tier].spacing || 0};
-  color: ${({ tier }) => tiers[tier].color || "black"};
+  color: ${({ tier, color }) => color || tiers[tier].color || "black"};
   margin: 0;
   padding: 0;
   ${({ center }) => center && "text-align: center"};

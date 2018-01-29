@@ -1,10 +1,6 @@
 import React, { Component } from "react"
-import { connect } from "react-redux"
 import styled from "styled-components/native"
 import styles from "../utilities/styles"
-import User from "../ducks/user"
-import AppScrollContainer from "../components/AppScrollContainer"
-import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"
 
@@ -25,7 +21,11 @@ class ChatInputArea extends Component {
   @bind
   async onPressSend() {
     const { value } = this.state
-    const { chatId } = this.props
+    const { chatId, scrollToEnd } = this.props
+
+    this.setState({
+      value: "",
+    })
 
     const response = await mutate(`
       mutation createMessage {
@@ -39,7 +39,14 @@ class ChatInputArea extends Component {
       }
     `)
 
+    scrollToEnd()
+    this.textInput.focus()
+
     console.log(response)
+  }
+
+  componentDidMount() {
+    this.textInput.focus()
   }
 
   render() {
@@ -50,7 +57,12 @@ class ChatInputArea extends Component {
           value={value}
           placeholder="Message"
           onChangeText={this.onChangeText}
+          onSubmitEditing={this.onPressSend}
+          innerRef={comp => {
+            this.textInput = comp
+          }}
         />
+        <Spacing size={10} />
         <Button title="Send" onPress={this.onPressSend} />
       </Container>
     )
@@ -62,4 +74,7 @@ export default ChatInputArea
 const Container = styled.View`
   min-height: 60px;
   flex-direction: row;
+  padding: 10px;
+  background-color: ${styles.colors.grey[100]};
+  border-top: 1px solid ${styles.colors.grey[200]};
 `

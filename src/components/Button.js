@@ -52,6 +52,8 @@ const Opacity = styled.TouchableOpacity`
   background-color: ${({ small }) => styles.colors.grey[small ? 100 : 200]};
   overflow: hidden;
   border-radius: ${({ small }) => (small ? 20 : 10)}px;
+  align-items: center;
+  justify-content: center;
 `
 
 const Text = styled.Text`

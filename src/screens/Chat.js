@@ -14,6 +14,9 @@ import { List, AutoSizer, CellMeasurer } from "react-virtualized"
 
 import ChatInputArea from "../components/ChatInputArea"
 import { mutate } from "../utilities/gql_util"
+import Message from "../components/Message"
+
+import { withRouter } from "react-router"
 
 class Chat extends Component {
   renderMessage(msg) {
@@ -42,18 +45,34 @@ class Chat extends Component {
 
   componentDidMount() {
     this.updateReadPosition()
+    this.scrollView.scrollToEnd()
+  }
+
+  @bind
+  scrollToEnd() {
+    this.scrollView.scrollToEnd({ animated: false })
   }
 
   render() {
-    const { messages, foundChat, match } = this.props
+    const { messages, foundChat, match, currentUser } = this.props
     const { params: { group, chat } } = match
 
     return (
       <OuterContainer>
-        <ScrollView>
-          {messages.map(msg => <Text tier="body">{JSON.stringify(msg)}</Text>)}
+        <ScrollView
+          ref={view => (this.scrollView = view)}
+          contentContainerStyle={{ alignItems: "flex-start", padding: 25 }}
+        >
+          {messages.map((msg, i) => (
+            <Message
+              {...msg}
+              key={msg.id}
+              prev={i < 1 ? {} : messages[i - 1]}
+              currentUser={currentUser}
+            />
+          ))}
         </ScrollView>
-        <ChatInputArea chatId={foundChat.id} />
+        <ChatInputArea chatId={foundChat.id} scrollToEnd={this.scrollToEnd} />
       </OuterContainer>
     )
   }
@@ -88,11 +107,23 @@ function mapStateToProps(state, props) {
     // The group they are trying to access isnt in the store
   }
 
+  // associate the users from the redux store with the messages
+  // in this chat
+
+  let messages = state.user.messages
+    .filter(msg => msg.chatId === foundChat.id)
+    .map(msg => {
+      return {
+        ...msg,
+        user: state.user.users.find(u => u.id === msg.userId),
+      }
+    })
+
   return {
     foundChat,
     foundGroup,
-    messages: state.user.messages.filter(msg => msg.chatId === foundChat.id),
+    messages,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat))

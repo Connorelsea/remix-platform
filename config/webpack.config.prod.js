@@ -150,6 +150,7 @@ module.exports = {
               plugins: [
                 "transform-decorators-legacy",
                 "transform-class-properties",
+                "react-hot-loader/babel",
               ],
 
               compact: true,

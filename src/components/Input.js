@@ -17,7 +17,14 @@ const Link = Routing.Link
 
 export default class Input extends Component {
   render() {
-    const { user, onChangeText, value, placeholder } = this.props
+    const {
+      user,
+      onChangeText,
+      value,
+      placeholder,
+      onSubmitEditing,
+      innerRef,
+    } = this.props
 
     return (
       <StyledInput
@@ -25,6 +32,8 @@ export default class Input extends Component {
         placeholderTextColor={styles.colors.grey[200]}
         value={value}
         onChangeText={onChangeText}
+        onSubmitEditing={onSubmitEditing}
+        innerRef={innerRef}
       />
     )
   }
@@ -37,4 +46,5 @@ const StyledInput = styled.TextInput`
   padding: 15px;
   font-size: 17px;
   background-color: white;
+  flex: 1;
 `

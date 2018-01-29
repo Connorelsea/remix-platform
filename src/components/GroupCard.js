@@ -6,6 +6,7 @@ import { bind } from "decko"
 import { TouchableOpacity } from "react-native"
 import styles from "../utilities/styles"
 import Card from "../components/Card"
+import Spacing from "./Spacing"
 
 class GroupCard extends Component {
   @bind
@@ -36,12 +37,16 @@ class GroupCard extends Component {
     return (
       <TouchableOpacity onPress={this.onPress}>
         <Card>
-          <Image
-            source={{
-              uri: iconUrl || "https://www.arete.net/Content/Images/nopic.jpg",
-            }}
-          />
-          <Text tier="title">{title}</Text>
+          <Header>
+            <Image
+              source={{
+                uri:
+                  iconUrl || "https://www.arete.net/Content/Images/nopic.jpg",
+              }}
+            />
+            <Spacing size={15} />
+            <Text tier="title">{title}</Text>
+          </Header>
         </Card>
       </TouchableOpacity>
     )
@@ -58,4 +63,8 @@ const Image = styled.Image`
   border-radius: ${imageSize / 2};
   background-color: ${styles.colors.grey[100]};
   overflow: hidden;
+`
+
+const Header = styled.View`
+  flex-direction: row;
 `

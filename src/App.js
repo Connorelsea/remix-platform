@@ -4,6 +4,7 @@ import { ApolloProvider } from "react-apollo"
 import store from "./utilities/storage/store"
 import Routing, { Router } from "./utilities/routing"
 import { Platform, Text, View } from "react-native"
+import styled from "styled-components/native"
 
 import { query, mutate } from "./utilities/gql_util"
 import { remove } from "./utilities/storage"
@@ -27,6 +28,9 @@ import { bind } from "decko"
 import { get } from "./utilities/storage"
 
 import { Switch } from "react-router"
+import { hot } from "react-hot-loader"
+import MediaQuery from "react-responsive"
+import styles from "./utilities/styles"
 
 const Route = Routing.Route
 const Link = Routing.Link
@@ -64,33 +68,46 @@ class App extends React.Component {
   renderWithUser() {
     const { user } = this.state
     // const Stack = require("react-router-native-stack").default
+    /* <Route exact path="/@:id" component={User} /> */
+
+    const routes = [
+      <Route exact path="/+:group/" component={Group} />,
+      <Route
+        exact
+        path="/+:group/:chat"
+        component={() => <Chat currentUser={user} />}
+      />,
+      <Route
+        exact
+        path="/new/friend"
+        component={() => <FriendNew user={user} />}
+      />,
+      <Route
+        exact
+        path="/new/group"
+        component={() => <GroupNew user={user} />}
+      />,
+      <Route
+        exact
+        path="/new/group/create"
+        component={() => <GroupCreate user={user} />}
+      />,
+    ]
 
     return (
-      <View>
-        <Route
-          exact
-          path="/"
-          component={() => <Dashboard user={user} />}
-          animationType="slide-vertical"
-        />
-        <Route exact path="/+:group/" component={Group} />
-        <Route exact path="/+:group/:chat" component={Chat} />
-        {/* <Route exact path="/@:id" component={User} /> */}
-        <Route
-          exact
-          path="/new/friend"
-          component={() => <FriendNew user={user} />}
-        />
-        <Route
-          exact
-          path="/new/group"
-          component={() => <GroupNew user={user} />}
-        />
-        <Route
-          exact
-          path="/new/group/create"
-          component={() => <GroupCreate user={user} />}
-        />
+      <View style={{ flex: 1 }}>
+        <MediaQuery minDeviceWidth={1224}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <Side>
+              <Dashboard user={user} />
+            </Side>
+            <Body>{routes}</Body>
+          </View>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={1224}>
+          <Route exact path="/" component={() => <Dashboard user={user} />} />
+          {routes}
+        </MediaQuery>
       </View>
     )
   }
@@ -185,4 +202,14 @@ class App extends React.Component {
   // }
 }
 
-export default App
+export default hot(module)(App)
+
+const Side = styled.View`
+  width: 400;
+  min-width: 400;
+  border-right: 1px solid ${styles.colors.grey[200]};
+`
+
+const Body = styled.View`
+  flex: 1;
+`

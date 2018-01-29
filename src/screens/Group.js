@@ -7,16 +7,35 @@ import AppScrollContainer from "../components/AppScrollContainer"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"
+import Button from "../components/Button"
+import Input from "../components/Input"
 
 class Group extends Component {
+  state = {
+    addingChat: false,
+  }
+
   @bind
   getOnChatPress(name) {
     const { match: { params: { group } }, history } = this.props
     return () => history.push(`/+${group}/${name}`)
   }
 
+  @bind
+  pressAddChat() {
+    const { addingChat } = this.state
+
+    if (addingChat) {
+    } else {
+      this.setState({
+        addingChat: true,
+      })
+    }
+  }
+
   render() {
     const { group } = this.props
+    const { addingChat } = this.state
     const { name, chats, description } = group
 
     return (
@@ -36,6 +55,11 @@ class Group extends Component {
             <Chat {...chat} onChatPress={this.getOnChatPress(chat.name)} />
           ))}
         </ChatList>
+        {addingChat ? (
+          [<Input placeholder="Chat Name" />]
+        ) : (
+          <Button title="Add Chat" onPress={this.pressAddChat} />
+        )}
       </AppScrollContainer>
     )
   }
