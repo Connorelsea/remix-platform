@@ -38,18 +38,6 @@ class GroupCard extends Component {
       if (firstUser.id == user.id) title = firstUser.name
       else title = secondUser.name
     }
-    // if (title === "friend") {
-    //   let friend = description
-    //     .trim()
-    //     .split(",")
-    //     .map(part => {
-    //       let sub = part.split(":")
-    //       return { id: sub[0], name: sub[1] }
-    //     })
-    //     .filter(part => part.id !== user.id)
-
-    //   title = friend[0].name
-    // }
 
     return (
       <TouchableOpacity onPress={this.onPress}>
@@ -69,11 +57,12 @@ class GroupCard extends Component {
                   .slice(-4)
                   .map((msg, i) => (
                     <Message
+                      key={msg.id}
                       prev={msg}
-                      currentUser={{}}
+                      currentUser={user}
                       {...msg}
                       style={{ opacity: 1 }}
-                      small
+                      small={1}
                     />
                   ))}
               </MessageContainer>
@@ -100,6 +89,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, props) {
   return {
+    user: state.user,
     friendRequests: state.user.friendRequests,
     users: state.user.users,
     messages: User.selectors.getGroupMessages(state, props.group.id),
@@ -124,6 +114,8 @@ const Container = styled.View`
   flex-direction: row;
 `
 
-const MessageContainer = styled.View``
+const MessageContainer = styled.View`
+  align-items: center;
+`
 
 const Body = styled.View``

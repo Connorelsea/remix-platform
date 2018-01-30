@@ -52,11 +52,15 @@ class Group extends Component {
         <Spacing size={5} />
         <ChatList>
           {chats.map(chat => (
-            <Chat {...chat} onChatPress={this.getOnChatPress(chat.name)} />
+            <Chat
+              {...chat}
+              key={chat.id}
+              onChatPress={this.getOnChatPress(chat.name)}
+            />
           ))}
         </ChatList>
         {addingChat ? (
-          [<Input placeholder="Chat Name" />]
+          [<Input placeholder="Chat Name" key="chat_name" />]
         ) : (
           <Button title="Add Chat" onPress={this.pressAddChat} />
         )}

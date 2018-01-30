@@ -11,10 +11,15 @@ import HelpCard from "../components/HelpCard"
 
 class Dashboard extends Component {
   render() {
-    const { user, friendRequests, groups, removeFriendRequest } = this.props
+    const {
+      reduxUser,
+      friendRequests,
+      groups,
+      removeFriendRequest,
+    } = this.props
 
     return (
-      <AppScrollContainer user={user} backText="remove" title="Remix">
+      <AppScrollContainer user={reduxUser} backText="remove" title="Remix">
         <ActionContainer>
           <Button
             to="/new/friend"
@@ -36,7 +41,7 @@ class Dashboard extends Component {
           />
         ))}
         {groups.map(group => (
-          <GroupCard key={group.id} group={group} user={user} />
+          <GroupCard key={group.id} group={group} user={reduxUser} />
         ))}
         {groups.length === 0 && (
           <HelpCard title="Add some friends or join some groups to start chatting" />

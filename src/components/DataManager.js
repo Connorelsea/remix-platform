@@ -1,26 +1,38 @@
 import React from "react"
 import User from "../ducks/user"
 import { connect } from "react-redux"
+import { bind } from "decko"
+import { get } from "../utilities/storage"
 
 class DataManager extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    this.fetchInitialData()
+  }
 
-  fetchInitialData() {
-    console.log(this.props)
+  @bind
+  async fetchInitialData() {
+    const { loadInitialUser } = this.props
+    let userId = await get("userId")
+    if (userId) {
+      loadInitialUser(userId)
+      // this.initSubscriptions()
+    }
+  }
+
+  initSubscriptions() {
     const {
       user: { id },
-      loadInitialUser,
       subscribeToFriendRequests,
       subscribeToMessages,
     } = this.props
 
-    loadInitialUser(id)
     subscribeToFriendRequests(id)
     subscribeToMessages(id)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.loading && !nextProps.loading) {
+      this.initSubscriptions()
     }
   }
 

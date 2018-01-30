@@ -8272,6 +8272,13 @@ webpack-dev-server@2.8.2:
     webpack-dev-middleware "^1.11.0"
     yargs "^6.6.0"
 
+webpack-graphql-loader@^0.0.23:
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/webpack-graphql-loader/-/webpack-graphql-loader-0.0.23.tgz#591a173bba61901fd6fd217247f16530f10596d6"
+  dependencies:
+    loader-utils "^1.1.0"
+    pify "^3.0.0"
+
 webpack-manifest-plugin@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/webpack-manifest-plugin/-/webpack-manifest-plugin-1.2.1.tgz#e02f0846834ce98dca516946ee3ee679745e7db1"

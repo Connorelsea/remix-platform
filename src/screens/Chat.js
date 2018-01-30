@@ -46,17 +46,15 @@ class Chat extends Component {
 
   @bind
   scrollToEnd() {
-    this.scrollView.scrollToEnd({ animated: true })
+    // this.scrollView.scrollToEnd({ animated: true })
     // this.scrollView.scrollTop = this.scrollView.scrollHeight
     // TODO: Fix this scroll bullshit
-    this.endComp.scrollIntoView({ block: "end", inline: "nearest" })
+    // this.endComp.scrollIntoView({ block: "end", inline: "nearest" })
   }
 
   render() {
-    const { messages = [], foundChat, match, currentUser } = this.props
+    const { messages, foundChat, match, currentUser } = this.props
     const { params: { chat } } = match
-
-    let comp = this
 
     return (
       <OuterContainer>
@@ -94,12 +92,6 @@ class Chat extends Component {
                     user={config.data.user}
                     prev={i < 1 ? {} : interpolatedStyles[i - 1].data}
                     currentUser={currentUser}
-                    ref={
-                      interpolatedStyles.length === i - 1 &&
-                      (c => {
-                        comp = c
-                      })
-                    }
                   />
                 ))}
               </View>
@@ -131,16 +123,14 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-function newMapStateToProps(state, props) {
+function mapStateToProps(state, props) {
   const { match: { params: { group, chat } } } = props
-  console.log(User)
-  console.log("NEW MAP STATE TO PROPS")
   const foundChat = User.selectors.getChat(state, group, chat)
-  console.log("FOUND CHAT ", foundChat)
+
   return {
     foundChat,
     messages: User.selectors.getChatMessages(state, group, foundChat.id),
   }
 }
 
-export default withRouter(connect(newMapStateToProps, mapDispatchToProps)(Chat))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat))

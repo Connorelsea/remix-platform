@@ -3,6 +3,8 @@ import { client } from "../utilities/apollo"
 import gql from "graphql-tag"
 import { query } from "../utilities/gql_util"
 import createCachedSelector from "re-reselect"
+import initialUserQuery from "./user.graphql"
+import { remove } from "../utilities/storage"
 
 // ACTION CREATORS
 
@@ -40,7 +42,7 @@ export default new Duck({
     groups: [],
     messages: [],
     users: [],
-    loading: true,
+    loading: false,
   },
   reducer: (state, action, duck) => {
     switch (action.type) {
@@ -110,7 +112,7 @@ export default new Duck({
       }
 
       case duck.types.END_USER_LOADING: {
-        return { ...state, loading: true }
+        return { ...state, loading: false }
       }
 
       default:
@@ -118,21 +120,21 @@ export default new Duck({
     }
   },
   selectors: {
+    isAuthenticated: state => state.user.id !== undefined,
+
     getMessages: state =>
-      state.user.messages.map(m => ({
-        ...m,
-        user: state.user.users.find(u => u.id == m.userId),
-      })),
+      state.user.messages.map(m => {
+        return {
+          ...m,
+          user: state.user.users.find(u => u.id === m.userId),
+        }
+      }),
+
     getGroups: state => state.user.groups,
 
     getChat: (state, groupId, chatName) => {
-      console.log("GET CHAT SELECTOR")
-      console.log(groupId, chatName)
-
       const foundGroup = state.user.groups.find(g => g.id == groupId)
       if (!foundGroup) return
-
-      console.log(foundGroup)
       return foundGroup.chats.find(c => c.name == chatName)
     },
 
@@ -145,8 +147,6 @@ export default new Duck({
         ],
 
         (messages, groups, groupId) => {
-          console.log("SELECTOR VARS")
-          console.log(messages, groups, groupId)
           const foundGroup = groups.find(g => g.id == groupId)
           if (!foundGroup) return []
 
@@ -154,7 +154,6 @@ export default new Duck({
             foundGroup.chats.find(c => c.id == msg.chatId)
           )
 
-          console.log(foundMessages)
           return foundMessages
         }
       )((state, groupId) => groupId)
@@ -169,7 +168,6 @@ export default new Duck({
         ],
         (groupMessages, chatId) => {
           const foundMessages = groupMessages.filter(m => m.chatId == chatId)
-          console.log(foundMessages, chatId)
           return foundMessages
         }
       )((state, chatId) => chatId)
@@ -208,14 +206,13 @@ export default new Duck({
 
       return dispatch => {
         return observable.subscribe(response => {
-          console.log("GOT MESSAGE", response)
           dispatch(addMessages([response.data.newMessage]))
         })
       }
     }
 
     function subscribeToFriendRequests(id) {
-      console.log("SUBSCRIBING WITH ID " + id)
+      console.log("SUBSCRIBING TO FRIEND REQUESTS ")
 
       const observable = client.subscribe({
         query: gql`
@@ -252,6 +249,7 @@ export default new Duck({
     }
 
     function loadInitialUser(id) {
+      let userId = id
       return async dispatch => {
         console.log("[REDUX] Loading initial user state")
         dispatch(startUserLoading())
@@ -261,74 +259,45 @@ export default new Duck({
 
         // TODO: Use try-catch here and handle user failure
 
-        const response = await query(`
-          {
-            User(id: ${id}) {
-              id
-              name
-              username
-              color
-              friendRequests {
-                id
-                message
-                createdAt
-                fromUser {
-                  name
-                }
-              }
-              friends {
-                id
-              }
-              groups {
-                id
-                iconUrl
-                name
-                description
-                isDirectMessage
-                chats {
-                  id
-                  name
-                }
-                members {
-                  id
-                }
-              }
-              allMessages {
-                id
-                chatId
-                userId
-                content {
-                  type
-                  data
-                }
-              }
-            }
-            relevantUsers {
-              id
-              name
-              username
-              color
-            }
-          }
-        `)
+        let response
+
+        try {
+          response = await query(initialUserQuery, { id: userId })
+        } catch (err) {
+          remove("token")
+          remove("userId")
+          console.error(err)
+        }
+
+        if (!response) {
+          return dispatch(endUserLoading())
+        }
 
         const {
           User: {
+            id,
             name,
             username,
             friendRequests = [],
             friends = [],
             groups = [],
             allMessages = [],
+            token,
           },
           relevantUsers = [],
         } = response.data
 
-        dispatch()
+        if (token !== undefined) {
+          dispatch(setUserMeta({ id, token }))
+        } else {
+          console.log("NO TOKEN")
+        }
+
+        dispatch(setUsers(relevantUsers))
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))
         dispatch(setMessages(allMessages))
-        dispatch(setUsers(relevantUsers))
+        dispatch(endUserLoading())
 
         // TODO: dispatch and fill store with all this content
         // TODO: subscribe to new messages

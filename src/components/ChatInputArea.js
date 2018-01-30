@@ -39,14 +39,20 @@ class ChatInputArea extends Component {
       }
     `)
 
-    setTimeout(scrollToEnd, 100)
-    this.textInput.focus()
+    console.log("THIS THIS THIS", this)
 
-    console.log(response)
+    setTimeout(scrollToEnd, 100)
+    // this.textInput.focus()
   }
 
   componentDidMount() {
-    this.textInput.focus()
+    // this.textInput.focus()
+  }
+
+  @bind
+  inputRef(comp) {
+    console.log("CALLING INPUT REF CALLBACK WITH ", comp)
+    this.refs.textInput = comp
   }
 
   render() {
@@ -58,9 +64,7 @@ class ChatInputArea extends Component {
           placeholder="Message"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onPressSend}
-          innerRef={comp => {
-            this.textInput = comp
-          }}
+          innerRef={this.inputRef}
         />
         <Spacing size={10} />
         <Button title="Send" onPress={this.onPressSend} />

@@ -1,17 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
-
-import AppScrollContainer from "../components/AppScrollContainer"
-import { query } from "../utilities/gql_util"
-import { client } from "../utilities/apollo"
-
-import { bind } from "decko"
-
-import Button from "../components/Button"
-
-const Route = Routing.Route
-const Link = Routing.Link
+import { TouchableOpacity } from "react-native"
 
 export default class Option extends Component {
   render() {
@@ -20,9 +9,9 @@ export default class Option extends Component {
     return (
       <Container>
         {options.map(option => (
-          <ActionableOption onPress={option.action}>
+          <TouchableOpacity onPress={option.action}>
             <Text color={option.color}>{option.text}</Text>
-          </ActionableOption>
+          </TouchableOpacity>
         ))}
       </Container>
     )
@@ -34,8 +23,6 @@ const Container = styled.View`
   justify-content: space-between;
   height: 40px;
 `
-
-const ActionableOption = styled.TouchableOpacity``
 
 const Text = styled.Text`
   font-size: 15px;

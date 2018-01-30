@@ -18,11 +18,11 @@ class Message extends Component {
     const textColor = fontColorContrast(color) // === "#000000" ? "#FFFFFF" : "#000000"
 
     let sameUserAsPrev = prev.user && prev.user.id === id
-    let isCurrentUser = currentUser.id === id
+    let isCurrentUser = currentUser.id === id ? 1 : 0
     const space = <Spacing size={6} />
 
     return (
-      <Container isCurrentUser={isCurrentUser} opacity={style.opacity}>
+      <Container iscurrentuser={isCurrentUser} opacity={style.opacity}>
         {!sameUserAsPrev && [<Text tier="messageName">{name}</Text>, space]}
         <Bubble color={color} small={small}>
           <Text tier="body" color={textColor}>
@@ -38,10 +38,10 @@ class Message extends Component {
 export default Message
 
 const Container = styled.View`
-  align-self: ${({ isCurrentUser }) =>
-    isCurrentUser ? "flex-end" : "flex-start"};
-  align-items: ${({ isCurrentUser }) =>
-    isCurrentUser ? "flex-end" : "flex-start"};
+  align-self: ${({ iscurrentuser }) =>
+    iscurrentuser ? "flex-end" : "flex-start"};
+  align-items: ${({ iscurrentuser }) =>
+    iscurrentuser ? "flex-end" : "flex-start"};
   opacity: ${props => props.opacity};
 `
 

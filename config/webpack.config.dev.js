@@ -139,6 +139,8 @@ module.exports = {
               name: "static/media/[name].[hash:8].[ext]",
             },
           },
+          // GraphQL files
+          { test: /\.graphql?$/, loader: "webpack-graphql-loader" },
           // Process JS with Babel.
           {
             test: /\.(js|jsx)$/,

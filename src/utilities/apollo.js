@@ -34,11 +34,11 @@ const httpLink = useLocal
     })
 
 const authLink = setContext(async (_, { headers }) => {
-  console.log("Attempting to find token")
+  // console.log("Attempting to find token")
   let token
   try {
     token = await get("token")
-    console.log(token)
+    // console.log(token)
   } catch (err) {
     console.error(err)
   }
@@ -63,7 +63,7 @@ const connectionLink = split(
   // split based on operation type
   ({ query }) => {
     if (query === undefined) console.log("UNDEFINED QUERY")
-    console.log("QUERY", query)
+    console.log("[APP QUERY] App made query", query)
     const { kind, operation } = getMainDefinition(query)
     return kind === "OperationDefinition" && operation === "subscription"
   },

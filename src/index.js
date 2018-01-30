@@ -1,6 +1,6 @@
 import React from "react"
 import ReactNative from "react-native"
-import App from "./App"
+import AppContainer from "./AppContainer"
 
 import iconFont from "react-native-vector-icons/Fonts/Feather.ttf"
 const iconFontStyles = `@font-face {
@@ -20,4 +20,4 @@ if (style.styleSheet) {
 // Inject stylesheet
 document.head.appendChild(style)
 
-ReactNative.render(<App />, document.getElementById("root"))
+ReactNative.render(<AppContainer />, document.getElementById("root"))

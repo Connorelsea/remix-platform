@@ -40,7 +40,6 @@ class UserLogin extends Component {
     const { data: { loginUserWithEmail: { id, token } } } = response
     await set("token", token)
     await set("userId", id)
-    this.props.setUser({ id, token })
     this.props.history.replace("/", "")
   }
 

@@ -1,0 +1,49 @@
+query initialUserQuery($id: ID!) {
+  User(id: $id) {
+    id
+    token
+    name
+    username
+    color
+    friendRequests {
+      id
+      message
+      createdAt
+      fromUser {
+        name
+      }
+    }
+    friends {
+      id
+    }
+    groups {
+      id
+      iconUrl
+      name
+      description
+      isDirectMessage
+      chats {
+        id
+        name
+      }
+      members {
+        id
+      }
+    }
+    allMessages {
+      id
+      chatId
+      userId
+      content {
+        type
+        data
+      }
+    }
+  }
+  relevantUsers {
+    id
+    name
+    username
+    color
+  }
+}
