@@ -46,7 +46,7 @@ const Container = styled.View`
 `
 
 const Bubble = styled.View`
-  padding: 8px 12px;
+  padding: 9px 13px;
   border-radius: 20px;
   background-color: ${({ color }) => color || styles.colors.grey[200]};
   max-width: ${props => (props.small ? 200 : 300)}px;

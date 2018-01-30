@@ -26,8 +26,9 @@ class GroupCard extends Component {
     let title = name
 
     if (isDirectMessage) {
+      console.log(isDirectMessage)
       const firstUser = users.find(u => u.id == users[0].id)
-      const secondUser = users.find(u => u.id == users[0].id)
+      const secondUser = users.find(u => u.id == users[1].id)
       if (firstUser.id == user.id) title = firstUser.name
       else title = secondUser.name
     }
