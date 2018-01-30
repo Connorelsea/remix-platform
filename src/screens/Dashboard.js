@@ -63,5 +63,5 @@ export default connect(mapStateToProps, undefined)(Dashboard)
 
 const ActionContainer = styled.View`
   flex-direction: row;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `

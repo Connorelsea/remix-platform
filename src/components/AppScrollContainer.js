@@ -18,7 +18,7 @@ export default class AppScrollContainer extends Component {
         />
         <Spacing size={120} />
         <ScrollView
-          contentContainerStyle={{ padding: 15 }}
+          contentContainerStyle={{ padding: 20 }}
           ref={scroll => {
             this.scrollView = scroll
           }}

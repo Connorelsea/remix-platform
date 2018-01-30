@@ -96,6 +96,7 @@ class UserLogin extends Component {
           content={{ type: "remix/text", data: { text: "Message text" } }}
           user={{ id: -1, name, color }}
           prev={{}}
+          style={{ opacity: 1 }}
           currentUser={{ id: -2 }}
         />
         <Spacing size={30} />

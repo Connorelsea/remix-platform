@@ -25,7 +25,7 @@ class Message extends Component {
       <Container iscurrentuser={isCurrentUser} opacity={style.opacity}>
         {!sameUserAsPrev && [<Text tier="messageName">{name}</Text>, space]}
         <Bubble color={color} small={small}>
-          <Text tier="body" color={textColor}>
+          <Text tier="body" color={textColor} small={small}>
             {data.text}
           </Text>
         </Bubble>
@@ -46,8 +46,12 @@ const Container = styled.View`
 `
 
 const Bubble = styled.View`
-  padding: 10px 12px;
+  padding: 8px 12px;
   border-radius: 20px;
   background-color: ${({ color }) => color || styles.colors.grey[200]};
   max-width: ${props => (props.small ? 200 : 300)}px;
+  ::selection {
+    background: ${({ color }) => color || styles.colors.grey[200]};
+  }
+  transition: all 0.4s;
 `

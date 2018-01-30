@@ -43,7 +43,7 @@ export default class LinearGradient extends Component {
         style={[
           style,
           {
-            backgroundImage: `linear-gradient(${angleWeb}deg, ${colorStrings})`,
+            backgroundImage: `linear-gradient(to bottom, ${colorStrings})`,
           },
         ]}
       >

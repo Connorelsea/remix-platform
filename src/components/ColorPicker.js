@@ -22,7 +22,7 @@ class ColorPicker extends Component {
       "#32D561",
       "#154B25",
 
-      "#0079FF",
+      "#0f72e0",
       "#9DC7F8",
       "#644F99",
     ],

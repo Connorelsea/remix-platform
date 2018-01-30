@@ -58,7 +58,7 @@ const tiers = {
 }
 
 export default styled.Text`
-  font-size: ${({ tier }) => tiers[tier].size}px;
+  font-size: ${({ tier, small }) => tiers[tier].size - (small ? 2 : 0)}px;
   font-weight: ${({ tier }) => tiers[tier].weight || 500};
   letter-spacing: ${({ tier }) => tiers[tier].spacing || 0};
   color: ${({ tier, color }) => color || tiers[tier].color || "black"};

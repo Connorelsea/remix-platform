@@ -10,6 +10,7 @@ import Spacing from "./Spacing"
 import { connect } from "react-redux"
 import User from "../ducks/user"
 import Message from "./Message"
+import Gradient from "./Gradient"
 
 class GroupCard extends Component {
   @bind
@@ -19,16 +20,8 @@ class GroupCard extends Component {
   }
 
   render() {
-    const {
-      id,
-      iconUrl,
-      name,
-      description,
-      isDirectMessage,
-      members,
-      users,
-    } = this.props.group
-    const { user, messages } = this.props
+    const { id, iconUrl, name, description, isDirectMessage } = this.props.group
+    const { user, messages, users } = this.props
 
     let title = name
 
@@ -40,7 +33,7 @@ class GroupCard extends Component {
     }
 
     return (
-      <TouchableOpacity onPress={this.onPress}>
+      <TouchableOpacity onPress={this.onPress} style={{ marginBottom: 25 }}>
         <Card>
           <Container>
             <Image
@@ -51,18 +44,30 @@ class GroupCard extends Component {
             />
             <Spacing size={15} />
             <Body>
+              <Gradient
+                colors={[" rgba(0,0,0,0)", "#FFFFFF"]}
+                size={90}
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  // border: "1px solid black",
+                  zIndex: 9999,
+                }}
+              />
               <Text tier="title">{title}</Text>
+              <Spacing size={10} />
               <MessageContainer>
                 {messages
-                  .slice(-4)
+                  .slice(-3)
+                  .reverse()
                   .map((msg, i) => (
                     <Message
                       key={msg.id}
                       prev={msg}
                       currentUser={user}
-                      {...msg}
                       style={{ opacity: 1 }}
                       small={1}
+                      {...msg}
                     />
                   ))}
               </MessageContainer>
@@ -100,7 +105,7 @@ export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(GroupCard)
 )
 
-const imageSize = 90
+const imageSize = 110
 
 const Image = styled.Image`
   height: ${imageSize}px;
@@ -116,6 +121,9 @@ const Container = styled.View`
 
 const MessageContainer = styled.View`
   align-items: center;
+  width: 95%;
 `
 
-const Body = styled.View``
+const Body = styled.View`
+  flex: 1;
+`
