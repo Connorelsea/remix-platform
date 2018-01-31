@@ -20,4 +20,9 @@ if (style.styleSheet) {
 // Inject stylesheet
 document.head.appendChild(style)
 
+if (process.env.NODE_ENV !== "production") {
+  const { whyDidYouUpdate } = require("why-did-you-update")
+  whyDidYouUpdate(React)
+}
+
 ReactNative.render(<AppContainer />, document.getElementById("root"))

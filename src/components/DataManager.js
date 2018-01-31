@@ -30,12 +30,6 @@ class DataManager extends React.Component {
     subscribeToMessages(id)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.loading && !nextProps.loading) {
-      this.initSubscriptions()
-    }
-  }
-
   render() {
     return this.props.children
   }

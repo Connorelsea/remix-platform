@@ -47,29 +47,14 @@ class App extends React.Component {
 
     const routes = [
       <Route exact path="/+:group/" key="group_show" component={Group} />,
-      <Route
-        exact
-        path="/+:group/:chat"
-        key="chat_show"
-        component={() => <Chat currentUser={user} />}
-      />,
-      <Route
-        exact
-        path="/new/friend"
-        key="new_friend"
-        component={() => <FriendNew user={user} />}
-      />,
-      <Route
-        exact
-        path="/new/group"
-        key="new_group"
-        component={() => <GroupNew user={user} />}
-      />,
+      <Route exact path="/+:group/:chat" key="chat_show" component={Chat} />,
+      <Route exact path="/new/friend" key="new_friend" component={FriendNew} />,
+      <Route exact path="/new/group" key="new_group" component={GroupNew} />,
       <Route
         exact
         path="/new/group/create"
         key="new_group_create"
-        component={() => <GroupCreate user={user} />}
+        component={GroupCreate}
       />,
     ]
 

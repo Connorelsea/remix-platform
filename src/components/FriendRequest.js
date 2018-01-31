@@ -36,11 +36,21 @@ class FriendRequest extends Component {
       let request = await mutate(
         `
         mutation($friendRequestId: ID!) {
-          acceptFriendRequest(friendRequestId: $friendRequestId)
+          acceptFriendRequest(friendRequestId: $friendRequestId) {
+            id
+            iconUrl
+            name
+            description
+            isDirectMessage
+            chats { id }
+            members { id }
+          }
         }
       `,
         { friendRequestId: id }
       )
+      console.log(request)
+      this.props.addGroups(request)
 
       this.setState({ accepted: true })
     }

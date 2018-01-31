@@ -12,7 +12,7 @@ import { withRouter } from "react-router"
 import Header from "../components/Header"
 import { TransitionMotion, spring } from "react-motion"
 
-class Chat extends Component {
+class Chat extends React.Component {
   renderMessage(msg) {
     return <Text>{JSON.stringify(msg)}</Text>
   }
@@ -28,7 +28,7 @@ class Chat extends Component {
     const response = await mutate(`
       mutation updateReadPosition {
         updateReadPosition(
-          forMessageId: ${messages[0].id}
+          forMessageId: ${messages[messages.length - 1].id}
         ) {
           id
         }
@@ -40,6 +40,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
+    console.log("MOUNTING CHAT")
     this.updateReadPosition()
     this.scrollView.scrollToEnd()
   }
@@ -92,6 +93,7 @@ class Chat extends Component {
                     user={config.data.user}
                     prev={i < 1 ? {} : interpolatedStyles[i - 1].data}
                     currentUser={currentUser}
+                    readPositions={config.data.readPositions}
                   />
                 ))}
               </View>
@@ -129,6 +131,7 @@ function mapStateToProps(state, props) {
 
   return {
     foundChat,
+    currentUser: state.user,
     messages: User.selectors.getChatMessages(state, group, foundChat.id),
   }
 }

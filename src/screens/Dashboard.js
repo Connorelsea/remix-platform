@@ -8,6 +8,7 @@ import FriendRequest from "../components/FriendRequest"
 import GroupCard from "../components/GroupCard"
 import Icon from "react-native-vector-icons/dist/Feather"
 import HelpCard from "../components/HelpCard"
+import User from "../ducks/user"
 
 class Dashboard extends Component {
   render() {
@@ -16,6 +17,7 @@ class Dashboard extends Component {
       friendRequests,
       groups,
       removeFriendRequest,
+      addGroups,
     } = this.props
 
     return (
@@ -38,6 +40,7 @@ class Dashboard extends Component {
             key={r.id}
             {...r}
             removeFriendRequest={removeFriendRequest}
+            addGroups={addGroups}
           />
         ))}
         {groups.map(group => (
@@ -46,8 +49,17 @@ class Dashboard extends Component {
         {groups.length === 0 && (
           <HelpCard title="Add some friends or join some groups to start chatting" />
         )}
+
+        <Button onPress={this.props.logout} title="Logout" small={1} />
       </AppScrollContainer>
     )
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    logout: () => dispatch(User.creators.logout()),
+    addGroups: groups => dispatch(User.creators.addGroups(groups)),
   }
 }
 
@@ -59,7 +71,7 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, undefined)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
 
 const ActionContainer = styled.View`
   flex-direction: row;

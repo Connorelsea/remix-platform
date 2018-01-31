@@ -7,6 +7,8 @@ import { mutate } from "../utilities/gql_util"
 import { bind } from "decko"
 import { set } from "../utilities/storage"
 import { withRouter } from "react-router"
+import { connect } from "react-redux"
+import User from "../ducks/user"
 
 class UserLogin extends Component {
   attemptEmailLogin(email, password) {
@@ -40,6 +42,7 @@ class UserLogin extends Component {
     const { data: { loginUserWithEmail: { id, token } } } = response
     await set("token", token)
     await set("userId", id)
+    this.props.loadInitialUser(id)
     this.props.history.replace("/", "")
   }
 
@@ -90,7 +93,25 @@ class UserLogin extends Component {
   }
 }
 
-export default withRouter(UserLogin)
+function mapDispatchToProps(dispatch) {
+  return {
+    subscribeToFriendRequests: id => {
+      dispatch(User.creators.subscribeToFriendRequests(id))
+    },
+    subscribeToMessages: id => {
+      dispatch(User.creators.subscribeToMessages(id))
+    },
+    loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
+  }
+}
+
+function mapStateToProps(state, props) {
+  return {}
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserLogin)
+)
 
 const Text = styled.Text`
   font-size: 17px;

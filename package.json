@@ -94,7 +94,8 @@
     "webpack-dev-server": "2.8.2",
     "webpack-graphql-loader": "^0.0.23",
     "webpack-manifest-plugin": "1.2.1",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "why-did-you-update": "^0.1.0"
   },
   "devDependencies": {
     "babel-jest": "22.0.4",

@@ -34,6 +34,8 @@ export default new Duck({
     "SET_USER_META",
     "START_USER_LOADING",
     "END_USER_LOADING",
+    "LOGOUT",
+    "ADD_READ_POSITION",
   ],
   initialState: {
     id: undefined,
@@ -43,6 +45,7 @@ export default new Duck({
     messages: [],
     users: [],
     loading: false,
+    readPositions: [],
   },
   reducer: (state, action, duck) => {
     switch (action.type) {
@@ -115,6 +118,22 @@ export default new Duck({
         return { ...state, loading: false }
       }
 
+      case duck.types.LOGOUT: {
+        remove("token")
+        remove("userId")
+        return duck.initialState
+      }
+
+      case duck.types.ADD_READ_POSITION: {
+        const { payload } = action
+        // If x user for y chat already had a previous RP
+        // remove it then add the new one
+        const newReadPositions = state.readPositions.filter(
+          rp => !(rp.chatId === payload.chatId && rp.userId === payload.userId)
+        )
+        return { ...state, readPositions: [...newReadPositions, payload] }
+      }
+
       default:
         return state
     }
@@ -124,9 +143,17 @@ export default new Duck({
 
     getMessages: state =>
       state.user.messages.map(m => {
+        console.log("READ POSITIONS ", state.user.readPositions)
+
         return {
           ...m,
           user: state.user.users.find(u => u.id === m.userId),
+          readPositions: state.user.readPositions
+            .filter(rp => rp.messageId === m.id)
+            .map(rp => ({
+              ...rp,
+              user: state.user.users.find(u => u.id === rp.userId),
+            })),
         }
       }),
 
@@ -182,6 +209,30 @@ export default new Duck({
   },
   creators: duck => {
     // ACTION CREATORS
+
+    function subscribeToReadPositions(userId) {
+      const observable = client.subscribe({
+        query: gql`
+        subscription newReadPosition {
+          newReadPosition(forUserId: ${userId}) {
+            id
+            userId
+            chatId
+            messageId
+          }
+        }
+      `,
+      })
+
+      console.log("SUBSCRIBING TO READ POSITIONS")
+
+      return dispatch => {
+        return observable.subscribe(response => {
+          console.log("NEW READ POSITION", response)
+          dispatch(addReadPosition(response.data.newReadPosition))
+        })
+      }
+    }
 
     function subscribeToMessages(userId) {
       const observable = client.subscribe({
@@ -297,6 +348,9 @@ export default new Duck({
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))
         dispatch(setMessages(allMessages))
+        dispatch(subscribeToFriendRequests(id))
+        dispatch(subscribeToMessages(id))
+        dispatch(subscribeToReadPositions(id))
         dispatch(endUserLoading())
 
         // TODO: dispatch and fill store with all this content
@@ -361,6 +415,14 @@ export default new Duck({
       return { type: duck.types.END_USER_LOADING }
     }
 
+    function logout() {
+      return { type: duck.types.LOGOUT }
+    }
+
+    function addReadPosition(payload) {
+      return { type: duck.types.ADD_READ_POSITION, payload }
+    }
+
     return {
       subscribeToFriendRequests,
       subscribeToMessages,
@@ -370,6 +432,7 @@ export default new Duck({
       addGroups,
       addMessages,
       removeFriendRequest,
+      logout,
     }
   },
 })

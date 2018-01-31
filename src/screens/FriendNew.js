@@ -11,6 +11,7 @@ import Spacing from "../components/Spacing"
 import HelpCard from "../components/HelpCard"
 import Card from "../components/Card"
 import Icon from "react-native-vector-icons/dist/Feather"
+import { connect } from "react-redux"
 
 class FriendNew extends Component {
   async onPress({ message, fromUserId, toUserId }) {
@@ -153,4 +154,14 @@ const SearchContainer = styled.View`
   margin-bottom: 20px;
 `
 
-export default FriendNew
+function mapDispatchToProps(dispatch) {
+  return {}
+}
+
+function mapStateToProps(state, props) {
+  return {
+    user: state.user,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendNew)

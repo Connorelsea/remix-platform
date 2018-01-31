@@ -20,17 +20,25 @@ class GroupCard extends Component {
   }
 
   render() {
-    const { id, iconUrl, name, description, isDirectMessage } = this.props.group
+    const {
+      id,
+      iconUrl,
+      name,
+      description,
+      isDirectMessage,
+      members,
+    } = this.props.group
     const { user, messages, users } = this.props
 
     let title = name
 
     if (isDirectMessage) {
       console.log(isDirectMessage)
-      const firstUser = users.find(u => u.id == users[0].id)
-      const secondUser = users.find(u => u.id == users[1].id)
-      if (firstUser.id == user.id) title = firstUser.name
-      else title = secondUser.name
+      console.log(members)
+
+      const otherUser = members.find(member => member.id !== user.id)
+      const otherUserFound = users.find(u => u.id === otherUser.id)
+      title = otherUserFound.name
     }
 
     return (
