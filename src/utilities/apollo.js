@@ -53,7 +53,7 @@ const authLink = setContext(async (_, { headers }) => {
 
 const subEndpoint = useLocal
   ? "ws://localhost:8080/subscriptions"
-  : "https://remix-platform-server.herokuapp.com/subscriptions"
+  : "ws://remix-platform-server.herokuapp.com/subscriptions"
 const subOptions = { reconnect: true }
 
 const subClient = new SubscriptionClient(subEndpoint, subOptions)
