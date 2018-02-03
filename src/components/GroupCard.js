@@ -38,7 +38,7 @@ class GroupCard extends Component {
       console.log(members)
 
       const otherUser = members.find(member => member.id !== user.id)
-      const otherUserFound = users.find(u => u.id === otherUser.id)
+      const otherUserFound = users.find(u => u.id === otherUser.id) || {}
       title = otherUserFound.name
       console.log("FOUND OTHERUSER", otherUserFound)
       icon = otherUserFound.iconUrl

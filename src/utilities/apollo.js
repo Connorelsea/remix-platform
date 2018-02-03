@@ -23,7 +23,7 @@ const errorLink = onError(props => {
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
-const useLocal = true
+const useLocal = false
 
 const httpLink = useLocal
   ? createHttpLink({

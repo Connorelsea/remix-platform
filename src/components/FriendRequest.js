@@ -42,15 +42,22 @@ class FriendRequest extends Component {
             name
             description
             isDirectMessage
-            chats { id }
-            members { id }
+            chats {
+              id
+              name
+            }
+            members {
+              id
+            }
           }
         }
       `,
         { friendRequestId: id }
       )
+
+      console.log("ACCEPT")
       console.log(request)
-      this.props.addGroups(request)
+      this.props.addGroups([request.data.acceptFriendRequest])
 
       this.setState({ accepted: true })
     }

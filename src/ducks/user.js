@@ -288,7 +288,7 @@ export default new Duck({
       return dispatch => {
         return observable.subscribe(
           friendRequest => {
-            // console.log("NEW FRIEND REQUEST", friendRequest)
+            console.log("NEW FRIEND REQUEST", friendRequest)
             dispatch(addFriendRequest(friendRequest.data.newFriendRequest))
           },
           error => {
