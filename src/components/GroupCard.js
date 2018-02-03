@@ -31,6 +31,7 @@ class GroupCard extends Component {
     const { user, messages, users } = this.props
 
     let title = name
+    let icon = iconUrl
 
     if (isDirectMessage) {
       console.log(isDirectMessage)
@@ -39,6 +40,8 @@ class GroupCard extends Component {
       const otherUser = members.find(member => member.id !== user.id)
       const otherUserFound = users.find(u => u.id === otherUser.id)
       title = otherUserFound.name
+      console.log("FOUND OTHERUSER", otherUserFound)
+      icon = otherUserFound.iconUrl
     }
 
     return (
@@ -47,8 +50,7 @@ class GroupCard extends Component {
           <Container>
             <Image
               source={{
-                uri:
-                  iconUrl || "https://www.arete.net/Content/Images/nopic.jpg",
+                uri: icon || "https://www.arete.net/Content/Images/nopic.jpg",
               }}
             />
             <Spacing size={15} />

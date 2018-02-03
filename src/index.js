@@ -6,7 +6,17 @@ import iconFont from "react-native-vector-icons/Fonts/Feather.ttf"
 const iconFontStyles = `@font-face {
   src: url(${iconFont});
   font-family: Feather;
-}`
+}
+
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+}
+
+`
 
 // Create stylesheet
 const style = document.createElement("style")

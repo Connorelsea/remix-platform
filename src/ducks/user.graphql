@@ -5,6 +5,11 @@ query initialUserQuery($id: ID!) {
     name
     username
     color
+    currentReadPositions {
+      userId
+      chatId
+      messageId
+    }
     friendRequests {
       id
       message
@@ -38,6 +43,11 @@ query initialUserQuery($id: ID!) {
         type
         data
       }
+      readPositions {
+        userId
+        chatId
+        messageId
+      }
     }
   }
   relevantUsers {
@@ -45,5 +55,6 @@ query initialUserQuery($id: ID!) {
     name
     username
     color
+    iconUrl
   }
 }

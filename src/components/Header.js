@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, PureComponent } from "react"
 import styled from "styled-components/native"
 import Gradient from "./Gradient"
 import styles from "../utilities/styles"

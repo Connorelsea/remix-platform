@@ -10,8 +10,7 @@ import ColorPicker from "../components/ColorPicker"
 import Text from "../components/Text"
 import Spacing from "../components/Spacing"
 import styles from "../utilities/styles"
-import Message from "../components/Message"
-
+import MessageMock from "../components/MessageMock"
 class UserLogin extends Component {
   attemptCreateUser({
     email,
@@ -68,6 +67,7 @@ class UserLogin extends Component {
 
   state = {
     color: "",
+    messages: [],
   }
 
   @bind
@@ -77,28 +77,32 @@ class UserLogin extends Component {
 
   render() {
     const { name, color } = this.state
-
     return (
       <AppScrollContainer title="New User">
         <Text tier="subtitle">Personal Color</Text>
-        <Spacing size={5} />
+        <Spacing size={10} />
         <Text tier="body">What color are you?</Text>
         <Spacing size={15} />
         <ColorPicker onColorChange={this.onColorChange} />
-        <Spacing size={30} />
+        <Spacing size={15} />
         <Text tier="subtitle">Your Messages</Text>
-        <Spacing size={5} />
+        <Spacing size={10} />
         <Text tier="body">
           This is what your messages will look like to other users
         </Text>
         <Spacing size={15} />
-        <Message
-          content={{ type: "remix/text", data: { text: "Message text" } }}
-          user={{ id: -1, name, color }}
-          prev={{}}
-          style={{ opacity: 1 }}
-          currentUser={{ id: -2 }}
+
+        <MessageMock
+          text={"Welcome to Remix!"}
+          color={styles.colors.grey[200]}
         />
+        <MessageMock
+          text={`Thank you ` + (name ? `- I'm ${name}` : "")}
+          name={name}
+          color={color}
+          currentUser
+        />
+
         <Spacing size={30} />
         <Text tier="subtitle">Account Credentials</Text>
         <TextInput

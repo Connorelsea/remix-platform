@@ -43,64 +43,93 @@ class Chat extends React.Component {
     console.log("MOUNTING CHAT")
     this.updateReadPosition()
     this.scrollView.scrollToEnd()
+    this.updateFocus()
+  }
+
+  @bind
+  updateFocus() {
+    console.log("updating focus to textbox")
+    this.textInput.focus()
   }
 
   @bind
   scrollToEnd() {
-    // this.scrollView.scrollToEnd({ animated: true })
+    this.scrollView.scrollToEnd()
     // this.scrollView.scrollTop = this.scrollView.scrollHeight
     // TODO: Fix this scroll bullshit
     // this.endComp.scrollIntoView({ block: "end", inline: "nearest" })
   }
 
+  state = {
+    selectedMessages: [],
+  }
+
+  @bind
+  addSelectedMessage(id) {
+    const { messages } = this.props
+    const { selectedMessages } = this.state
+    const message = messages.find(msg => msg.id === id)
+
+    this.setState(state => ({
+      selectedMessages: [...selectedMessages, message],
+    }))
+  }
+
+  removeSelectedMessage(id) {
+    // TODO
+  }
+
+  clearSelectedMessages() {
+    this.setState({ selectedMessages: [] })
+  }
+
   render() {
     const { messages, foundChat, match, currentUser } = this.props
     const { params: { chat } } = match
-
+    const { selectedMessages } = this.state
     return (
-      <OuterContainer>
+      <OuterContainer onFocus={this.updateReadPosition}>
         <Header user={currentUser} backText="Back" title={`#${chat}`} light />
         <ScrollView
-          ref={view => (this.scrollView = view)}
+          className="chatScroll"
+          ref={view => {
+            this.scrollView = view
+          }}
           contentContainerStyle={{
             alignItems: "flex-start",
             padding: 25,
             marginTop: 100,
           }}
+          contentInset={{
+            right: 10,
+            left: 10,
+          }}
         >
-          <TransitionMotion
-            willLeave={style => ({
-              // height: spring(0),
-              opacity: spring(0),
-            })}
-            willEnter={style => ({
-              // height: 0,
-              opacity: 0,
-            })}
-            styles={messages.map(msg => ({
-              key: msg.id,
-              style: { opacity: spring(1) },
-              data: { ...msg },
-            }))}
-          >
-            {interpolatedStyles => (
-              <View style={{ flex: 1, width: "100%" }}>
-                {interpolatedStyles.map((config, i) => (
-                  <Message
-                    key={config.key}
-                    style={config.style}
-                    content={config.data.content}
-                    user={config.data.user}
-                    prev={i < 1 ? {} : interpolatedStyles[i - 1].data}
-                    currentUser={currentUser}
-                    readPositions={config.data.readPositions}
-                  />
-                ))}
-              </View>
-            )}
-          </TransitionMotion>
+          {messages.map((msg, i) => (
+            <Message
+              key={msg.id}
+              id={msg.id}
+              style={msg.style}
+              content={msg.content}
+              user={msg.user}
+              prev={i < 1 ? {} : messages[i - 1]}
+              currentUser={currentUser}
+              readPositions={msg.readPositions}
+              addSelectedMessage={this.addSelectedMessage}
+              isSelected={
+                selectedMessages.find(sm => sm.id === msg.id) !== undefined
+              }
+            />
+          ))}
         </ScrollView>
-        <ChatInputArea chatId={foundChat.id} scrollToEnd={this.scrollToEnd} />
+        <ChatInputArea
+          innerRef={input => {
+            this.textInput = input
+          }}
+          chatId={foundChat.id}
+          scrollToEnd={this.scrollToEnd}
+          updateFocus={this.updateFocus}
+        />
       </OuterContainer>
     )
   }
@@ -109,10 +138,6 @@ class Chat extends React.Component {
 const OuterContainer = styled.View`
   flex: 1;
   ${Platform.OS !== "ios" && "min-height: 100vh"};
-`
-
-const Container = styled.ScrollView`
-  flex: 1;
 `
 
 function mapDispatchToProps(dispatch) {

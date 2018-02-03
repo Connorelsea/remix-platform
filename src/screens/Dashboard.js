@@ -60,6 +60,7 @@ function mapDispatchToProps(dispatch) {
   return {
     logout: () => dispatch(User.creators.logout()),
     addGroups: groups => dispatch(User.creators.addGroups(groups)),
+    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
   }
 }
 

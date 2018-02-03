@@ -28,10 +28,10 @@ class FriendRequest extends Component {
 
   @bind
   onAcceptPress(id) {
+    const { removeFriendRequest } = this.props
+
     return async () => {
-      setTimeout(() => {
-        this.props.removeFriendRequest(id)
-      }, 2000)
+      setTimeout(() => removeFriendRequest(id), 2000)
 
       let request = await mutate(
         `

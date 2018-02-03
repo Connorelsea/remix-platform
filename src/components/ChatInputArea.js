@@ -19,44 +19,36 @@ class ChatInputArea extends Component {
   }
 
   @bind
-  async onPressSend() {
+  onPressSend() {
     const { value } = this.state
-    const { chatId, scrollToEnd } = this.props
+    const { chatId, scrollToEnd, updateFocus } = this.props
 
     this.setState({
       value: "",
     })
 
-    const response = await mutate(`
+    console.log("BEFORE SEND")
+
+    mutate(`
       mutation createMessage {
         createMessage(
-          type: "remix/text"
-          data: { text: "${value}" }
-          chatId: ${chatId}
+          type: "remix/text",
+          data: { text: "${value}" },
+          chatId: ${chatId},
         ) {
           id
         }
       }
-    `)
-
-    console.log("THIS THIS THIS", this)
-
-    setTimeout(scrollToEnd, 100)
-    // this.textInput.focus()
-  }
-
-  componentDidMount() {
-    // this.textInput.focus()
-  }
-
-  @bind
-  inputRef(comp) {
-    console.log("CALLING INPUT REF CALLBACK WITH ", comp)
-    this.refs.textInput = comp
+    `).then(() => {
+      console.log("AFTER SEND")
+      scrollToEnd()
+      updateFocus()
+    })
   }
 
   render() {
     const { value } = this.state
+    const { innerRef } = this.props
     return (
       <Container>
         <Input
@@ -64,7 +56,7 @@ class ChatInputArea extends Component {
           placeholder="Message"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onPressSend}
-          innerRef={this.inputRef}
+          innerRef={innerRef}
         />
         <Spacing size={10} />
         <Button title="Send" onPress={this.onPressSend} />

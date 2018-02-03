@@ -10,7 +10,7 @@ import fontColorContrast from "font-color-contrast"
 
 class ColorPicker extends Component {
   state = {
-    colors: [
+    oldColors: [
       "#5A5E64",
       "#D1D5DB",
       "#FFC0C0",
@@ -25,6 +25,18 @@ class ColorPicker extends Component {
       "#0f72e0",
       "#9DC7F8",
       "#644F99",
+    ],
+    colors: [
+      "#D1D5DB",
+      "#FFCACA",
+      "#FF8383",
+      "#B42525",
+      "#FFC000",
+      "#72B925",
+      "#89C1FF",
+      "#0F72E0",
+      "#1D297F",
+      "#752F95",
     ],
     selectedIndex: 0,
   }
@@ -66,7 +78,7 @@ const Container = styled.View`
   justify-content: center;
 `
 
-const colorSize = 70
+const colorSize = 90
 
 const Color = styled.View`
   height: ${colorSize}px;
@@ -85,5 +97,5 @@ const Text = styled.Text`
   font-size: 35px;
   text-align: center;
   font-weight: 200;
-  padding-top: 5px;
+  padding-top: 15px;
 `

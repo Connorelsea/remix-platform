@@ -333,6 +333,7 @@ export default new Duck({
             friends = [],
             groups = [],
             allMessages = [],
+            readPositions,
             token,
           },
           relevantUsers = [],
@@ -343,6 +344,8 @@ export default new Duck({
         } else {
           console.log("NO TOKEN")
         }
+
+        console.log("READ POSITIONS??", readPositions)
 
         dispatch(setUsers(relevantUsers))
         dispatch(setFriendRequests(friendRequests))

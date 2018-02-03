@@ -55,6 +55,12 @@ const tiers = {
     spacing: 0,
     color: styles.colors.grey[400],
   },
+  messageRead: {
+    size: 15,
+    weight: 400,
+    spacing: 0,
+    color: styles.colors.grey[300],
+  },
 }
 
 export default styled.Text`
@@ -65,4 +71,5 @@ export default styled.Text`
   margin: 0;
   padding: 0;
   ${({ center }) => center && "text-align: center"};
+  ${({ opacity }) => opacity && `opacity: ${opacity}`};
 `
