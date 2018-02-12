@@ -43,7 +43,7 @@ class Header extends Component {
         <Gradient
           colors={
             light
-              ? ["white", " rgba(0,0,0,0)"]
+              ? ["white", " rgba(255, 255,255,0)"]
               : [styles.colors.grey[100], "rgba(248, 248, 248, 0)"]
           }
           size={25}

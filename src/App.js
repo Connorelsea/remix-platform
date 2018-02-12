@@ -63,6 +63,8 @@ class App extends React.Component {
   renderWithoutUser() {
     // const Stack = require("react-router-native-stack").default
 
+    console.log("WITHOUT USER")
+
     return (
       <Switch>
         <Route exact path="/" component={Home} />
@@ -79,8 +81,10 @@ class App extends React.Component {
   @bind
   renderWithUser() {
     const { user } = this.props
-    // const Stack = require("react-router-native-stack").default
+    const Stack = require("react-router-native-stack").default
     /* <Route exact path="/@:id" component={User} /> */
+
+    console.log("WITH USER")
 
     const routes = [
       <Route exact path="/+:group/" key="group_show" component={Group} />,
@@ -94,6 +98,12 @@ class App extends React.Component {
         component={GroupCreate}
       />,
     ]
+    return (
+      <Stack>
+        <Route exact path="/" component={Dashboard} />
+        {routes}
+      </Stack>
+    )
 
     return (
       <View style={{ flex: 1 }}>
@@ -106,43 +116,21 @@ class App extends React.Component {
           </View>
         </MediaQuery>
         <MediaQuery maxDeviceWidth={1224}>
-          <Switch
-          // atEnter={bounceTransition.atEnter}
-          // atLeave={bounceTransition.atLeave}
-          // atActive={bounceTransition.atActive}
-          // mapStyles={mapStyles}
-          // className="switch-wrapper"
-          >
-            <Route exact path="/" component={() => <Dashboard user={user} />} />
+          <Stack>
+            <Route exact path="/" component={Dashboard} />
             {routes}
-          </Switch>
+          </Stack>
         </MediaQuery>
       </View>
     )
   }
 
   @bind
-  renderMobileRouting() {
+  renderRouting() {
     const { isAuthenticated, loading } = this.props
     if (loading) return <Text>Loading</Text>
     if (isAuthenticated) return this.renderWithUser()
     else return this.renderWithoutUser()
-  }
-
-  renderWebRouting() {
-    return <Text>On the web</Text>
-  }
-
-  renderRouting() {
-    console.log("RENDERING ROUTING")
-    switch (Platform.OS) {
-      case "ios":
-        return this.renderMobileRouting()
-      default:
-      case "web":
-        // return this.renderWebRouting()
-        return this.renderMobileRouting()
-    }
   }
 
   render() {

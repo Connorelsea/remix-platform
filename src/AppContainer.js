@@ -9,6 +9,8 @@ import App from "./App"
 
 class Container extends React.Component {
   render() {
+    console.log("Rendering app container")
+    console.log("STORE", store)
     return (
       <Provider store={store}>
         <ApolloProvider client={client}>
@@ -21,4 +23,6 @@ class Container extends React.Component {
   }
 }
 
-export default hot(module)(Container)
+// export default hot(module)(Container)
+
+export default Container

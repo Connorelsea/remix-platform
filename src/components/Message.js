@@ -27,7 +27,11 @@ class Message extends Component {
           right={isCurrentUser ? offset : undefined}
         >
           <Text tier="body" color={textColor} small={small}>
-            {data.text}
+            {small
+              ? data.text.length > 35
+                ? data.text.slice(0, 35) + "..."
+                : data.text
+              : data.text}
           </Text>
         </Bubble>
       )
@@ -83,8 +87,6 @@ class Message extends Component {
       small,
       isSelected,
     } = this.props
-
-    console.log(readPositions)
 
     let sameUserAsPrev = prev.user && prev.user.id === id
     let isCurrentUser = currentUser.id === id ? 1 : 0
@@ -160,7 +162,7 @@ const Container = styled.View`
 `
 
 const Bubble = styled.View`
-  padding: 9px 13px;
+  padding: ${props => (props.small ? "5px 11px" : "9px 13px")};
   border-radius: 20px;
   background-color: ${({ color }) => color || styles.colors.grey[200]};
   max-width: ${props => (props.small ? 200 : 330)}px;

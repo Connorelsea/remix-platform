@@ -12,9 +12,9 @@ const Link = Routing.Link
 
 const tiers = {
   title: {
-    size: 30,
+    size: 24,
     weight: 900,
-    spacing: -0.5,
+    spacing: -0.8,
     color: styles.colors.grey[600],
   },
   subtitle: {

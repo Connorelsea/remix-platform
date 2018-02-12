@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { ScrollView, Platform, View } from "react-native"
 import { bind } from "decko"
 import styled from "styled-components/native"
 import { mutate } from "../utilities/gql_util"
@@ -11,6 +10,21 @@ import User from "../ducks/user"
 import { withRouter } from "react-router"
 import Header from "../components/Header"
 import { TransitionMotion, spring } from "react-motion"
+
+import {
+  ScrollView,
+  Platform,
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+} from "react-native"
+import CustomKeyboardAwareView from "../components/CustomKeyboardAwareView"
+import { KeyboardTrackingView } from "react-native-keyboard-tracking-view"
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import KeyboardSpacer from "react-native-keyboard-spacer"
+
+import { InvertibleFlatList } from "react-native-invertible-flatlist"
+import { BlurView, VibrancyView } from "react-native-blur"
 
 class Chat extends React.Component {
   renderMessage(msg) {
@@ -87,49 +101,66 @@ class Chat extends React.Component {
     const { messages, foundChat, match, currentUser } = this.props
     const { params: { chat } } = match
     const { selectedMessages } = this.state
+
+    const flippedMessages = messages.reverse()
+    console.log("FLIPPED MESAGES")
+    console.log(flippedMessages)
+
     return (
       <OuterContainer onFocus={this.updateReadPosition}>
         <Header user={currentUser} backText="Back" title={`#${chat}`} light />
-        <ScrollView
-          className="chatScroll"
-          ref={view => {
-            this.scrollView = view
-          }}
-          contentContainerStyle={{
-            alignItems: "flex-start",
-            padding: 25,
-            marginTop: 100,
-          }}
-          contentInset={{
-            right: 10,
-            left: 10,
-          }}
-        >
-          {messages.map((msg, i) => (
-            <Message
-              key={msg.id}
-              id={msg.id}
-              style={msg.style}
-              content={msg.content}
-              user={msg.user}
-              prev={i < 1 ? {} : messages[i - 1]}
-              currentUser={currentUser}
-              readPositions={msg.readPositions}
-              addSelectedMessage={this.addSelectedMessage}
-              isSelected={
-                selectedMessages.find(sm => sm.id === msg.id) !== undefined
-              }
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            className="chatScroll"
+            ref={view => {
+              this.scrollView = view
+            }}
+            contentContainerStyle={{
+              flex: 1,
+              marginTop: 115,
+              position: "relative",
+              paddingBottom: 70,
+            }}
+            automaticallyAdjustContentInsets={false}
+            keyboardDismissMode="on-drag"
+          >
+            {/* TODO: Seperate list rendering entirely on web. Too complicated to abstract*/}
+            <FlatList
+              inverted
+              keyExtractor={item => item.id}
+              data={flippedMessages}
+              renderItem={({ item, index }) => (
+                <Message
+                  id={item.id}
+                  style={item.style}
+                  content={item.content}
+                  user={item.user}
+                  prev={
+                    index >= flippedMessages.length - 1
+                      ? {}
+                      : flippedMessages[index + 1]
+                  }
+                  currentUser={currentUser}
+                  readPositions={item.readPositions}
+                  addSelectedMessage={this.addSelectedMessage}
+                  isSelected={
+                    console.log(item) &&
+                    selectedMessages.find(sm => sm.id === msg.id) !== undefined
+                  }
+                />
+              )}
             />
-          ))}
-        </ScrollView>
-        <ChatInputArea
-          innerRef={input => {
-            this.textInput = input
-          }}
-          chatId={foundChat.id}
-          scrollToEnd={this.scrollToEnd}
-          updateFocus={this.updateFocus}
-        />
+          </ScrollView>
+          <ChatInputArea
+            innerRef={input => {
+              this.textInput = input
+            }}
+            chatId={foundChat.id}
+            scrollToEnd={this.scrollToEnd}
+            updateFocus={this.updateFocus}
+          />
+        </View>
+        <KeyboardSpacer />
       </OuterContainer>
     )
   }

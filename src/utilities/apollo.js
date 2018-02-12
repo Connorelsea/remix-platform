@@ -23,11 +23,12 @@ const errorLink = onError(props => {
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
-const useLocal = false
+const localUrl = "localhost:8080" // "68.106.160.235:8080" // "localhost:8080"
+const useLocal = true
 
 const httpLink = useLocal
   ? createHttpLink({
-      uri: "http://localhost:8080/graphql",
+      uri: `http://${localUrl}/graphql`,
     })
   : createHttpLink({
       uri: "https://remix-platform-server.herokuapp.com/graphql",
@@ -52,9 +53,22 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const subEndpoint = useLocal
-  ? "ws://localhost:8080/subscriptions"
+  ? `ws://${localUrl}/subscriptions`
   : "wss://remix-platform-server.herokuapp.com/subscriptions"
-const subOptions = { reconnect: true }
+
+const subOptions = {
+  reconnect: true,
+  connectionParams: async () => {
+    let token = await get("token")
+    let ret = {
+      token,
+    }
+
+    console.log("WEBSOCKET RETURN OBJEDCT", ret)
+
+    return ret
+  },
+}
 
 const subClient = new SubscriptionClient(subEndpoint, subOptions)
 const subLink = new WebSocketLink(subClient)

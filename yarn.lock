@@ -3613,7 +3613,7 @@ graphql-anywhere@^4.1.1:
   dependencies:
     apollo-utilities "^1.0.4"
 
-graphql-tag@^2.4.2, graphql-tag@^2.6.1:
+graphql-tag@^2.4.2, graphql-tag@^2.6.0, graphql-tag@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.6.1.tgz#4788d509f6e29607d947fc47a40c4e18f736d34a"
 
@@ -6601,21 +6601,45 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-graphql-transformer@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-graphql-transformer/-/react-native-graphql-transformer-0.1.3.tgz#051a787d02409bdc0dda61871742435746809c2d"
+  dependencies:
+    graphql-tag "^2.6.0"
+    semver "^5.4.1"
+
 react-native-interactable@^0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/react-native-interactable/-/react-native-interactable-0.1.7.tgz#c785688ea6ec7c4ef443e715d145c6862ae210da"
+
+react-native-invertible-flatlist@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-invertible-flatlist/-/react-native-invertible-flatlist-1.2.1.tgz#74dd5718640a2d6fdf8d8eeeb1cc8280703d0e0e"
+
+react-native-iphone-x-helper@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.2.tgz#7dbca530930f7c1ce8633cc8fd13ba94102992e1"
+
+react-native-keyboard-aware-scroll-view@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.4.3.tgz#206e197730902ce01d026910ff8409a2a363e1ac"
+  dependencies:
+    prop-types "^15.6.0"
+    react-native-iphone-x-helper "^1.0.1"
+
+react-native-keyboard-spacer@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-spacer/-/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
+
+react-native-keyboard-tracking-view@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.1.1.tgz#de4d81bc35c5ea151ea4ced22503a676a1d421fe"
 
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.0.tgz#51d8ea12bb72a59bede9edc87b694b16b64cf435"
   dependencies:
     prop-types "^15.5.10"
-
-react-native-onesignal@^3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.0.8.tgz#9be2f413a7bc95a4e1970ac9b310b321f5417855"
-  dependencies:
-    invariant "^2.2.2"
 
 react-native-tab-view@^0.0.74:
   version "0.0.74"
@@ -7293,6 +7317,10 @@ semver-diff@^2.0.0:
 "semver@2 || 3 || 4 || 5", semver@5.x, semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
+
+semver@^5.4.1:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
 send@0.13.2:
   version "0.13.2"

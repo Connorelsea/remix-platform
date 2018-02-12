@@ -44,6 +44,7 @@ export default class LinearGradient extends Component {
           style,
           {
             backgroundImage: `linear-gradient(to bottom, ${colorStrings})`,
+            background: `-webkit-linear-gradient(to bottom, ${colorStrings})`,
           },
         ]}
       >

@@ -35,4 +35,6 @@ if (process.env.NODE_ENV !== "production") {
   whyDidYouUpdate(React)
 }
 
+console.log("RENDERING APP CONTAINER")
+
 ReactNative.render(<AppContainer />, document.getElementById("root"))

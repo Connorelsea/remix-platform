@@ -31,6 +31,7 @@ export default new Duck({
     "SET_MESSAGES",
     "ADD_FRIENDS",
     "SET_USERS",
+    "ADD_USERS",
     "SET_USER_META",
     "START_USER_LOADING",
     "END_USER_LOADING",
@@ -48,6 +49,7 @@ export default new Duck({
     readPositions: [],
   },
   reducer: (state, action, duck) => {
+    console.log("ACTION", action)
     switch (action.type) {
       case duck.types.SET_USER_META: {
         const { id } = action.payload
@@ -102,12 +104,18 @@ export default new Duck({
 
       case duck.types.SET_MESSAGES: {
         const { messages } = action
+        console.log("MESSAGES, in reducer", messages.map(m => m.content.data))
         return { ...state, messages }
       }
 
       case duck.types.SET_USERS: {
         const { users } = action
         return { ...state, users }
+      }
+
+      case duck.types.ADD_USERS: {
+        const { users } = action
+        return { ...state, users: [...state.users, users] }
       }
 
       case duck.types.START_USER_LOADING: {
@@ -210,6 +218,48 @@ export default new Duck({
   creators: duck => {
     // ACTION CREATORS
 
+    function subscribeToNewFriends(userId) {
+      const observable = client.subscribe({
+        query: gql`
+        subscription newFriend {
+          newFriend(forUserId: ${userId}) {
+            newUser {
+              id
+              name
+              username
+              color
+              iconUrl
+            }
+            newGroup {
+              id
+              iconUrl
+              name
+              description
+              isDirectMessage
+              chats {
+                id
+                name
+              }
+              members {
+                id
+              }
+            }
+          }
+        }
+      `,
+      })
+
+      console.log("SUBSCRIBING TO NEW FRIENDS")
+
+      return dispatch => {
+        return observable.subscribe(response => {
+          console.log("NEW FRIEND", response)
+          dispatch(addUsers([response.data.newFriend.newUser]))
+          dispatch(addGroups([response.data.newFriend.newGroup]))
+        })
+      }
+    }
+
     function subscribeToReadPositions(userId) {
       const observable = client.subscribe({
         query: gql`
@@ -257,6 +307,7 @@ export default new Duck({
 
       return dispatch => {
         return observable.subscribe(response => {
+          console.log("RESPONSE TO NEW MESSAGE", response)
           dispatch(addMessages([response.data.newMessage]))
         })
       }
@@ -347,6 +398,8 @@ export default new Duck({
 
         console.log("READ POSITIONS??", readPositions)
 
+        console.log("MESSAGES (all)", allMessages.map(m => m.content.data))
+
         dispatch(setUsers(relevantUsers))
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))
@@ -354,6 +407,7 @@ export default new Duck({
         dispatch(subscribeToFriendRequests(id))
         dispatch(subscribeToMessages(id))
         dispatch(subscribeToReadPositions(id))
+        dispatch(subscribeToNewFriends(id))
         dispatch(endUserLoading())
 
         // TODO: dispatch and fill store with all this content
@@ -408,6 +462,10 @@ export default new Duck({
 
     function setUsers(users) {
       return { type: duck.types.SET_USERS, users }
+    }
+
+    function addUsers(users) {
+      return { type: duck.types.ADD_USERS, users }
     }
 
     function startUserLoading() {

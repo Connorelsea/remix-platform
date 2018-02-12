@@ -56,7 +56,7 @@ class GroupCard extends Component {
             <Spacing size={15} />
             <Body>
               <Gradient
-                colors={[" rgba(0,0,0,0)", "#FFFFFF"]}
+                colors={[" rgba(255, 255, 255, 0)", "#FFFFFF"]}
                 size={90}
                 style={{
                   position: "absolute",
@@ -116,7 +116,7 @@ export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(GroupCard)
 )
 
-const imageSize = 110
+const imageSize = 100
 
 const Image = styled.Image`
   height: ${imageSize}px;
@@ -132,7 +132,7 @@ const Container = styled.View`
 
 const MessageContainer = styled.View`
   align-items: center;
-  width: 95%;
+  width: 100%;
 `
 
 const Body = styled.View`

@@ -8,7 +8,6 @@ import Option from "../components/Option"
 import { bind } from "decko"
 import { mutate } from "../utilities/gql_util"
 import Spacing from "./Spacing"
-import { setTimeout } from "timers"
 
 class FriendRequest extends Component {
   state = {
@@ -36,28 +35,11 @@ class FriendRequest extends Component {
       let request = await mutate(
         `
         mutation($friendRequestId: ID!) {
-          acceptFriendRequest(friendRequestId: $friendRequestId) {
-            id
-            iconUrl
-            name
-            description
-            isDirectMessage
-            chats {
-              id
-              name
-            }
-            members {
-              id
-            }
-          }
+          acceptFriendRequest(friendRequestId: $friendRequestId)
         }
       `,
         { friendRequestId: id }
       )
-
-      console.log("ACCEPT")
-      console.log(request)
-      this.props.addGroups([request.data.acceptFriendRequest])
 
       this.setState({ accepted: true })
     }

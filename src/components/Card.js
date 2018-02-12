@@ -2,7 +2,7 @@ import styled from "styled-components/native"
 
 export default styled.View`
   background-color: white;
-  padding: 15px;
+  padding: 12px;
   border-radius: 8px;
   shadow-color: black;
   shadow-radius: 22px;

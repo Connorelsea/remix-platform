@@ -21,7 +21,6 @@ class FriendNew extends Component {
       }`,
       { message, fromUserId, toUserId }
     )
-    console.log(req)
   }
 
   state = {

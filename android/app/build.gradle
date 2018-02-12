@@ -139,7 +139,6 @@ android {
 dependencies {
     compile project(':react-native-interactable')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-onesignal')
     compile project(':react-native-blur')
     compile project(':react-native-linear-gradient')
     compile fileTree(dir: "libs", include: ["*.jar"])

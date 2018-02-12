@@ -7,6 +7,8 @@ import { bind } from "decko"
 import Input from "./Input"
 import Button from "./Button"
 import { mutate } from "../utilities/gql_util"
+import { BlurView, VibrancyView } from "react-native-blur"
+import { View } from "react-native"
 
 class ChatInputArea extends Component {
   state = {
@@ -40,7 +42,6 @@ class ChatInputArea extends Component {
         }
       }
     `).then(() => {
-      console.log("AFTER SEND")
       scrollToEnd()
       updateFocus()
     })
@@ -49,8 +50,28 @@ class ChatInputArea extends Component {
   render() {
     const { value } = this.state
     const { innerRef } = this.props
-    return (
-      <Container>
+    return [
+      <VibrancyView
+        blurType="light"
+        blurAmount={40}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          height: 70,
+        }}
+        key="vibrancy"
+      />,
+      <View
+        key="input"
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          padding: 10,
+        }}
+      >
         <Input
           value={value}
           placeholder="Message"
@@ -60,17 +81,9 @@ class ChatInputArea extends Component {
         />
         <Spacing size={10} />
         <Button title="Send" onPress={this.onPressSend} />
-      </Container>
-    )
+      </View>,
+    ]
   }
 }
 
 export default ChatInputArea
-
-const Container = styled.View`
-  min-height: 60px;
-  flex-direction: row;
-  padding: 10px;
-  background-color: ${styles.colors.grey[100]};
-  border-top: 1px solid ${styles.colors.grey[200]};
-`
