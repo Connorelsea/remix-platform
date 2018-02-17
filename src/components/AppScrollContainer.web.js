@@ -30,7 +30,7 @@ const Container = styled.div`
   background-color: ${styles.colors.grey[100]};
   height: 100vh;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
 `
 
@@ -46,4 +46,18 @@ const Scroll = styled.div`
   ${props => (props.fullwidth ? "max-width: 1000px" : "")};
   flex-direction: column;
   align-self: center;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f8f8f8;
+    border-radius: 20px;
+  }
 `
