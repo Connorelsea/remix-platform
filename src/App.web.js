@@ -75,10 +75,23 @@ class App extends React.Component {
   renderDesktop() {
     return (
       <DesktopContainer>
-        <DesktopColumn>
+        <DesktopColumn width="25%">
           <Route path="/" component={Dashboard} />
+          <Route
+            exact
+            path="/new/friend"
+            key="new_friend"
+            component={FriendNew}
+          />
+          <Route exact path="/new/group" key="new_group" component={GroupNew} />
+          <Route
+            exact
+            path="/new/group/create"
+            key="new_group_create"
+            component={GroupCreate}
+          />
         </DesktopColumn>
-        <DesktopColumn>
+        <DesktopColumn width="20%">
           <Route path="/+:group/" key="group_show" component={Group} />
         </DesktopColumn>
         <DesktopSpace>
@@ -121,7 +134,9 @@ const DesktopContainer = styled.View`
 
 const DesktopColumn = styled.View`
   min-width: 200px;
-  width: 25%;
+  width: ${props => props.width};
+  border-right-width: 1px;
+  border-right-color: ${styles.colors.grey[200]};
 `
 
 const DesktopSpace = styled.View`

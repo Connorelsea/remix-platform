@@ -40,7 +40,6 @@ class GroupCard extends Component {
       const otherUser = members.find(member => member.id !== user.id)
       const otherUserFound = users.find(u => u.id === otherUser.id) || {}
       title = otherUserFound.name
-      console.log("FOUND OTHERUSER", otherUserFound)
       icon = otherUserFound.iconUrl
     }
 
@@ -106,8 +105,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, props) {
   return {
     user: state.user,
-    friendRequests: state.user.friendRequests,
     users: state.user.users,
+    friendRequests: state.user.friendRequests,
     messages: User.selectors.getGroupMessages(state, props.group.id),
   }
 }

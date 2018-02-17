@@ -19,6 +19,8 @@ class FriendNew extends Component {
       `mutation($message: String, $fromUserId: ID!, $toUserId: ID!) {
         createFriendRequest(message: $message, fromUserId: $fromUserId, toUserId: $toUserId) {
           id
+          name
+          description
         }
       }`,
       { message, fromUserId, toUserId }

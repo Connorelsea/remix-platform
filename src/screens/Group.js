@@ -9,6 +9,7 @@ import Spacing from "../components/Spacing"
 import { bind } from "decko"
 import Button from "../components/Button"
 import Input from "../components/Input"
+import { mutate } from "../utilities/gql_util"
 
 class Group extends Component {
   state = {
@@ -26,6 +27,9 @@ class Group extends Component {
     const { addingChat } = this.state
 
     if (addingChat) {
+      this.setState({
+        addingChat: false
+      })
     } else {
       this.setState({
         addingChat: true,
@@ -33,23 +37,62 @@ class Group extends Component {
     }
   }
 
+  @bind
+  onChangeText(text) {
+    this.setState({ chatNameText: text })
+  }
+
+  @bind
+  async createChat() {
+    const { chatNameText, chatDescriptionText } = this.state
+    let name = chatNameText
+    let description = chatDescriptionText
+    console.log("Creating chat with " + name)
+
+    const req = await mutate(
+      `mutation($name: String!, $description: String, $inGroupId: ID!) {
+        createChat(
+          name: $name
+          description: $description
+          inGroupId: $inGroupId
+        ) {
+          id
+        }
+      }`,
+      { name, description, inGroupId: this.props.group.id }
+    )
+
+    this.setState({
+      addingChat: false,
+      chatNameText: undefined,
+    })
+  }
+
   render() {
     const { group } = this.props
     const { addingChat } = this.state
-    const { name, chats, description } = group
+    let {
+      id,
+      iconUrl,
+      name,
+      description,
+      isDirectMessage,
+      members,
+      chats,
+    } = this.props.group
+    const { user, users } = this.props
+
+    if (isDirectMessage) {
+      const otherUser = members.find(member => member.id !== user.id)
+      const otherUserFound = users.find(u => u.id === otherUser.id) || {}
+      name = otherUserFound.name
+    }
 
     return (
       <AppScrollContainer title={name}>
-        <Text tier="subtitle">Description</Text>
-        <Spacing size={5} />
-        <Text tier="body">{description}</Text>
-        <Spacing size={15} />
-        <Text tier="subtitle">Top Recent Messages</Text>
-        <Spacing size={5} />
-        <Text tier="body">Test</Text>
-        <Spacing size={15} />
         <Text tier="subtitle">Chats</Text>
-        <Spacing size={5} />
+        <Spacing size={10} />
+
         <ChatList>
           {chats.map(chat => (
             <Chat
@@ -59,8 +102,21 @@ class Group extends Component {
             />
           ))}
         </ChatList>
+
         {addingChat ? (
-          [<Input placeholder="Chat Name" key="chat_name" />]
+          [
+            <Input
+              placeholder="Chat Name"
+              key="chat_name"
+              onChangeText={this.onChangeText}
+            />,
+            <Spacing size={10} />,
+            <ActionContainer>
+              <Button title="Cancel" onPress={this.pressAddChat} />
+              <Spacing size={10} />
+              <Button title="Create" onPress={this.createChat} />
+            </ActionContainer>,
+          ]
         ) : (
           <Button title="Add Chat" onPress={this.pressAddChat} />
         )}
@@ -86,6 +142,8 @@ function mapStateToProps(state, props) {
 
   return {
     group: state.user.groups.find(g => g.id === group),
+    user: state.user,
+    users: state.user.users,
   }
 }
 
@@ -98,12 +156,14 @@ const Chat = ({ name, onChatPress }) => (
 )
 
 const ChatContainer = styled.TouchableOpacity`
-  background-color: ${styles.colors.grey[200]};
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 50px;
+  margin-bottom: 15px;
+  padding: 15px 20px;
 `
 
-const ChatList = styled.View`
-  align-items: flex-start;
+const ChatList = styled.View``
+
+const ActionContainer = styled.View`
+  flex-direction: row;
 `

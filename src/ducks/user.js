@@ -37,6 +37,7 @@ export default new Duck({
     "END_USER_LOADING",
     "LOGOUT",
     "ADD_READ_POSITION",
+    "ADD_CHAT",
   ],
   initialState: {
     id: undefined,
@@ -89,6 +90,22 @@ export default new Duck({
       case duck.types.ADD_GROUPS: {
         const { groups } = action
         return { ...state, groups: [...state.groups, ...groups] }
+      }
+
+      case duck.types.ADD_CHAT: {
+        const { chat, groupId } = action
+        let groupIndex = state.groups.findIndex(group => group.id === groupId)
+        let groupFound = state.groups[groupIndex]
+        let groups = state.splice(groupIndex, 1)
+        let newGroup = {
+          ...groupFound,
+          chats: [...groupFound.chats, chat],
+        }
+        groups = [...groups, newGroup]
+        return {
+          ...state,
+          groups,
+        }
       }
 
       case duck.types.SET_GROUPS: {
@@ -450,6 +467,10 @@ export default new Duck({
 
     function setGroups(groups) {
       return { type: duck.types.SET_GROUPS, groups }
+    }
+
+    function addChat(chat, groupId) {
+      return { type: duck.types.ADD_CHAT, chat, groupId }
     }
 
     function addMessages(messages) {

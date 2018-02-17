@@ -75,4 +75,6 @@ export default styled.p`
   padding: 0;
   ${({ center }) => center && "text-align: center"};
   ${({ opacity }) => opacity && `opacity: ${opacity}`};
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 `

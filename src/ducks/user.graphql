@@ -30,6 +30,7 @@ query initialUserQuery($id: ID!) {
       chats {
         id
         name
+        description
       }
       members {
         id
