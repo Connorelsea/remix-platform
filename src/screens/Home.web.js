@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import AppScrollContainer from "../components/AppScrollContainer"
 import Button from "../components/Button"
 import Spacing from "../components/Spacing"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import styles from "../utilities/styles"
 import Text from "../components/Text"
 
@@ -105,7 +105,12 @@ export default class Home extends Component {
 
         <Bar color={styles.colors.grey[100]}>
           <InnerContainerColumn>
-            <Text tier="thintitle">Made in Louisiana, United States</Text>
+            <Text tier="thintitle">
+              Made in Louisiana, United States{" "}
+              <span role="img" aria-label="American Flag Emoji">
+                🇺🇸
+              </span>
+            </Text>
             <Spacing size={10} />
             <Text tier="largebody" color={styles.colors.grey[500]}>
               Software produced in Baton Rouge, Louisiana by Elsea Labs. Elsea
@@ -120,42 +125,63 @@ export default class Home extends Component {
   }
 }
 
-const Container = styled.View`
+const Container = styled.div`
   flex: 1;
   background-color: ${styles.colors.grey[100]};
   height: 100vh;
+  width: 100%;
   overflow: scroll;
   overflow-x: hidden;
 `
 
-const Bar = styled.View`
+const Bar = styled.div`
+  display: flex;
+
   flex-direction: row;
   background-color: ${props => props.color};
   justify-content: center;
+  align-items: center;
+  width: 100%;
 `
 
-const InnerContainer = styled.View`
-  width: 1000px;
+const InnerContainer = styled.div`
+  display: flex;
+  width: 100%;
   max-width: 1000px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 50px 0px;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    padding: 35px 25px;
+  }
 `
-const InnerContainerColumn = styled.View`
-  width: 1000px;
+const InnerContainerColumn = styled.div`
+  display: flex;
+  width: 100%;
   max-width: 1000px;
   flex-direction: column;
   flex-wrap: wrap;
   padding: 50px 0px;
+  @media (max-width: 1000px) {
+    padding: 35px 25px;
+  }
 `
 
-const FeatureContainer = styled.View`
+const FeatureContainer = styled.div`
   width: 46%;
   padding-top: 20px;
   padding-bottom: 20px;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 `
 
-const ButtonContainer = styled.View`
+const ButtonContainer = styled.div`
+  display: flex;
   flex-direction: row;
+  @media (max-width: 1000px) {
+    flex-direction: row;
+  }
 `
