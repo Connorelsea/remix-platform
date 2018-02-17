@@ -15,11 +15,6 @@ const iconFontStyles = `@font-face {
 .switch-wrapper > div {
   position: absolute;
 }
-
-body {
-  overflow: hidden;
-}
-
 `
 
 // Create stylesheet

@@ -132,6 +132,9 @@ const Container = styled.div`
   width: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 `
 
 const Bar = styled.div`
