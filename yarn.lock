@@ -6816,6 +6816,12 @@ react-router@4.2.0, react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
+react-scroll@^1.7.6:
+  version "1.7.6"
+  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.7.6.tgz#826102e6a9de30142cd8450f190b0fed87171ff6"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-stand-in@^4.0.0-beta.18:
   version "4.0.0-beta.18"
   resolved "https://registry.yarnpkg.com/react-stand-in/-/react-stand-in-4.0.0-beta.18.tgz#67d83309ae5d95526a2d1124beaa7ab093085cb2"

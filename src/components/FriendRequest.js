@@ -35,7 +35,7 @@ class FriendRequest extends Component {
       let request = await mutate(
         `
         mutation($friendRequestId: ID!) {
-          acceptFriendRequest(friendRequestId: $friendRequestId)
+          acceptFriendRequest(friendRequestId: $friendRequestId) 
         }
       `,
         { friendRequestId: id }

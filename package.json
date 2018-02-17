@@ -85,6 +85,7 @@
     "react-router-native": "4.2.0",
     "react-router-native-stack": "^0.0.9",
     "react-router-transition": "^1.2.0",
+    "react-scroll": "^1.7.6",
     "react-virtualized": "^9.18.0",
     "redux": "3.7.2",
     "redux-thunk": "^2.2.0",

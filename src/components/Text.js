@@ -1,20 +1,17 @@
-import React, { Component } from "react"
 import styled from "styled-components/native"
-import Routing, { Router } from "../utilities/routing"
-
-import AppScrollContainer from "../components/AppScrollContainer"
-import { query } from "../utilities/gql_util"
-import { client } from "../utilities/apollo"
 import styles from "../utilities/styles"
-
-const Route = Routing.Route
-const Link = Routing.Link
 
 const tiers = {
   title: {
     size: 24,
     weight: 900,
     spacing: -0.8,
+    color: styles.colors.grey[600],
+  },
+  thintitle: {
+    size: 25,
+    weight: 600,
+    spacing: -0.5,
     color: styles.colors.grey[600],
   },
   subtitle: {
@@ -27,6 +24,12 @@ const tiers = {
     size: 16,
     weight: 500,
     spacing: 0,
+    color: styles.colors.grey[600],
+  },
+  largebody: {
+    size: 17,
+    weight: 500,
+    spacing: -0.2,
     color: styles.colors.grey[600],
   },
   emphasis: {

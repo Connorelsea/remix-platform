@@ -18,45 +18,8 @@ import MediaQuery from "react-responsive"
 import styles from "./utilities/styles"
 import { connect } from "react-redux"
 import User from "./ducks/user"
-import { spring, AnimatedSwitch } from "react-router-transition"
 
 const Route = Routing.Route
-
-// we need to map the `scale` prop we define below
-// to the transform style property
-function mapStyles(styles) {
-  return {
-    opacity: styles.opacity,
-    transform: `scale(${styles.scale})`,
-  }
-}
-
-// wrap the `spring` helper to use a bouncy config
-function bounce(val) {
-  return spring(val, {
-    stiffness: 330,
-    damping: 22,
-  })
-}
-
-// child matches will...
-const bounceTransition = {
-  // start in a transparent, upscaled state
-  atEnter: {
-    opacity: 0,
-    scale: 1.2,
-  },
-  // leave in a transparent, downscaled state
-  atLeave: {
-    opacity: bounce(0),
-    scale: bounce(0.8),
-  },
-  // and rest at an opaque, normally-scaled state
-  atActive: {
-    opacity: bounce(1),
-    scale: bounce(1),
-  },
-}
 
 class App extends React.Component {
   @bind
@@ -80,12 +43,6 @@ class App extends React.Component {
 
   @bind
   renderWithUser() {
-    const { user } = this.props
-    const Stack = require("react-router-native-stack").default
-    /* <Route exact path="/@:id" component={User} /> */
-
-    console.log("WITH USER")
-
     const routes = [
       <Route exact path="/+:group/" key="group_show" component={Group} />,
       <Route exact path="/+:group/:chat" key="chat_show" component={Chat} />,
@@ -100,28 +57,9 @@ class App extends React.Component {
     ]
 
     return (
-      <Stack>
+      <View style={{}}>
         <Route exact path="/" component={Dashboard} />
         {routes}
-      </Stack>
-    )
-
-    return (
-      <View style={{ flex: 1 }}>
-        <MediaQuery minDeviceWidth={1224}>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <Side>
-              <Dashboard user={user} />
-            </Side>
-            <Body>{routes}</Body>
-          </View>
-        </MediaQuery>
-        <MediaQuery maxDeviceWidth={1224}>
-          <Stack>
-            <Route exact path="/" component={Dashboard} />
-            {routes}
-          </Stack>
-        </MediaQuery>
       </View>
     )
   }
@@ -137,24 +75,6 @@ class App extends React.Component {
   render() {
     return <Router>{this.renderRouting()}</Router>
   }
-
-  // async registerPushNotifs() {
-  //   const { status: { existingStatus } } = await Permissions.getAsync(
-  //     Permissions.NOTIFICATIONS
-  //   )
-  //   let finalStatus = existingStatus
-
-  //   if (existingStatus !== "granted") {
-  //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
-  //     finalStatus = status
-  //   }
-
-  //   if (finalStatus !== "granted") {
-  //     return
-  //   }
-
-  //   let token = await Notifications.getExpoPushTokenAsync()
-  // }
 }
 
 function mapStateToProps(state) {
@@ -168,14 +88,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, undefined)(App)
-
-const Side = styled.View`
-  width: 400;
-  min-width: 400;
-  border-right-color: ${styles.colors.grey[200]};
-  border-right-width: 1px;
-`
-
-const Body = styled.View`
-  flex: 1;
-`

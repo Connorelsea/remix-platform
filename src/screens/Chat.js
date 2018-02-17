@@ -5,30 +5,62 @@ import styled from "styled-components/native"
 import { mutate } from "../utilities/gql_util"
 import Text from "../components/Text"
 import ChatInputArea from "../components/ChatInputArea"
-import Message from "../components/Message"
 import User from "../ducks/user"
 import { withRouter } from "react-router"
 import Header from "../components/Header"
-import { TransitionMotion, spring } from "react-motion"
 
-import {
-  ScrollView,
-  Platform,
-  View,
-  KeyboardAvoidingView,
-  FlatList,
-} from "react-native"
-import CustomKeyboardAwareView from "../components/CustomKeyboardAwareView"
-import { KeyboardTrackingView } from "react-native-keyboard-tracking-view"
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
-import KeyboardSpacer from "react-native-keyboard-spacer"
+import { ScrollView, Platform, View, FlatList } from "react-native"
+import KeyboardSpacer from "../components/KeyboardSpacer"
+import MessageList from "../components/MessageList"
 
-import { InvertibleFlatList } from "react-native-invertible-flatlist"
-import { BlurView, VibrancyView } from "react-native-blur"
+import { Events, animateScroll, scroller, scrollSpy } from "react-scroll"
 
 class Chat extends React.Component {
-  renderMessage(msg) {
-    return <Text>{JSON.stringify(msg)}</Text>
+  componentDidMount() {
+    console.log("MOUNTING CHAT")
+    this.updateReadPosition()
+    this.updateFocus()
+
+    Events.scrollEvent.register("begin", function(to, element) {
+      console.log("begin", arguments)
+    })
+
+    Events.scrollEvent.register("end", function(to, element) {
+      console.log("end", arguments)
+    })
+
+    scrollSpy.update()
+
+    // this.scrollToBottom()
+  }
+
+  componentWillUnmount() {
+    Events.scrollEvent.remove("begin")
+    Events.scrollEvent.remove("end")
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { props } = this
+
+    this.scrollToBottom()
+
+    if (props.messages.length !== nextProps.messages.length) {
+      // SCROLL TO BOTTOM WHEN LENGTH CHANGES
+      // CONDITIONS HERE TO STOP SCROLL, LIKE IF USER IS NOT CURRENTLY SCROLLING AT THE BOTTOM
+      this.scrollToBottom()
+    }
+
+    // UPDATE SCROLL IF READ POSITION CHANGED
+  }
+
+  @bind
+  scrollToBottom() {
+    scroller.scrollTo("messageListEnd", {
+      duration: 1100,
+      // delay: 100,
+      smooth: true,
+      containerId: "messageList",
+    })
   }
 
   keyExtractor(msg) {
@@ -53,110 +85,27 @@ class Chat extends React.Component {
     console.log(response)
   }
 
-  componentDidMount() {
-    console.log("MOUNTING CHAT")
-    this.updateReadPosition()
-    this.scrollView.scrollToEnd()
-    this.updateFocus()
-  }
-
   @bind
   updateFocus() {
     console.log("updating focus to textbox")
     this.textInput.focus()
   }
 
-  @bind
-  scrollToEnd() {
-    this.scrollView.scrollToEnd()
-    // this.scrollView.scrollTop = this.scrollView.scrollHeight
-    // TODO: Fix this scroll bullshit
-    // this.endComp.scrollIntoView({ block: "end", inline: "nearest" })
-  }
-
-  state = {
-    selectedMessages: [],
-  }
-
-  @bind
-  addSelectedMessage(id) {
-    const { messages } = this.props
-    const { selectedMessages } = this.state
-    const message = messages.find(msg => msg.id === id)
-
-    this.setState(state => ({
-      selectedMessages: [...selectedMessages, message],
-    }))
-  }
-
-  removeSelectedMessage(id) {
-    // TODO
-  }
-
-  clearSelectedMessages() {
-    this.setState({ selectedMessages: [] })
-  }
-
   render() {
     const { messages, foundChat, match, currentUser } = this.props
     const { params: { chat } } = match
-    const { selectedMessages } = this.state
-
-    const flippedMessages = messages.reverse()
-    console.log("FLIPPED MESAGES")
-    console.log(flippedMessages)
 
     return (
       <OuterContainer onFocus={this.updateReadPosition}>
         <Header user={currentUser} backText="Back" title={`#${chat}`} light />
         <View style={{ flex: 1 }}>
-          <ScrollView
-            className="chatScroll"
-            ref={view => {
-              this.scrollView = view
-            }}
-            contentContainerStyle={{
-              flex: 1,
-              marginTop: 115,
-              position: "relative",
-              paddingBottom: 70,
-            }}
-            automaticallyAdjustContentInsets={false}
-            keyboardDismissMode="on-drag"
-          >
-            {/* TODO: Seperate list rendering entirely on web. Too complicated to abstract*/}
-            <FlatList
-              inverted
-              keyExtractor={item => item.id}
-              data={flippedMessages}
-              renderItem={({ item, index }) => (
-                <Message
-                  id={item.id}
-                  style={item.style}
-                  content={item.content}
-                  user={item.user}
-                  prev={
-                    index >= flippedMessages.length - 1
-                      ? {}
-                      : flippedMessages[index + 1]
-                  }
-                  currentUser={currentUser}
-                  readPositions={item.readPositions}
-                  addSelectedMessage={this.addSelectedMessage}
-                  isSelected={
-                    console.log(item) &&
-                    selectedMessages.find(sm => sm.id === msg.id) !== undefined
-                  }
-                />
-              )}
-            />
-          </ScrollView>
+          <MessageList messages={messages} currentUser={currentUser} />
           <ChatInputArea
             innerRef={input => {
               this.textInput = input
             }}
             chatId={foundChat.id}
-            scrollToEnd={this.scrollToEnd}
+            scrollToBottom={this.scrollToBottom}
             updateFocus={this.updateFocus}
           />
         </View>

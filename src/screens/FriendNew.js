@@ -17,7 +17,9 @@ class FriendNew extends Component {
   async onPress({ message, fromUserId, toUserId }) {
     const req = await mutate(
       `mutation($message: String, $fromUserId: ID!, $toUserId: ID!) {
-        createFriendRequest(message: $message, fromUserId: $fromUserId, toUserId: $toUserId)
+        createFriendRequest(message: $message, fromUserId: $fromUserId, toUserId: $toUserId) {
+          id
+        }
       }`,
       { message, fromUserId, toUserId }
     )

@@ -16,6 +16,10 @@ const iconFontStyles = `@font-face {
   position: absolute;
 }
 
+body {
+  overflow: hidden;
+}
+
 `
 
 // Create stylesheet

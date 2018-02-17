@@ -39,10 +39,10 @@ const Inner = styled.View`
 `
 
 const Opacity = styled.TouchableOpacity`
-  padding: ${({ small }) => (small ? 10 : 15)}px 15px;
+  padding: ${({ small }) => (small ? 10 : 15)}px 20px;
   background-color: ${({ small }) => styles.colors.grey[small ? 100 : 200]};
   overflow: hidden;
-  border-radius: ${({ small }) => (small ? 20 : 10)}px;
+  border-radius: ${({ small }) => (small ? 20 : 50)}px;
   align-items: center;
   justify-content: center;
 `

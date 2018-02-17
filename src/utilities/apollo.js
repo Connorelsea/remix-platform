@@ -24,7 +24,9 @@ const errorLink = onError(props => {
 })
 
 const localUrl = "localhost:8080" // "68.106.160.235:8080" // "localhost:8080"
-const useLocal = true
+let useLocal = true
+
+if (process.env.NODE_ENV === "production") useLocal = false
 
 const httpLink = useLocal
   ? createHttpLink({

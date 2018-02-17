@@ -5,10 +5,10 @@ import Spacing from "../components/Spacing"
 import { bind } from "decko"
 
 import Input from "./Input"
-import Button from "./Button"
 import { mutate } from "../utilities/gql_util"
-import { BlurView, VibrancyView } from "react-native-blur"
 import { View } from "react-native"
+import VibrancyView from "./VibrancyView"
+import Text from "./Text"
 
 class ChatInputArea extends Component {
   state = {
@@ -23,7 +23,7 @@ class ChatInputArea extends Component {
   @bind
   onPressSend() {
     const { value } = this.state
-    const { chatId, scrollToEnd, updateFocus } = this.props
+    const { chatId, scrollToBottom, updateFocus } = this.props
 
     this.setState({
       value: "",
@@ -42,7 +42,8 @@ class ChatInputArea extends Component {
         }
       }
     `).then(() => {
-      scrollToEnd()
+      console.log("SCROLLING TO BOTTOM")
+      scrollToBottom()
       updateFocus()
     })
   }
@@ -50,6 +51,7 @@ class ChatInputArea extends Component {
   render() {
     const { value } = this.state
     const { innerRef } = this.props
+
     return [
       <VibrancyView
         blurType="light"
@@ -58,7 +60,7 @@ class ChatInputArea extends Component {
           position: "absolute",
           bottom: 0,
           width: "100%",
-          height: 70,
+          height: 65,
         }}
         key="vibrancy"
       />,
@@ -70,9 +72,10 @@ class ChatInputArea extends Component {
           bottom: 0,
           width: "100%",
           padding: 10,
+          background: "transparent",
         }}
       >
-        <Input
+        <ChatInput
           value={value}
           placeholder="Message"
           onChangeText={this.onChangeText}
@@ -80,10 +83,33 @@ class ChatInputArea extends Component {
           innerRef={innerRef}
         />
         <Spacing size={10} />
-        <Button title="Send" onPress={this.onPressSend} />
+        <Button onPress={this.onPressSend}>
+          <Text tier="body">Send</Text>
+        </Button>
       </View>,
     ]
   }
 }
 
 export default ChatInputArea
+
+const ChatInput = styled.TextInput`
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 100px;
+  margin: 0px;
+  padding: 6px 15px;
+  font-size: 16px;
+  flex: 1;
+  -webkit-backdrop-filter: blur(60px);
+  background-color: rgba(255, 255, 255, 0.7);
+  outline: none;
+`
+
+const Button = styled.TouchableOpacity`
+  padding: 14px 15px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  -webkit-backdrop-filter: blur(60px);
+  background-color: rgba(255, 255, 255, 0.8);
+`
