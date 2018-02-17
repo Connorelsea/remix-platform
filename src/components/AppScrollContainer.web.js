@@ -1,9 +1,7 @@
 import React, { Component } from "react"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import Header from "./Header"
-import { ScrollView } from "react-native"
 import styles from "../utilities/styles"
-import { Platform } from "react-native"
 import Spacing from "./Spacing"
 
 export default class AppScrollContainer extends Component {
@@ -17,20 +15,35 @@ export default class AppScrollContainer extends Component {
           title={this.props.title || "Remix"}
         />
         <Spacing size={120} />
-        <ScrollView
-          contentContainerStyle={{ padding: 20 }}
-          ref={scroll => {
-            this.scrollView = scroll
-          }}
-        >
-          {this.props.children}
-        </ScrollView>
+        <PaddingContainer>
+          <Scroll>{this.props.children}</Scroll>
+        </PaddingContainer>
       </Container>
     )
   }
 }
 
-const Container = styled.View`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   background-color: ${styles.colors.grey[100]};
+  height: 100vh;
+  width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+`
+
+const PaddingContainer = styled.div`
+  padding: 25px;
+  align-self: center;
+`
+
+const Scroll = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: 1000px;
+  flex-direction: column;
+  align-self: center;
 `
