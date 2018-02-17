@@ -6,7 +6,7 @@ import Spacing from "./Spacing"
 
 export default class AppScrollContainer extends Component {
   render() {
-    const { user } = this.props
+    const { user, fullwidth = false } = this.props
     return (
       <Container>
         <Header
@@ -15,9 +15,9 @@ export default class AppScrollContainer extends Component {
           title={this.props.title || "Remix"}
         />
         <Spacing size={120} />
-        <PaddingContainer>
-          <Scroll>{this.props.children}</Scroll>
-        </PaddingContainer>
+        <Scroll fullwidth={fullwidth}>
+          <PaddingContainer>{this.props.children}</PaddingContainer>
+        </Scroll>
       </Container>
     )
   }
@@ -36,14 +36,14 @@ const Container = styled.div`
 
 const PaddingContainer = styled.div`
   padding: 25px;
-  align-self: center;
+  width: 100%;
 `
 
 const Scroll = styled.div`
   display: flex;
   flex: 1;
   width: 100%;
-  max-width: 1000px;
+  ${props => (props.fullwidth ? "max-width: 1000px" : "")};
   flex-direction: column;
   align-self: center;
 `

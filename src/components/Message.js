@@ -35,9 +35,7 @@ class Message extends Component {
           </Text>
         </Bubble>
       )
-    }
-
-    if (type === "remix/spotify/track") {
+    } else if (type === "remix/spotify/track") {
       if (small) {
         return (
           <Bubble
@@ -61,6 +59,38 @@ class Message extends Component {
           <iframe
             title="Spotify Track"
             src={`https://open.spotify.com/embed/track/${data.id}`}
+            width="300"
+            height="380"
+            frameborder="0"
+            allowtransparency="true"
+          />
+        </FrameContainer>
+      )
+    } else if (type === "remix/spotify/album") {
+      //https://open.spotify.com/embed/album/1BzMONuUlgUnqOrg2aQeAY
+      if (small) {
+        return (
+          <Bubble
+            color={color}
+            small={small}
+            opacity={opacity}
+            left={isCurrentUser ? undefined : offset}
+            right={isCurrentUser ? offset : undefined}
+          >
+            <Icon name="music" size={20} color={"white"} />
+            <Spacing size={5} />
+            <Text tier="body" color={textColor} small={small}>
+              Spotify Album
+            </Text>
+          </Bubble>
+        )
+      }
+
+      return (
+        <FrameContainer>
+          <iframe
+            title="Spotify Track"
+            src={`https://open.spotify.com/embed/album/${data.id}`}
             width="300"
             height="380"
             frameborder="0"
