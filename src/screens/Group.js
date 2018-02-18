@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 import styles from "../utilities/styles"
 import User from "../ducks/user"
 import AppScrollContainer from "../components/AppScrollContainer"
-import Text from "../components/Text"
+import Text, { EditableText } from "../components/Text"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"
 import Button from "../components/Button"
@@ -28,7 +28,7 @@ class Group extends Component {
 
     if (addingChat) {
       this.setState({
-        addingChat: false
+        addingChat: false,
       })
     } else {
       this.setState({
@@ -39,7 +39,13 @@ class Group extends Component {
 
   @bind
   onChangeText(text) {
+    console.log("CHANG ETTEXT ", text)
     this.setState({ chatNameText: text })
+  }
+
+  @bind
+  onChangeDescription(text) {
+    this.setState({ chatDescriptionText: text })
   }
 
   @bind
@@ -57,10 +63,16 @@ class Group extends Component {
           inGroupId: $inGroupId
         ) {
           id
+          name
+          description
         }
       }`,
       { name, description, inGroupId: this.props.group.id }
     )
+
+    console.log(req)
+
+    this.props.addChat(req.data.createChat, this.props.group.id)
 
     this.setState({
       addingChat: false,
@@ -90,7 +102,13 @@ class Group extends Component {
 
     return (
       <AppScrollContainer title={name}>
-        <Text tier="subtitle">Chats</Text>
+        <ActionContainer>
+          <Text tier="subtitle">Chats</Text>
+          <Spacing size={10} />
+          <SmallButton>
+            <Text tier="body">Edit</Text>
+          </SmallButton>
+        </ActionContainer>
         <Spacing size={10} />
 
         <ChatList>
@@ -105,11 +123,19 @@ class Group extends Component {
 
         {addingChat ? (
           [
-            <Input
-              placeholder="Chat Name"
-              key="chat_name"
-              onChangeText={this.onChangeText}
-            />,
+            <ChatContainer>
+              <EditableText
+                tier="requestTitle"
+                originalText="chat"
+                onTextChange={this.onChangeText}
+              />
+              <Spacing size={5} />
+              <EditableText
+                tier="requestSubtitle"
+                originalText="chat"
+                onTextChange={this.onChangeDescription}
+              />
+            </ChatContainer>,
             <Spacing size={10} />,
             <ActionContainer>
               <Button title="Cancel" onPress={this.pressAddChat} />
@@ -132,6 +158,7 @@ function mapDispatchToProps(dispatch) {
     },
     loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
     removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
+    addChat: (chat, groupId) => dispatch(User.creators.addChat(chat, groupId)),
   }
 }
 
@@ -149,17 +176,20 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Group)
 
-const Chat = ({ name, onChatPress }) => (
+const Chat = ({ name, description, onChatPress }) => (
   <ChatContainer onPress={onChatPress}>
-    <Text tier="body">{name}</Text>
+    <Text tier="requestTitle">{name}</Text>
+    <Spacing size={5} />
+    <Text tier="requestSubtitle">{description}</Text>
   </ChatContainer>
 )
 
 const ChatContainer = styled.TouchableOpacity`
   background-color: white;
-  border-radius: 50px;
+  border-radius: 8px;
   margin-bottom: 15px;
   padding: 15px 20px;
+  align-items: flex-start;
 `
 
 const ChatList = styled.View``
@@ -167,3 +197,5 @@ const ChatList = styled.View``
 const ActionContainer = styled.View`
   flex-direction: row;
 `
+
+const SmallButton = styled.TouchableOpacity``

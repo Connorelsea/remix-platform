@@ -96,7 +96,13 @@ export default new Duck({
         const { chat, groupId } = action
         let groupIndex = state.groups.findIndex(group => group.id === groupId)
         let groupFound = state.groups[groupIndex]
-        let groups = state.splice(groupIndex, 1)
+
+        console.log("GROUP FOUND", groupFound)
+
+        let groups = [...state.groups]
+        groups.splice(groupIndex, 1)
+
+        console.log("GROUPsss FOUND", groups)
         let newGroup = {
           ...groupFound,
           chats: [...groupFound.chats, chat],
@@ -512,6 +518,7 @@ export default new Duck({
       addFriendRequests,
       loadInitialUser,
       addGroups,
+      addChat,
       addMessages,
       removeFriendRequest,
       logout,

@@ -76,7 +76,6 @@ class App extends React.Component {
     return (
       <DesktopContainer>
         <DesktopColumn width="25%">
-          <Route path="/" component={Dashboard} />
           <Route
             exact
             path="/new/friend"
@@ -90,6 +89,7 @@ class App extends React.Component {
             key="new_group_create"
             component={GroupCreate}
           />
+          <Route path="/" component={Dashboard} />
         </DesktopColumn>
         <DesktopColumn width="20%">
           <Route path="/+:group/" key="group_show" component={Group} />

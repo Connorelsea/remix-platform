@@ -1,5 +1,7 @@
+import React from "react"
 import styled from "styled-components"
 import styles from "../utilities/styles"
+import { bind } from "decko"
 
 const tiers = {
   title: {
@@ -39,7 +41,7 @@ const tiers = {
     color: styles.colors.grey[500],
   },
   emphasisSubtitle: {
-    size: 15,
+    size: 16,
     weight: 300,
     // TODO
   },
@@ -77,4 +79,54 @@ export default styled.p`
   ${({ opacity }) => opacity && `opacity: ${opacity}`};
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+`
+
+export const EditableText = class EditableText extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      text: this.props.originalText,
+    }
+  }
+
+  @bind
+  onChange(event) {
+    this.setState({
+      text: event.target.value,
+    })
+
+    console.log("ON CHANGE", event.target.value)
+
+    this.props.onTextChange(event.target.value)
+  }
+
+  render() {
+    const { tier } = this.props
+    const { text } = this.state
+
+    return (
+      <EditableTextInput value={text} tier={tier} onChange={this.onChange} />
+    )
+  }
+}
+
+const EditableTextInput = styled.input`
+  font-size: ${({ tier, small }) => tiers[tier].size - (small ? 2 : 0)}px;
+  font-weight: ${({ tier }) => tiers[tier].weight || 500};
+  letter-spacing: ${({ tier }) => tiers[tier].spacing || 0};
+  color: ${({ tier, color }) => color || tiers[tier].color || "black"};
+  margin: 0;
+  padding: 0;
+  ${({ center }) => center && "text-align: center"};
+  ${({ opacity }) => opacity && `opacity: ${opacity}`};
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  outline: none;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+  border-bottom-color: ${styles.colors.grey[300]};
+  padding-bottom: 3px;
 `
