@@ -123,7 +123,7 @@ class Group extends Component {
 
         {addingChat ? (
           [
-            <ChatContainer>
+            <FakeChatContainer>
               <EditableText
                 tier="requestTitle"
                 originalText="chat"
@@ -135,7 +135,7 @@ class Group extends Component {
                 originalText="chat"
                 onTextChange={this.onChangeDescription}
               />
-            </ChatContainer>,
+            </FakeChatContainer>,
             <Spacing size={10} />,
             <ActionContainer>
               <Button title="Cancel" onPress={this.pressAddChat} />
@@ -185,6 +185,14 @@ const Chat = ({ name, description, onChatPress }) => (
 )
 
 const ChatContainer = styled.TouchableOpacity`
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  align-items: flex-start;
+`
+
+const FakeChatContainer = styled.View`
   background-color: white;
   border-radius: 8px;
   margin-bottom: 15px;

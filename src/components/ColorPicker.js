@@ -76,6 +76,8 @@ const Container = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  max-width: 540px;
+  align-self: center;
 `
 
 const colorSize = 90

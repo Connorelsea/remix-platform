@@ -37,15 +37,23 @@ const Container = styled.div`
 const PaddingContainer = styled.div`
   padding: 25px;
   width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  @media (min-width: 999px) {
+    padding: 0px;
+    padding-top: 25px;
+  }
 `
 
 const Scroll = styled.div`
-  display: flex;
-  flex: 1;
   width: 100%;
-  ${props => (props.fullwidth ? "max-width: 1000px" : "")};
+  display: flex;
   flex-direction: column;
+  flex: 1;
   align-self: center;
+  ${props => (!props.fullwidth ? "max-width: 1000px" : "")};
 
   ::-webkit-scrollbar {
     width: 5px;

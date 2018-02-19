@@ -2,13 +2,15 @@ import React, { Component } from "react"
 import styled from "styled-components/native"
 import Button from "../components/Button"
 import AppScrollContainer from "../components/AppScrollContainer"
-import TextInput from "../components/TextInput"
+import Input from "../components/Input"
 import { mutate } from "../utilities/gql_util"
 import { bind } from "decko"
 import { set } from "../utilities/storage"
 import { withRouter } from "react-router"
 import { connect } from "react-redux"
 import User from "../ducks/user"
+import { View } from "react-native"
+import Spacing from "../components/Spacing"
 
 class UserLogin extends Component {
   attemptEmailLogin(email, password) {
@@ -74,20 +76,25 @@ class UserLogin extends Component {
   render() {
     return (
       <AppScrollContainer title="Login">
-        <Text>
-          If you have your password, you can log in with your email address or
-          your phone number.
-        </Text>
-        <TextInput
-          placeholder="Email or Phone Number"
-          onChangeText={this.onChangeCredential}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          onChangeText={this.onChangePassword}
-        />
-        <Button onPress={this.onLoginPress} title="Login" />
+        <View>
+          <Text>
+            If you have your password, you can log in with your email address or
+            your phone number.
+          </Text>
+          <Spacing size={15} />
+          <Input
+            placeholder="Email or Phone Number"
+            onChangeText={this.onChangeCredential}
+          />
+          <Spacing size={15} />
+          <Input
+            placeholder="Password"
+            secureTextEntry
+            onChangeText={this.onChangePassword}
+          />
+          <Spacing size={15} />
+          <Button onPress={this.onLoginPress} title="Login" />
+        </View>
       </AppScrollContainer>
     )
   }

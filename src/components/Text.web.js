@@ -20,7 +20,7 @@ const tiers = {
     size: 16,
     weight: 500,
     spacing: 0,
-    color: styles.colors.grey[400],
+    color: styles.colors.grey[500],
   },
   body: {
     size: 16,
@@ -33,6 +33,12 @@ const tiers = {
     weight: 500,
     spacing: -0.2,
     color: styles.colors.grey[600],
+  },
+  label: {
+    size: 15,
+    weight: 500,
+    spacing: 0,
+    color: styles.colors.grey[400],
   },
   emphasis: {
     size: 17,

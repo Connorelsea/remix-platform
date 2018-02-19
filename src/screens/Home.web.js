@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import AppScrollContainer from "../components/AppScrollContainer"
 import Button from "../components/Button"
 import Spacing from "../components/Spacing"
 import styled from "styled-components"
@@ -29,35 +28,38 @@ export default class Home extends Component {
         <Bar color="white">
           <InnerContainer>
             <FeatureContainer>
-              <Text tier="thintitle">Group Chats</Text>
+              <Text tier="thintitle">Groups</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[400]}>
-                Create groups with your close friends, explore new topic-based
-                groups, or find local groups.
+              <Text tier="largebody" color={styles.colors.grey[500]}>
+                Create a group for your close friends, a discussion board open
+                to the public, or a study group for a hard course - the
+                possibilities are endless.
               </Text>
             </FeatureContainer>
             <FeatureContainer>
-              <Text tier="thintitle">Personal Profiles</Text>
+              <Text tier="thintitle">Unique Profiles</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[400]}>
-                Express yourself by decorating your profile. Add songs,
+              <Text tier="largebody" color={styles.colors.grey[500]}>
+                Express yourself by decorating your profile - add songs,
                 pictures, or text to make your profile unique.
               </Text>
             </FeatureContainer>
             <FeatureContainer>
-              <Text tier="thintitle">Discover Popular Content</Text>
+              <Text tier="thintitle">Made for You</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[400]}>
-                Explore popular content based, react to messages with emojis.
-                Fair algorithms, chronological order, and no ads.
+              <Text tier="largebody" color={styles.colors.grey[500]}>
+                We believe in fair software. Fast, no bloat, no ads, no unfair
+                algorithms, no selling our members' data. Remix is a social
+                network on your side.
               </Text>
             </FeatureContainer>
             <FeatureContainer>
-              <Text tier="thintitle">Personal Groups</Text>
+              <Text tier="thintitle">Private Messages</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[400]}>
-                Groups can decorate their profiles and divide conversations into
-                topic-based chats that can be made public or private.
+              <Text tier="largebody" color={styles.colors.grey[500]}>
+                Directly message your close friends and divide conversations
+                into named chats for different topics, such as #music, #random,
+                #gaming, etc.
               </Text>
             </FeatureContainer>
           </InnerContainer>

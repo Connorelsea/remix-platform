@@ -8,4 +8,5 @@ export default styled.View`
   shadow-radius: 22px;
   shadow-offset: 0px 10px;
   shadow-opacity: 0.09;
+  width: 100%;
 `

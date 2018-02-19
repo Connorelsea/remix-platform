@@ -33,4 +33,5 @@ const StyledInput = styled.TextInput`
   font-size: 16px;
   background-color: white;
   flex: 1;
+  width: 100%;
 `
