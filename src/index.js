@@ -1,6 +1,7 @@
 import React from "react"
 import ReactNative from "react-native"
-import AppContainer from "./AppContainer"
+import { AppContainer } from "react-hot-loader"
+import App from "./AppContainer"
 
 import iconFont from "react-native-vector-icons/Fonts/Feather.ttf"
 const iconFontStyles = `@font-face {
@@ -36,4 +37,17 @@ if (process.env.NODE_ENV !== "production") {
 
 console.log("RENDERING APP CONTAINER")
 
-ReactNative.render(<AppContainer />, document.getElementById("root"))
+const render = Component => {
+  ReactNative.render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    document.getElementById("root")
+  )
+}
+
+render(App)
+
+// if (module.hot) {
+//   module.hot.accept("./AppContainer", () => render(App))
+// }

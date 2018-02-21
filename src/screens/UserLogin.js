@@ -5,12 +5,13 @@ import AppScrollContainer from "../components/AppScrollContainer"
 import Input from "../components/Input"
 import { mutate } from "../utilities/gql_util"
 import { bind } from "decko"
-import { set } from "../utilities/storage"
+import { set, get } from "../utilities/storage"
 import { withRouter } from "react-router"
 import { connect } from "react-redux"
 import User from "../ducks/user"
 import { View } from "react-native"
 import Spacing from "../components/Spacing"
+import Text from "../components/Text"
 
 class UserLogin extends Component {
   attemptEmailLogin(email, password) {
@@ -73,26 +74,70 @@ class UserLogin extends Component {
     this.attemptEmailLogin(loginCredential, loginPassword)
   }
 
+  @bind
+  async checkPreviousEmail() {
+    const val = await get("previousEmail")
+    if (val || val.trim().length < 1)
+      this.setState({
+        previousEmail: val,
+        loginCredential: val,
+      })
+  }
+
+  @bind
+  clearPreviousEmail() {
+    set("previousEmail", "")
+    this.setState({
+      previousEmail: undefined,
+      loginCredential: "",
+    })
+  }
+
+  componentDidMount() {
+    this.checkPreviousEmail()
+  }
+
   render() {
+    const { previousEmail } = this.state
+
     return (
       <AppScrollContainer title="Login">
         <View>
-          <Text>
-            If you have your password, you can log in with your email address or
-            your phone number.
+          <Text tier="body">
+            Login to Remix using your email address and password.
           </Text>
           <Spacing size={15} />
+          <Text tier="label">Email</Text>
+          <Spacing size={5} />
           <Input
-            placeholder="Email or Phone Number"
+            placeholder="Email Address"
+            value={this.state.loginCredential}
             onChangeText={this.onChangeCredential}
           />
+          {previousEmail
+            ? [
+                <Spacing size={10} />,
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text tier="body">Is this not you?</Text>
+                  <Spacing size={10} />
+                  <Button
+                    small
+                    onPress={this.clearPreviousEmail}
+                    title="Use a different email"
+                  />
+                </View>,
+              ]
+            : undefined}
           <Spacing size={15} />
+          <Text tier="label">Password</Text>
+          <Spacing size={5} />
           <Input
             placeholder="Password"
             secureTextEntry
+            value={this.state.loginPassword}
             onChangeText={this.onChangePassword}
           />
-          <Spacing size={15} />
+          <Spacing size={30} />
           <Button onPress={this.onLoginPress} title="Login" />
         </View>
       </AppScrollContainer>
@@ -119,8 +164,3 @@ function mapStateToProps(state, props) {
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(UserLogin)
 )
-
-const Text = styled.Text`
-  font-size: 17px;
-  margin-bottom: 12px;
-`

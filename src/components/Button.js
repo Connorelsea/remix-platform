@@ -12,15 +12,25 @@ class Button extends Component {
   }
 
   render() {
-    const { onPress, to, title, icon, small } = this.props
+    const { onPress, to, title, icon, small, disabled } = this.props
 
     // const clonedIcon = React.cloneElement(icon, { key: "icon", ...icon })
 
+    let props = {}
+
+    if (disabled)
+      props = {
+        small,
+        disabled: true,
+      }
+    else
+      props = {
+        onPress: to === undefined ? onPress : this.onLinkPress,
+        small,
+      }
+
     return (
-      <Opacity
-        small={small}
-        onPress={to === undefined ? onPress : this.onLinkPress}
-      >
+      <Opacity {...props}>
         <Inner>
           <Text small={small}>{title}</Text>
           {icon && [<Spacing key="spacing" size={10} />, icon]}
@@ -39,17 +49,19 @@ const Inner = styled.View`
 `
 
 const Opacity = styled.TouchableOpacity`
-  padding: ${({ small }) => (small ? 10 : 15)}px 20px;
-  background-color: ${({ small }) => styles.colors.grey[small ? 100 : 200]};
+  padding: ${({ small }) => (small ? "8px 15px" : "15px 20px")};
+  background-color: ${({ disabled }) =>
+    styles.colors.grey[disabled ? 400 : 200]};
   overflow: hidden;
   border-radius: ${({ small }) => (small ? 20 : 50)}px;
   align-items: center;
   justify-content: center;
+  ${props => (props.disabled ? "cursor: not-allowed" : undefined)};
 `
 
 const Text = styled.Text`
   color: ${props =>
-    props.small ? styles.colors.grey[500] : styles.colors.grey[600]};
+    props.small ? styles.colors.grey[600] : styles.colors.grey[600]};
   font-weight: ${props => (props.small ? 500 : 600)};
   font-size: ${props => (props.small ? 14 : 17)}px;
   letter-spacing: -0.3px;

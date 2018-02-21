@@ -1,19 +1,18 @@
-import React, { Component } from "react"
+import React from "react"
 import { connect } from "react-redux"
 import { bind } from "decko"
 import styled from "styled-components/native"
 import { mutate } from "../utilities/gql_util"
-import Text from "../components/Text"
 import ChatInputArea from "../components/ChatInputArea"
 import User from "../ducks/user"
 import { withRouter } from "react-router"
 import Header from "../components/Header"
 
-import { ScrollView, Platform, View, FlatList } from "react-native"
+import { Platform, View } from "react-native"
 import KeyboardSpacer from "../components/KeyboardSpacer"
 import MessageList from "../components/MessageList"
 
-import { Events, animateScroll, scroller, scrollSpy } from "react-scroll"
+import { Events, scroller, scrollSpy } from "react-scroll"
 
 class Chat extends React.Component {
   componentDidMount() {

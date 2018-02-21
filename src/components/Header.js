@@ -21,19 +21,29 @@ class Header extends Component {
     this.props.history.push("/new/friend")
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return false
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.vibrancyStyle = {
+      position: "absolute",
+      bottom: 0,
+      width: "100%",
+      height: 200,
+    }
+  }
+
   render() {
-    const { backText, title, user, light } = this.props
+    const { backText, title, light } = this.props
     return (
       <Bar>
         <VibrancyView
           blurType="light"
           blurAmount={20}
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            height: 200,
-          }}
+          style={this.vibrancyStyle}
           color={light ? "white" : styles.colors.grey[100]}
           key="vibrancy"
         />

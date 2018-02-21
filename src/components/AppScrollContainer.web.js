@@ -42,8 +42,7 @@ const PaddingContainer = styled.div`
   flex-direction: column;
   flex: 1;
   @media (min-width: 999px) {
-    padding: 0px;
-    padding-top: 25px;
+    padding: 20px;
   }
 `
 

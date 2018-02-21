@@ -27,16 +27,19 @@ class ColorPicker extends Component {
       "#644F99",
     ],
     colors: [
-      "#D1D5DB",
-      "#FFCACA",
-      "#FF8383",
-      "#B42525",
-      "#FFC000",
-      "#72B925",
-      "#89C1FF",
-      "#0F72E0",
-      "#1D297F",
-      "#752F95",
+      "#3F3F3F", // black
+      "#D1D5DB", // grey
+      "#FFCACA", // light pink
+      "#FF8383", // salmon
+      "#B42525", // red
+      "#FFC195", // sand
+      "#FFC000", // yellow
+      "#36954B", // green
+      "#85BFFF", // light blue
+      "#0F72E0", // bright blue
+      "#182198", // navy
+      "#BC60CE", // light purple
+      "#751489", // deep purple
     ],
     selectedIndex: 0,
   }
@@ -47,6 +50,17 @@ class ColorPicker extends Component {
       this.setState({ selectedIndex: i })
       this.props.onColorChange(this.state.colors[i])
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.selectedIndex !== nextState.selectedIndex) {
+      console.log("UPDATING")
+      return true
+    }
+
+    console.log("NOT UPDATING")
+
+    return false
   }
 
   render() {
@@ -76,7 +90,8 @@ const Container = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 540px;
+  /* max-width: 540px; */
+  max-width: 1000px;
   align-self: center;
 `
 
@@ -91,7 +106,7 @@ const Color = styled.View`
   border: 7px solid
     ${({ isSelected }) =>
       isSelected ? styles.colors.grey[200] : styles.colors.grey[100]};
-  transition: border 0.5s;
+  /* transition: border 0.5s; */
 `
 
 const Text = styled.Text`

@@ -10,6 +10,8 @@ export default class Input extends Component {
       placeholder,
       onSubmitEditing,
       innerRef,
+      type,
+      secureTextEntry = false,
     } = this.props
 
     return (
@@ -20,6 +22,8 @@ export default class Input extends Component {
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         innerRef={innerRef}
+        type={type}
+        secureTextEntry={secureTextEntry}
       />
     )
   }

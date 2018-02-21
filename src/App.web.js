@@ -24,10 +24,6 @@ const Route = Routing.Route
 class App extends React.Component {
   @bind
   renderWithoutUser() {
-    // const Stack = require("react-router-native-stack").default
-
-    console.log("WITHOUT USER")
-
     return (
       <Switch>
         <Route exact path="/" component={Home} />
@@ -75,7 +71,7 @@ class App extends React.Component {
   renderDesktop() {
     return (
       <DesktopContainer>
-        <DesktopColumn width="25%">
+        <DesktopColumn width="26%">
           <Route
             exact
             path="/new/friend"

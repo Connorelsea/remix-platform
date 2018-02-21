@@ -4,8 +4,14 @@ import styles from "../utilities/styles"
 import { bind } from "decko"
 
 const tiers = {
+  error: {
+    size: 17,
+    weight: 700,
+    spacing: 0,
+    color: "red",
+  },
   title: {
-    size: 24,
+    size: 25,
     weight: 900,
     spacing: -0.8,
     color: styles.colors.grey[600],
@@ -39,6 +45,12 @@ const tiers = {
     weight: 500,
     spacing: 0,
     color: styles.colors.grey[400],
+  },
+  labelerror: {
+    size: 16,
+    weight: 600,
+    spacing: 0,
+    color: "red",
   },
   emphasis: {
     size: 17,

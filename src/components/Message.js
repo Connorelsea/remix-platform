@@ -6,10 +6,33 @@ import Spacing from "../components/Spacing"
 import fontColorContrast from "font-color-contrast"
 import Icon from "react-native-vector-icons/dist/Feather"
 import { Motion, spring } from "react-motion"
-import { View, TouchableOpacity, Switch } from "react-native"
+import { View, TouchableOpacity } from "react-native"
 import { bind } from "decko"
 
 class Message extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.user.color !== this.props.user.color) {
+      return true
+    }
+
+    if (nextProps.user.name !== this.props.user.name) {
+      return true
+    }
+
+    if (
+      nextProps.content.type === "remix/text" &&
+      nextProps.content.data.text !== this.props.content.data.text
+    ) {
+      return true
+    }
+
+    if (nextProps.readPositions !== this.props.readPositions) {
+      return true
+    }
+
+    return false
+  }
+
   @bind
   renderContent(type, data, style) {
     const { user: { id, name, color }, small, currentUser } = this.props

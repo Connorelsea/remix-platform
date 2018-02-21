@@ -64,6 +64,18 @@ const tiers = {
     spacing: 0,
     color: styles.colors.grey[300],
   },
+  label: {
+    size: 15,
+    weight: 500,
+    spacing: 0,
+    color: styles.colors.grey[400],
+  },
+  labelerror: {
+    size: 16,
+    weight: 600,
+    spacing: 0,
+    color: "red",
+  },
 }
 
 export default styled.Text`

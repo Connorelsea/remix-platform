@@ -34,6 +34,7 @@ module.exports = {
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
   entry: [
     // We ship a few polyfills by default:
+    "react-hot-loader/patch",
     "babel-polyfill",
     require.resolve("./polyfills"),
     // Include an alternative client for WebpackDevServer. A client's job is to
@@ -45,7 +46,7 @@ module.exports = {
     // to bring better experience for Create React App users. You can replace
     // the line below with these two lines if you prefer the stock client:
     // require.resolve('webpack-dev-server/client') + '?/',
-    // require.resolve('webpack/hot/dev-server'),
+    // require.resolve("webpack/hot/dev-server"),
     require.resolve("react-dev-utils/webpackHotDevClient"),
     // Finally, this is your app's code:
     paths.appIndexJs,
@@ -152,9 +153,10 @@ module.exports = {
               // directory for faster rebuilds.
               cacheDirectory: true,
               plugins: [
+                ["styled-components", { displayName: true, minify: false }],
+                "react-hot-loader/babel",
                 "transform-decorators-legacy",
                 "transform-class-properties",
-                "react-hot-loader/babel",
               ],
             },
           },
@@ -269,6 +271,9 @@ module.exports = {
     net: "empty",
     tls: "empty",
     child_process: "empty",
+  },
+  devServer: {
+    hot: true,
   },
   // Turn off performance hints during development because we don't do any
   // splitting or minification in interest of speed. These warnings become

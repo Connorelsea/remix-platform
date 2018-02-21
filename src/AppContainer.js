@@ -23,6 +23,4 @@ class Container extends React.Component {
   }
 }
 
-// export default hot(module)(Container)
-
-export default Container
+export default hot(module)(Container)

@@ -14,6 +14,7 @@ import { mutate } from "../utilities/gql_util"
 class Group extends Component {
   state = {
     addingChat: false,
+    containsWhitespace: false,
   }
 
   @bind
@@ -39,8 +40,10 @@ class Group extends Component {
 
   @bind
   onChangeText(text) {
-    console.log("CHANG ETTEXT ", text)
-    this.setState({ chatNameText: text })
+    this.setState({
+      containsWhitespace: text.includes(" "),
+      chatNameText: text,
+    })
   }
 
   @bind
@@ -82,7 +85,7 @@ class Group extends Component {
 
   render() {
     const { group } = this.props
-    const { addingChat } = this.state
+    const { addingChat, containsWhitespace } = this.state
     let {
       id,
       iconUrl,
@@ -105,11 +108,9 @@ class Group extends Component {
         <ActionContainer>
           <Text tier="subtitle">Chats</Text>
           <Spacing size={10} />
-          <SmallButton>
-            <Text tier="body">Edit</Text>
-          </SmallButton>
+          <Button small title="Edit" />
         </ActionContainer>
-        <Spacing size={10} />
+        <Spacing size={15} />
 
         <ChatList>
           {chats.map(chat => (
@@ -123,28 +124,44 @@ class Group extends Component {
 
         {addingChat ? (
           [
+            <Text tier="subtitle">New Chat</Text>,
+            <Spacing size={10} />,
             <FakeChatContainer>
               <EditableText
                 tier="requestTitle"
-                originalText="chat"
+                originalText="name"
                 onTextChange={this.onChangeText}
               />
               <Spacing size={5} />
               <EditableText
                 tier="requestSubtitle"
-                originalText="chat"
+                originalText="description"
                 onTextChange={this.onChangeDescription}
               />
             </FakeChatContainer>,
+            containsWhitespace
+              ? [
+                  <Spacing size={5} />,
+                  <Text tier="labelerror">
+                    Chat name cannot contain whitespace
+                  </Text>,
+                ]
+              : undefined,
             <Spacing size={10} />,
             <ActionContainer>
               <Button title="Cancel" onPress={this.pressAddChat} />
               <Spacing size={10} />
-              <Button title="Create" onPress={this.createChat} />
+              <Button
+                title="Create"
+                onPress={this.createChat}
+                disabled={containsWhitespace}
+              />
             </ActionContainer>,
           ]
         ) : (
-          <Button title="Add Chat" onPress={this.pressAddChat} />
+          <ActionContainer>
+            <Button title="Add Chat" onPress={this.pressAddChat} />
+          </ActionContainer>
         )}
       </AppScrollContainer>
     )
@@ -178,7 +195,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Group)
 
 const Chat = ({ name, description, onChatPress }) => (
   <ChatContainer onPress={onChatPress}>
-    <Text tier="requestTitle">{name}</Text>
+    <Text tier="requestTitle">#{name}</Text>
     <Spacing size={5} />
     <Text tier="requestSubtitle">{description}</Text>
   </ChatContainer>
@@ -204,6 +221,5 @@ const ChatList = styled.View``
 
 const ActionContainer = styled.View`
   flex-direction: row;
+  align-items: center;
 `
-
-const SmallButton = styled.TouchableOpacity``

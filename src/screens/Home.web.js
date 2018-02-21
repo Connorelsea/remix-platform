@@ -31,9 +31,9 @@ export default class Home extends Component {
               <Text tier="thintitle">Groups</Text>
               <Spacing size={10} />
               <Text tier="largebody" color={styles.colors.grey[500]}>
-                Create a group for your close friends, a discussion board open
-                to the public, or a study group for a hard course - the
-                possibilities are endless.
+                Create groups with friends, find public groups on interesting
+                topics, or discuss daily life privately with your closest
+                friends - the possibilities are endless.
               </Text>
             </FeatureContainer>
             <FeatureContainer>
@@ -48,9 +48,11 @@ export default class Home extends Component {
               <Text tier="thintitle">Made for You</Text>
               <Spacing size={10} />
               <Text tier="largebody" color={styles.colors.grey[500]}>
-                We believe in fair software. Fast, no bloat, no ads, no unfair
-                algorithms, no selling our members' data. Remix is a social
-                network on your side.
+                We are working to create software focused on highlighting real
+                discussions and meaningful human interactions without the
+                baggage of traditional social media. Remix is for chatting with
+                friends, loved ones, or interesting strangers - no invasive
+                advertisements, no spam-filled timelines, no FarmVille invites
               </Text>
             </FeatureContainer>
             <FeatureContainer>
