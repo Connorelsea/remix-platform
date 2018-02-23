@@ -5,10 +5,26 @@ import styles from "../utilities/styles"
 import Spacing from "./Spacing"
 
 export default class AppScrollContainer extends Component {
+  onScroll() {
+    console.log("ON SCROLL")
+
+    var el = document.getElementById("scroll")
+    var minPixel = el.offsetTop
+    var maxPixel = minPixel + el.scrollHeight
+    var value = document.body.scrollTop
+
+    // respect bounds of element
+    var percent = (value - minPixel) / (maxPixel - minPixel)
+    percent = Math.min(1, Math.max(percent, 0)) * 100
+
+    console.log(el.scrollHeight)
+    console.log(percent)
+  }
+
   render() {
     const { user, fullwidth = false } = this.props
     return (
-      <Container>
+      <Container onScroll={this.onScroll} id="scroll">
         <Header
           user={user}
           backText={this.props.backText || "Back"}

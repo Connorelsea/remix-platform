@@ -14,6 +14,7 @@ import Spacing from "../components/Spacing"
 import Text from "../components/Text"
 
 class UserLogin extends Component {
+  @bind
   attemptEmailLogin(email, password) {
     mutate(
       `
@@ -24,7 +25,13 @@ class UserLogin extends Component {
       }
     `,
       { email, password }
-    ).then(this.processLoginResponse)
+    )
+      .then(this.processLoginResponse)
+      .catch(err =>
+        this.setState({
+          error: err,
+        })
+      )
   }
 
   attemptPhoneLogin(phone_number, password) {
@@ -98,7 +105,7 @@ class UserLogin extends Component {
   }
 
   render() {
-    const { previousEmail } = this.state
+    const { previousEmail, error } = this.state
 
     return (
       <AppScrollContainer title="Login">
@@ -107,7 +114,7 @@ class UserLogin extends Component {
             Login to Remix using your email address and password.
           </Text>
           <Spacing size={15} />
-          <Text tier="label">Email</Text>
+          <Text tier="label">Email Address</Text>
           <Spacing size={5} />
           <Input
             placeholder="Email Address"
@@ -138,6 +145,12 @@ class UserLogin extends Component {
             onChangeText={this.onChangePassword}
           />
           <Spacing size={30} />
+          {error && [
+            <Text tier="error">There was an error logging in, try again.</Text>,
+            <Spacing size={10} />,
+            <Text tier="body">{error.message}</Text>,
+            <Spacing size={20} />,
+          ]}
           <Button onPress={this.onLoginPress} title="Login" />
         </View>
       </AppScrollContainer>

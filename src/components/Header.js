@@ -5,6 +5,7 @@ import { withRouter } from "react-router"
 import { bind } from "decko"
 import Spacing from "../components/Spacing"
 import VibrancyView from "./VibrancyView"
+import { Motion, spring } from "react-motion"
 
 import Icon from "react-native-vector-icons/dist/Feather"
 
@@ -22,7 +23,12 @@ class Header extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return false
+    if (nextState.large !== this.state.large) {
+      return true
+    }
+
+    return true
+    // return false
   }
 
   constructor(props) {
@@ -34,46 +40,74 @@ class Header extends Component {
       width: "100%",
       height: 200,
     }
+
+    // setTimeout(() => this.setState({ large: false }), 500)
+    // window.addEventListener(
+    //   "scroll",
+    //   function() {
+    //     console.log("SCROLLING", this.amountscrolled())
+    //     if (this.amountscrolled() > 10) {
+    //       if (this.state.large !== false) this.setState({ large: false })
+    //     } else {
+    //       if (this.state.large !== true) this.setState({ large: true })
+    //     }
+    //   },
+    //   false
+    // )
+  }
+
+  state = {
+    large: true,
+  }
+
+  amountscrolled() {
+    var el = document.getElementById("story_body")
+    var minPixel = el.offsetTop
+    var maxPixel = minPixel + el.scrollHeight
+    var value = document.body.scrollTop
+
+    // respect bounds of element
+    var percent = (value - minPixel) / (maxPixel - minPixel)
+    percent = Math.min(1, Math.max(percent, 0)) * 100
+    return percent
   }
 
   render() {
     const { backText, title, light } = this.props
+    const { large } = this.state
     return (
-      <Bar>
-        <VibrancyView
-          blurType="light"
-          blurAmount={20}
-          style={this.vibrancyStyle}
-          color={light ? "white" : styles.colors.grey[100]}
-          key="vibrancy"
-        />
-        <Container>
-          <Spacing
-            size={25}
-            // color={light ? "white" : styles.colors.grey[100]}
-            fullwidth={1}
-          />
-          <Upper light={light}>
-            {backText !== "remove" && (
-              <Back onPress={this.onBackPress}>
-                <Icon name="arrow-left" size={22} color={backColor} />
-                <Spacing size={5} />
-                <BackText>{backText || "Back"}</BackText>
-              </Back>
-            )}
-            <Title>{title || "Remix"}</Title>
-          </Upper>
-          {/* <Gradient
-          colors={
-            light
-              ? ["white", " rgba(255, 255,255,0)"]
-              : [styles.colors.grey[100], "rgba(248, 248, 248, 0)"]
-          }
-          size={25}
-        /> */}
-          <Spacing size={20} />
-        </Container>
-      </Bar>
+      <Motion style={{ x: spring(this.state.large ? 120 : 70) }}>
+        {({ x }) => (
+          <Bar height={x}>
+            <VibrancyView
+              blurType="light"
+              blurAmount={20}
+              height={x}
+              style={this.vibrancyStyle}
+              color={
+                !large || light
+                  ? "rgba(255, 255, 255, 0.8)"
+                  : "rgba(241, 240, 247, 0.7)"
+              }
+              key="vibrancy"
+            />
+            <Container>
+              <Spacing size={large ? 25 : 0} fullwidth={1} />
+              <Upper light={light} large={large}>
+                {backText !== "remove" && (
+                  <Back onPress={this.onBackPress}>
+                    <Icon name="arrow-left" size={22} color={backColor} />
+                    <Spacing size={5} />
+                    <BackText>{backText || "Back"}</BackText>
+                  </Back>
+                )}
+                {!large && <Spacing size={15} />}
+                <Title large={large}>{title || "Remix"}</Title>
+              </Upper>
+            </Container>
+          </Bar>
+        )}
+      </Motion>
     )
   }
 }
@@ -87,6 +121,7 @@ const Bar = styled.View`
   z-index: 9999;
   position: absolute;
   background-color: transparent;
+  height: ${props => props.height};
 `
 
 const Back = styled.TouchableOpacity`
@@ -101,8 +136,10 @@ const BackText = styled.Text`
 `
 
 const Upper = styled.View`
-  /* background-color: ${props =>
-    props.light ? "white" : styles.colors.grey[100]}; */
+  background-color: transparent;
+  padding-right: 25px;
+  padding-left: 25px;
+  ${props => (!props.large ? "flex-direction: row; align-items: center" : "")};
 `
 
 const Container = styled.View`
@@ -113,7 +150,7 @@ const Container = styled.View`
 
 const Title = styled.Text`
   font-weight: 900;
-  font-size: 40px;
+  font-size: ${props => (props.large ? 35 : 25)}px;
   letter-spacing: -0.5;
   color: black;
 `
