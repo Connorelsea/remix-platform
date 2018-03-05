@@ -15,44 +15,51 @@ import Text from "../components/Text"
 
 class UserLogin extends Component {
   @bind
-  attemptEmailLogin(email, password) {
+  attemptEmailLogin(email, password, deviceId) {
     mutate(
       `
-      mutation loginUserWithEmail($email: String!, $password: String!) {
-        loginUserWithEmail(email: $email, password: $password) {
-          id, token
+      mutation loginUserWithEmail(
+        $email: String!
+        $password: String!
+        $deviceId: ID!
+      ) {
+        loginUserWithEmail(
+          email: $email
+          password: $password
+          deviceId: $deviceId
+        ) {
+          id
+          userId
+          refreshToken
+          accessToken
         }
       }
     `,
-      { email, password }
+      { email, password, deviceId }
     )
       .then(this.processLoginResponse)
-      .catch(err =>
+      .catch(err => {
+        console.log("USER LOGIN ERROR ", err)
         this.setState({
           error: err,
         })
-      )
-  }
-
-  attemptPhoneLogin(phone_number, password) {
-    mutate(
-      `
-      mutation loginUserWithPhone($email: String!, $password: String!) {
-        loginUserWithPhone(email: $email, password: $password) {
-          id, token
-        }
-      }c
-    `,
-      { phone_number, password }
-    ).then(this.processLoginResponse)
+      })
   }
 
   @bind
   async processLoginResponse(response) {
-    const { data: { loginUserWithEmail: { id, token } } } = response
-    await set("token", token)
-    await set("userId", id)
-    this.props.loadInitialUser(id)
+    console.log("LOGIN RESPONSE", response)
+
+    const {
+      data: { loginUserWithEmail: { id, userId, refreshToken, accessToken } },
+    } = response
+
+    await set("accessToken", accessToken)
+    await set("refreshToken", refreshToken)
+    await set("userId", userId)
+    await set("deviceId", id)
+
+    this.props.loadInitialUser(userId)
     this.props.history.replace("/", "")
   }
 
@@ -73,12 +80,15 @@ class UserLogin extends Component {
   }
 
   @bind
-  onLoginPress() {
+  async onLoginPress() {
     const {
       loginCredential,
       loginPassword /* loginCredentialType */,
     } = this.state
-    this.attemptEmailLogin(loginCredential, loginPassword)
+
+    const deviceId = await get("deviceId")
+
+    this.attemptEmailLogin(loginCredential, loginPassword, deviceId)
   }
 
   @bind
@@ -148,7 +158,9 @@ class UserLogin extends Component {
           {error && [
             <Text tier="error">There was an error logging in, try again.</Text>,
             <Spacing size={10} />,
+            <Text tier="body">{error.name}</Text>,
             <Text tier="body">{error.message}</Text>,
+            <Text tier="body">{JSON.stringify(error, null, 2)}</Text>,
             <Spacing size={20} />,
           ]}
           <Button onPress={this.onLoginPress} title="Login" />

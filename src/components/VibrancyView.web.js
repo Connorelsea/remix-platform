@@ -16,7 +16,8 @@ export default props => (
       "background-color": props.color
         ? props.color
         : "rgba(255, 255, 255, 0.7)",
-      "box-shadow": "0px 7px 13px -4px rgba(0, 0, 0, 0.1)",
+      // "box-shadow": "0px 7px 13px -4px rgba(0, 0, 0, 0.1)",
+      transition: "background-color 0.3s",
     }}
   />
 )

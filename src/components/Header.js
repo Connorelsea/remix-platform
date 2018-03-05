@@ -22,15 +22,6 @@ class Header extends Component {
     this.props.history.push("/new/friend")
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.large !== this.state.large) {
-      return true
-    }
-
-    return true
-    // return false
-  }
-
   constructor(props) {
     super(props)
 
@@ -40,43 +31,16 @@ class Header extends Component {
       width: "100%",
       height: 200,
     }
-
-    // setTimeout(() => this.setState({ large: false }), 500)
-    // window.addEventListener(
-    //   "scroll",
-    //   function() {
-    //     console.log("SCROLLING", this.amountscrolled())
-    //     if (this.amountscrolled() > 10) {
-    //       if (this.state.large !== false) this.setState({ large: false })
-    //     } else {
-    //       if (this.state.large !== true) this.setState({ large: true })
-    //     }
-    //   },
-    //   false
-    // )
-  }
-
-  state = {
-    large: true,
-  }
-
-  amountscrolled() {
-    var el = document.getElementById("story_body")
-    var minPixel = el.offsetTop
-    var maxPixel = minPixel + el.scrollHeight
-    var value = document.body.scrollTop
-
-    // respect bounds of element
-    var percent = (value - minPixel) / (maxPixel - minPixel)
-    percent = Math.min(1, Math.max(percent, 0)) * 100
-    return percent
   }
 
   render() {
-    const { backText, title, light } = this.props
-    const { large } = this.state
+    const { backText, title, light, large } = this.props
     return (
-      <Motion style={{ x: spring(this.state.large ? 120 : 70) }}>
+      <Motion
+        style={{
+          x: spring(large ? 120 : 60),
+        }}
+      >
         {({ x }) => (
           <Bar height={x}>
             <VibrancyView

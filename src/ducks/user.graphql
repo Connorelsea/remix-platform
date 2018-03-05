@@ -1,7 +1,6 @@
 query initialUserQuery($id: ID!) {
   User(id: $id) {
     id
-    token
     name
     username
     color

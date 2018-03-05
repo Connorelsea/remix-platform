@@ -20,41 +20,58 @@ class UserLogin extends Component {
   @bind
   attemptCreateUser({
     email,
-    phone_number,
     username,
     password,
     name,
     description,
     color,
+    iconUrl,
   }) {
     mutate(
       `
       mutation createUser(
-        $email: String,
-        $phone_number: String,
-        $username: String,
-        $password: String,
-        $name: String,
-        $description: String,
-        $color: String,
+        $email: String
+        $username: String
+        $password: String
+        $name: String
+        $description: String
+        $color: String
+        $iconUrl: String
       ) {
         createUser(
-          email: $email,
-          phone_number: $phone_number,
-          username: $username,
-          password: $password,
-          name: $name,
-          description: $description,
+          email: $email
+          username: $username
+          password: $password
+          name: $name
+          description: $description
           color: $color
+          iconUrl: $iconUrl
         ) {
-          id, token
+          id
+          userId
+          refreshToken
+          accessToken
         }
+      }`,
+      {
+        email,
+        username,
+        password,
+        name,
+        description,
+        color,
+        iconUrl,
       }
-    `,
-      { email, phone_number, username, password, name, description, color }
     )
-      .then(() => {
+      .then(res => {
+        const { data: { createUser } } = res
+
         set("previousEmail", email)
+        set("userId", createUser.userId)
+        set("deviceId", createUser.id)
+        set("accessToken", createUser.accessToken)
+        set("refreshToken", createUser.refreshToken)
+
         this.props.history.push("/login")
       })
       .catch(error => {

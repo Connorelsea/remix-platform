@@ -49,7 +49,7 @@ const Inner = styled.View`
 `
 
 const Opacity = styled.TouchableOpacity`
-  padding: ${({ small }) => (small ? "8px 15px" : "15px 20px")};
+  padding: ${({ small }) => (small ? "8px 15px" : "12px 17px")};
   background-color: ${({ disabled }) =>
     styles.colors.grey[disabled ? 400 : 200]};
   overflow: hidden;

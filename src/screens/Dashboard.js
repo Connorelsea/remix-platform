@@ -28,7 +28,7 @@ class Dashboard extends Component {
             title="New Friend"
             icon={<Icon name="user-plus" size={25} />}
           />
-          <Spacing size={15} />
+          <Spacing size={10} />
           <Button
             to="/new/group"
             title="New Group"

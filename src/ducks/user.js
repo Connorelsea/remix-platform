@@ -375,6 +375,7 @@ export default new Duck({
 
     function loadInitialUser(id) {
       let userId = id
+
       return async dispatch => {
         console.log("[REDUX] Loading initial user state")
         dispatch(startUserLoading())
@@ -387,9 +388,11 @@ export default new Duck({
         let response
 
         try {
+          console.log("ATTEMPTING TO GET USERID", userId)
           response = await query(initialUserQuery, { id: userId })
         } catch (err) {
-          remove("token")
+          remove("accessToken")
+          remove("refreshToken")
           remove("userId")
           console.error(err)
         }
@@ -397,6 +400,8 @@ export default new Duck({
         if (!response) {
           return dispatch(endUserLoading())
         }
+
+        console.log("RESPONSE", response)
 
         const {
           User: {
@@ -413,16 +418,11 @@ export default new Duck({
           relevantUsers = [],
         } = response.data
 
-        if (token !== undefined) {
-          dispatch(setUserMeta({ id, token }))
-        } else {
-          console.log("NO TOKEN")
-        }
-
         console.log("READ POSITIONS??", readPositions)
 
         console.log("MESSAGES (all)", allMessages.map(m => m.content.data))
 
+        dispatch(setUserMeta({ id }))
         dispatch(setUsers(relevantUsers))
         dispatch(setFriendRequests(friendRequests))
         dispatch(setGroups(groups))

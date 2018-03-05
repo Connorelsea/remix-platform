@@ -37,11 +37,11 @@ const httpLink = useLocal
     })
 
 const authLink = setContext(async (_, { headers }) => {
-  // console.log("Attempting to find token")
+  console.log("Attempting to find token")
   let token
   try {
-    token = await get("token")
-    // console.log(token)
+    token = await get("accessToken")
+    console.log("GOT ACCESS TOKEN", token)
   } catch (err) {
     console.error(err)
   }

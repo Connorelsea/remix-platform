@@ -1,10 +1,57 @@
-before_script:
-  - yarn
+stages:
+  - build
+  - test
+  - deploy
 
+# Configuration
+
+cache:
+  paths:
+    - node_modules/
+    - dist/
+  key: ${CI_BUILD_REF_NAME}
+  untracked: true
+
+# Job: Build
+# Build dist
 build:
-  - yarn run build
+  stage: build
+  before_script:
+    - echo "building branch:$CI_BUILD_REF_NAME tag:$CI_BUILD_TAG"
+  script:
+    - yarn
+    - NODE_ENV=PRODUCTION yarn run build
+  artifacts:
+    paths:
+      - dist/
 
+# Job: Test
+# Run tests against our application
+# If this fails, we do not deploy
 test:
-  - yarn run test
+  stage: test
+  script:
+    - yarn run test:ci
+  only:
+    - branches
+    - tags
 
+# Job: Deploy web
+web:
+  stage: deploy
+  script:
+    - netlify deploy -e production
+  only:
+    - master
 
+deploy_review:
+  stage: deploy
+  script:
+    - netlify deploy -e deploy-preview -s
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_ENVIRONMENT_SLUG.example.com
+  only:
+    - branches
+  except:
+    - master

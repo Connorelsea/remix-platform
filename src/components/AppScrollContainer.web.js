@@ -3,36 +3,39 @@ import styled from "styled-components"
 import Header from "./Header"
 import styles from "../utilities/styles"
 import Spacing from "./Spacing"
+import { bind } from "decko"
 
 export default class AppScrollContainer extends Component {
-  onScroll() {
-    console.log("ON SCROLL")
+  state = {
+    largeHeader: true,
+  }
 
-    var el = document.getElementById("scroll")
-    var minPixel = el.offsetTop
-    var maxPixel = minPixel + el.scrollHeight
-    var value = document.body.scrollTop
+  @bind
+  onScroll(event) {
+    const scrollTop = event.currentTarget.scrollTop
+    const { largeHeader } = this.state
 
-    // respect bounds of element
-    var percent = (value - minPixel) / (maxPixel - minPixel)
-    percent = Math.min(1, Math.max(percent, 0)) * 100
-
-    console.log(el.scrollHeight)
-    console.log(percent)
+    if (scrollTop > 10 && largeHeader === true)
+      this.setState({ largeHeader: false })
+    if (scrollTop < 10 && largeHeader === false)
+      this.setState({ largeHeader: true })
   }
 
   render() {
-    const { user, fullwidth = false } = this.props
+    const { user, fullwidth = false, title, backText, children } = this.props
+    const { largeHeader } = this.state
+
     return (
-      <Container onScroll={this.onScroll} id="scroll">
+      <Container id="scroll" onScroll={this.onScroll}>
         <Header
           user={user}
-          backText={this.props.backText || "Back"}
-          title={this.props.title || "Remix"}
+          backText={backText || "Back"}
+          title={title || "Remix"}
+          large={largeHeader}
         />
         <Spacing size={120} />
         <Scroll fullwidth={fullwidth}>
-          <PaddingContainer>{this.props.children}</PaddingContainer>
+          <PaddingContainer>{children}</PaddingContainer>
         </Scroll>
       </Container>
     )
