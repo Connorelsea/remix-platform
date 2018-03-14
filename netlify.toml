@@ -1,7 +1,7 @@
 [build]
   base    = "/"
   publish = "/webpack/build/"
-  command = "yarn run webpack:prod:dev"
+  command = "yarn run webpack:prod:build"
 
 # The following redirect is intended for use with most SPA's that handles routing internally.
 [[redirects]]
