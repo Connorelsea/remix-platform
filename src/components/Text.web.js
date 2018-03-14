@@ -14,37 +14,37 @@ const tiers = {
     size: 25,
     weight: 900,
     spacing: -0.8,
-    color: styles.colors.grey[600],
+    color: "primary",
   },
   thintitle: {
     size: 25,
     weight: 600,
-    spacing: -0.5,
-    color: styles.colors.grey[600],
+    spacing: -0.8,
+    color: "primary",
   },
   subtitle: {
     size: 16,
     weight: 500,
     spacing: 0,
-    color: styles.colors.grey[500],
+    color: "secondary",
   },
   body: {
     size: 16,
     weight: 500,
     spacing: 0,
-    color: styles.colors.grey[600],
+    color: "primary",
   },
   largebody: {
     size: 17,
     weight: 500,
-    spacing: -0.2,
-    color: styles.colors.grey[600],
+    spacing: -1.2,
+    color: "secondary",
   },
   label: {
     size: 15,
     weight: 500,
     spacing: 0,
-    color: styles.colors.grey[400],
+    color: "tertiary",
   },
   labelerror: {
     size: 16,
@@ -56,7 +56,7 @@ const tiers = {
     size: 17,
     weight: 400,
     spacing: 0,
-    color: styles.colors.grey[500],
+    color: "secondary",
   },
   emphasisSubtitle: {
     size: 16,
@@ -76,27 +76,52 @@ const tiers = {
     size: 15,
     weight: 600,
     spacing: 0,
-    color: styles.colors.grey[400],
+    color: "tertiary",
   },
   messageRead: {
     size: 15,
     weight: 400,
     spacing: 0,
-    color: styles.colors.grey[300],
+    color: "tertiary",
+  },
+  button: {
+    size: 16,
+    weight: 600,
+    spacing: 0,
   },
 }
 
+function getColor({ tier, color, theme, button }) {
+  if (button) return theme.button.text[button]
+  else if (color) return color
+  else if (tier) return theme.text[tiers[tier].color]
+  else return "black"
+}
+
+function getSize({ tier, small, button }) {
+  if (button) return tiers["button"].size
+  else if (tier) return tiers[tier].size
+  else return 16
+}
+function getWeight({ tier, small, button }) {
+  if (button) return tiers["button"].weight
+  else if (tier) return tiers[tier].weight
+  else return 500
+}
+
 export default styled.p`
-  font-size: ${({ tier, small }) => tiers[tier].size - (small ? 2 : 0)}px;
-  font-weight: ${({ tier }) => tiers[tier].weight || 500};
+  font-size: ${getSize}px;
+  font-weight: ${getWeight};
   letter-spacing: ${({ tier }) => tiers[tier].spacing || 0};
-  color: ${({ tier, color }) => color || tiers[tier].color || "black"};
+  color: ${getColor};
   margin: 0;
   padding: 0;
   ${({ center }) => center && "text-align: center"};
   ${({ opacity }) => opacity && `opacity: ${opacity}`};
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
+    "Helvetica Neue", sans-serif;
 `
 
 export const EditableText = class EditableText extends React.Component {

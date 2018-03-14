@@ -1,4 +1,18 @@
 {
-  "presets": ["react-native"],
-  "plugins": ["transform-decorators-legacy", "transform-class-properties"]
+  "presets": ["react-native", "env"],
+  "plugins": [
+    "react-hot-loader/babel",
+    "react-native-web",
+    ["styled-components", { "displayName": true, "minify": false }],
+    "transform-decorators-legacy",
+    "transform-class-properties"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-inline-elements",
+        "transform-react-constant-elements"
+      ]
+    }
+  }
 }

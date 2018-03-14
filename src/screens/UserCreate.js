@@ -14,7 +14,14 @@ import MessageMock from "../components/MessageMock"
 import Card from "../components/Card"
 import FlexContainer from "../components/FlexContainer"
 import FlexContainerItem from "../components/FlexContainerItem"
-import { set } from "../utilities/storage"
+import { set, exists, setArray, addToArray } from "../utilities/storage"
+import { connect } from "react-redux"
+import {
+  setCurrentDeviceId,
+  setDevices,
+  addDevice,
+  loginWithCurrentDevice,
+} from "../ducks/auth"
 
 class UserLogin extends Component {
   @bind
@@ -48,7 +55,12 @@ class UserLogin extends Component {
           iconUrl: $iconUrl
         ) {
           id
-          userId
+          user {
+            id
+            name
+            email
+            username
+          }
           refreshToken
           accessToken
         }
@@ -63,16 +75,20 @@ class UserLogin extends Component {
         iconUrl,
       }
     )
-      .then(res => {
-        const { data: { createUser } } = res
+      .then(async res => {
+        const device = res.data.createUser
 
-        set("previousEmail", email)
-        set("userId", createUser.userId)
-        set("deviceId", createUser.id)
-        set("accessToken", createUser.accessToken)
-        set("refreshToken", createUser.refreshToken)
+        const {
+          addDevice,
+          setCurrentDeviceId,
+          loginWithCurrentDevice,
+        } = this.props
 
-        this.props.history.push("/login")
+        addDevice(device)
+        setCurrentDeviceId(device.id)
+        loginWithCurrentDevice()
+
+        this.props.history.push("/")
       })
       .catch(error => {
         this.setState({
@@ -289,4 +305,20 @@ class UserLogin extends Component {
   }
 }
 
-export default withRouter(UserLogin)
+function mapDispatchToProps(dispatch) {
+  return {
+    addDevice: device => dispatch(addDevice(device)),
+    setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
+  }
+}
+
+function mapStateToProps(state, props) {
+  return {
+    devices: state.auth.devices,
+  }
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserLogin)
+)

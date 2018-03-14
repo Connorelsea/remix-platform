@@ -4,6 +4,7 @@ import Spacing from "../components/Spacing"
 import styled from "styled-components"
 import styles from "../utilities/styles"
 import Text from "../components/Text"
+import Logo from "../components/Logo"
 
 export default class Home extends Component {
   render() {
@@ -11,8 +12,8 @@ export default class Home extends Component {
       <Container>
         <Bar color={styles.colors.grey[100]}>
           <InnerContainerColumn>
-            <Text tier="title">Remix</Text>
-            <Spacing size={15} />
+            <Logo />
+            <Spacing size={20} />
             <Text tier="thintitle">
               Join interesting groups, meet new friends, explore new places
             </Text>
@@ -20,7 +21,7 @@ export default class Home extends Component {
             <ButtonContainer>
               <Button to="/login" title="Login" />
               <Spacing size={15} />
-              <Button to="/create" title="Create New User" />
+              <Button to="/create" title="Create New User" type="emphasis" />
             </ButtonContainer>
           </InnerContainerColumn>
         </Bar>
@@ -30,7 +31,7 @@ export default class Home extends Component {
             <FeatureContainer>
               <Text tier="thintitle">Groups</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[500]}>
+              <Text tier="largebody">
                 Create groups with friends, find public groups on interesting
                 topics, or discuss daily life privately with your closest
                 friends - the possibilities are endless.
@@ -39,7 +40,7 @@ export default class Home extends Component {
             <FeatureContainer>
               <Text tier="thintitle">Unique Profiles</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[500]}>
+              <Text tier="largebody">
                 Express yourself by decorating your profile - add songs,
                 pictures, or text to make your profile unique.
               </Text>
@@ -47,18 +48,18 @@ export default class Home extends Component {
             <FeatureContainer>
               <Text tier="thintitle">Made for You</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[500]}>
-                We are working to create software focused on highlighting real
-                discussions and meaningful human interactions without the
-                baggage of traditional social media. Remix is for chatting with
-                friends, loved ones, or interesting strangers - no invasive
-                advertisements, no spam-filled timelines, no FarmVille invites
+              <Text tier="largebody">
+                We focus on highlighting real discussions and meaningful human
+                interactions without the baggage of traditional social media.
+                Remix is for chatting with friends, loved ones, or interesting
+                strangers - no invasive advertisements, no spam-filled
+                timelines, no FarmVille invites.
               </Text>
             </FeatureContainer>
             <FeatureContainer>
               <Text tier="thintitle">Private Messages</Text>
               <Spacing size={10} />
-              <Text tier="largebody" color={styles.colors.grey[500]}>
+              <Text tier="largebody">
                 Directly message your close friends and divide conversations
                 into named chats for different topics, such as #music, #random,
                 #gaming, etc.
@@ -71,11 +72,12 @@ export default class Home extends Component {
           <InnerContainerColumn>
             <Text tier="thintitle">A social network on your side</Text>
             <Spacing size={10} />
-            <Text tier="largebody" color={styles.colors.grey[500]}>
+            <Text tier="largebody">
               Many of today's modern social media platforms use their power in
               dubious ways, controlling what you see or don't see, optimizing
               their interface and interactions for profit-increase instead of
-              user satisfaction, or selling your data to third parties.
+              user satisfaction, or selling your data to third parties. Instead,
+              we design in the best interest of the user.
             </Text>
           </InnerContainerColumn>
         </Bar>
@@ -89,7 +91,7 @@ export default class Home extends Component {
               based on topic or location. Groups can decorate a custom profile
               and divide conversations into topic-based chats that can be made
               public or private. Public chats are searchable on a global chat
-              index and can be sorted using tags
+              index and can be sorted using tags.
             </Text>
           </InnerContainerColumn>
         </Bar>
@@ -101,8 +103,8 @@ export default class Home extends Component {
             <Text tier="largebody" color={styles.colors.grey[500]}>
               To provide a rich social experience through chatting, we developed
               a fast communication platform that will run consistently across
-              all platforms. Updates are often, support is available, and the
-              code is open source - always being improved.
+              all devices. Updates are often, support is available, and the code
+              is open source - always being improved.
             </Text>
           </InnerContainerColumn>
         </Bar>
@@ -117,9 +119,9 @@ export default class Home extends Component {
             </Text>
             <Spacing size={10} />
             <Text tier="largebody" color={styles.colors.grey[500]}>
-              Software produced in Baton Rouge, Louisiana by Elsea Labs. Elsea
-              Labs was founded in 2012. The Remix Chat project was started in
-              2017 and will enter alpha in 2018.
+              Remix software is currently produced in Baton Rouge, Louisiana by
+              Elsea Labs. Elsea Labs was founded in 2012. The Remix project was
+              started in 2017 and will enter alpha in mid-2018.
             </Text>
           </InnerContainerColumn>
         </Bar>

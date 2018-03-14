@@ -1,26 +1,23 @@
 import React from "react"
 import ReactNative from "react-native"
-import { AppContainer } from "react-hot-loader"
-import App from "./AppContainer"
+import { AppContainer as HotContainer } from "react-hot-loader"
+import App from "./AppProviders"
+
+// Uses the webpack cache url to set the font family
 
 import iconFont from "react-native-vector-icons/Fonts/Feather.ttf"
-const iconFontStyles = `@font-face {
-  src: url(${iconFont});
-  font-family: Feather;
-}
 
-.switch-wrapper {
-  position: relative;
-}
-
-.switch-wrapper > div {
-  position: absolute;
-}
+const iconFontStyles = `
+  @font-face {
+    src: url(${iconFont});
+    font-family: Feather;
+  }
 `
 
 // Create stylesheet
 const style = document.createElement("style")
 style.type = "text/css"
+
 if (style.styleSheet) {
   style.styleSheet.cssText = iconFontStyles
 } else {
@@ -35,19 +32,13 @@ if (process.env.NODE_ENV !== "production") {
   whyDidYouUpdate(React)
 }
 
-console.log("RENDERING APP CONTAINER")
-
 const render = Component => {
   ReactNative.render(
-    <AppContainer>
+    <HotContainer>
       <App />
-    </AppContainer>,
+    </HotContainer>,
     document.getElementById("root")
   )
 }
 
 render(App)
-
-// if (module.hot) {
-//   module.hot.accept("./AppContainer", () => render(App))
-// }

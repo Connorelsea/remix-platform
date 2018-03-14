@@ -7,40 +7,11 @@ import styles from "../utilities/styles"
 import Card from "../components/Card"
 import Spacing from "./Spacing"
 import fontColorContrast from "font-color-contrast"
+import colors from "../utilities/colors"
 
 class ColorPicker extends Component {
   state = {
-    oldColors: [
-      "#5A5E64",
-      "#D1D5DB",
-      "#FFC0C0",
-      "#C94343",
-
-      "#801D1D",
-      "#F39D05",
-      "#F4D701",
-      "#32D561",
-      "#154B25",
-
-      "#0f72e0",
-      "#9DC7F8",
-      "#644F99",
-    ],
-    colors: [
-      "#3F3F3F", // black
-      "#D1D5DB", // grey
-      "#FFCACA", // light pink
-      "#FF8383", // salmon
-      "#B42525", // red
-      "#FFC195", // sand
-      "#FFC000", // yellow
-      "#36954B", // green
-      "#85BFFF", // light blue
-      "#0F72E0", // bright blue
-      "#182198", // navy
-      "#BC60CE", // light purple
-      "#751489", // deep purple
-    ],
+    colors,
     selectedIndex: 0,
   }
 

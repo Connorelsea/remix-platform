@@ -5,13 +5,16 @@ import AppScrollContainer from "../components/AppScrollContainer"
 import Input from "../components/Input"
 import { mutate } from "../utilities/gql_util"
 import { bind } from "decko"
-import { set, get } from "../utilities/storage"
+import { set, get, getArray, exists } from "../utilities/storage"
 import { withRouter } from "react-router"
 import { connect } from "react-redux"
 import User from "../ducks/user"
 import { View } from "react-native"
 import Spacing from "../components/Spacing"
 import Text from "../components/Text"
+import Card from "../components/Card"
+import FlexContainer from "../components/FlexContainer"
+import Device from "../components/Device"
 
 class UserLogin extends Component {
   @bind
@@ -110,18 +113,51 @@ class UserLogin extends Component {
     })
   }
 
+  @bind
+  async checkDevices() {
+    if (exists("devices")) {
+      const devices = await getArray("devices")
+      this.setState({ devices })
+    } else {
+      this.setState({ devices: [] })
+    }
+  }
+
   componentDidMount() {
-    this.checkPreviousEmail()
+    // this.checkPreviousEmail()
+    this.checkDevices()
   }
 
   render() {
-    const { previousEmail, error } = this.state
+    const { devices, error } = this.state
 
     return (
       <AppScrollContainer title="Login">
         <View>
-          <Text tier="body">
-            Login to Remix using your email address and password.
+          <Text tier="thintitle">Devices</Text>
+          <Spacing size={5} />
+          <Text tier="subtitle">
+            Login using an account linked to this device
+          </Text>
+          <Spacing size={15} />
+
+          {devices ? (
+            <View
+              style={{
+                alignItems: "flex-start",
+              }}
+            >
+              {devices.map(d => <Device {...d} />)}
+            </View>
+          ) : (
+            undefined
+          )}
+
+          <Spacing size={20} />
+          <Text tier="thintitle">Login</Text>
+          <Spacing size={5} />
+          <Text tier="subtitle">
+            Login using your email address and password.
           </Text>
           <Spacing size={15} />
           <Text tier="label">Email Address</Text>
@@ -131,20 +167,6 @@ class UserLogin extends Component {
             value={this.state.loginCredential}
             onChangeText={this.onChangeCredential}
           />
-          {previousEmail
-            ? [
-                <Spacing size={10} />,
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text tier="body">Is this not you?</Text>
-                  <Spacing size={10} />
-                  <Button
-                    small
-                    onPress={this.clearPreviousEmail}
-                    title="Use a different email"
-                  />
-                </View>,
-              ]
-            : undefined}
           <Spacing size={15} />
           <Text tier="label">Password</Text>
           <Spacing size={5} />

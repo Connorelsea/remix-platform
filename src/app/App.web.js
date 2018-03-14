@@ -1,22 +1,22 @@
 import React from "react"
 
-import Routing, { Router } from "./utilities/routing"
+import Routing, { Router } from "../utilities/routing"
 import { Platform, Text, View } from "react-native"
 import styled from "styled-components/native"
-import Home from "./screens/Home"
-import Group from "./screens/Group"
-import Chat from "./screens/Chat"
-import Dashboard from "./screens/Dashboard"
-import UserLogin from "./screens/UserLogin"
-import UserCreate from "./screens/UserCreate"
-import FriendNew from "./screens/FriendNew"
-import GroupNew from "./screens/GroupNew"
-import GroupCreate from "./screens/GroupCreate"
+import Home from "../screens/Home"
+import Group from "../screens/Group"
+import Chat from "../screens/Chat"
+import Dashboard from "../screens/Dashboard"
+import UserLogin from "../screens/UserLogin"
+import UserCreate from "../screens/UserCreate"
+import FriendNew from "../screens/FriendNew"
+import GroupNew from "../screens/GroupNew"
+import GroupCreate from "../screens/GroupCreate"
 import { bind } from "decko"
 import { Switch } from "react-router"
-import styles from "./utilities/styles"
+import styles from "../utilities/styles"
 import { connect } from "react-redux"
-import User from "./ducks/user"
+import User from "../ducks/user"
 import Media from "react-media"
 
 const Route = Routing.Route
@@ -99,9 +99,9 @@ class App extends React.Component {
 
   @bind
   renderRouting() {
-    const { isAuthenticated, loading } = this.props
+    const { authenticated, loading } = this.props
     if (loading) return <Text>Loading</Text>
-    if (isAuthenticated) return this.renderWithUser()
+    if (authenticated) return this.renderWithUser()
     else return this.renderWithoutUser()
   }
 
@@ -113,10 +113,10 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
-    isAuthenticated: User.selectors.isAuthenticated(state),
     loading: state.user.loading,
     friendRequests: state.user.friendRequests,
     groups: state.user.groups,
+    authenticated: state.auth.authenticated,
   }
 }
 

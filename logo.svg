@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640px" height="640px" viewBox="0 0 640 640" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>Custom Preset Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="12" y="11" width="616" height="616" rx="140"></rect>
+    </defs>
+    <g id="Current" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Custom-Preset-Copy">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Rectangle-42" fill="#F8F8F8" xlink:href="#path-1"></use>
+            <g id="Group" mask="url(#mask-2)" font-family="SFProDisplay-Bold, SF Pro Display" font-size="675" font-weight="bold" letter-spacing="-10.2877979">
+                <g transform="translate(-41.000000, 11.000000)" id="R">
+                    <text>
+                        <tspan x="351" y="643" fill="#FFCACA">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="312" y="643" fill="#FF8383">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="274.5" y="643" fill="#B42525">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="235.5" y="643" fill="#F9CAA8">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="196.5" y="643" fill="#FFC000">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="157.5" y="643" fill="#36954B">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="118.5" y="643" fill="#85BFFF">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="81" y="643" fill="#0F72E0">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="42" y="643" fill="#182198">R</tspan>
+                    </text>
+                    <text>
+                        <tspan x="0" y="643" fill="#000000">R</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
