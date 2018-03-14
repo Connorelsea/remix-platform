@@ -18,7 +18,7 @@ module.exports = {
   entry: ["babel-polyfill", "./src/app/index.js"],
   output: {
     path: path.resolve(__dirname, "build"),
-    publicPath: "/webpack/build/",
+    publicPath: "/",
     filename: "js/[hash].bundle.js",
     chunkFilename: "js/[name].chunk.js",
   },
@@ -43,7 +43,6 @@ module.exports = {
           loader: "babel-loader",
           options: {
             babelrc: true, // use .babelrc
-            cacheDirectory: true,
           },
         },
       },
@@ -118,7 +117,6 @@ module.exports = {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        cache: true,
         parallel: true,
         sourceMap: true,
         uglifyOptions: {
