@@ -9,8 +9,8 @@ export default class Logo extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ multiplier: spring(5) }), 500)
-    setTimeout(() => this.setState({ multiplier: spring(0) }), 1700)
+    setTimeout(() => this.setState({ multiplier: spring(5) }), 600)
+    setTimeout(() => this.setState({ multiplier: spring(0) }), 1600)
   }
 
   render() {

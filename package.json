@@ -17,6 +17,9 @@
     "webpack:prod:watch":
       "webpack-serve --config ./webpack/webpack.config.prod.js"
   },
+  "engines": {
+    "node": "9"
+  },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.10",
     "apollo-client": "^2.2.6",

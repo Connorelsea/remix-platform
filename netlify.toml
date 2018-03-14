@@ -1,0 +1,17 @@
+[build]
+  base    = "/"
+  publish = "/webpack/build/"
+  command = "yarn run webpack:prod:dev"
+
+# The following redirect is intended for use with most SPA's that handles routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true # Ensure that we always redirect
+
+[context.production]
+  environment = { NODE_VERSION = "9" }
+
+[context.deploy-preview]
+  environment = { NODE_VERSION = "9" }
