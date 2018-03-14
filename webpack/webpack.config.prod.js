@@ -18,8 +18,8 @@ module.exports = {
   entry: ["babel-polyfill", "./src/app/index.js"],
   output: {
     path: path.resolve(__dirname, "build"),
-    publicPath: "/",
-    filename: "js/bundle.js",
+    publicPath: "/webpack/build/",
+    filename: "js/[hash].bundle.js",
     chunkFilename: "js/[name].chunk.js",
   },
   module: {
