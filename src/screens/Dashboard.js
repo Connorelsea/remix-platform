@@ -9,6 +9,7 @@ import GroupCard from "../components/GroupCard"
 import Icon from "react-native-vector-icons/dist/Feather"
 import HelpCard from "../components/HelpCard"
 import User from "../ducks/user"
+import Text from "../components/Text"
 
 class Dashboard extends Component {
   render() {
@@ -22,16 +23,18 @@ class Dashboard extends Component {
 
     return (
       <AppScrollContainer user={reduxUser} backText="remove" title="Remix">
+        <Text tier="subtitle">Add New</Text>
+        <Spacing size={10} />
         <ActionContainer>
           <Button
             to="/new/friend"
-            title="New Friend"
+            title="Friend"
             icon={<Icon name="user-plus" size={25} />}
           />
           <Spacing size={10} />
           <Button
             to="/new/group"
-            title="New Group"
+            title="Group"
             icon={<Icon name="users" size={25} />}
           />
         </ActionContainer>
@@ -43,6 +46,10 @@ class Dashboard extends Component {
             addGroups={addGroups}
           />
         ))}
+        <Text tier="subtitle">Your Status</Text>
+        <Spacing size={10} />
+        <Text tier="subtitle">Friends & Groups</Text>
+        <Spacing size={10} />
         {groups.map(group => (
           <GroupCard key={group.id} group={group} user={reduxUser} />
         ))}
@@ -50,6 +57,8 @@ class Dashboard extends Component {
           <HelpCard title="Add some friends or join some groups to start chatting" />
         )}
 
+        <Text tier="subtitle">Options</Text>
+        <Spacing size={10} />
         <Button onPress={this.props.logout} title="Logout" small={1} />
       </AppScrollContainer>
     )

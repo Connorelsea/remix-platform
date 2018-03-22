@@ -11,30 +11,37 @@ import { get } from "./storage"
 import { onError } from "apollo-link-error"
 import { ApolloLink, split } from "apollo-link"
 
-const errorLink = onError(props => {
+// Meta info for development
+
+const localServerUrl = "localhost:8080"
+let useLocal = process.env.NODE_ENV !== "production"
+
+// Link parts
+
+export const errorLink = onError(props => {
   const { graphQLErrors, networkError } = props
-  console.log("ON ERROR", props)
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    )
-  if (networkError) console.log(`[Network error]: ${networkError}`)
+
+  if (graphQLErrors) {
+    graphQLErrors.map(error => {
+      console.log("[Error Link] GraphQL Error")
+      console.error(error)
+    })
+  } else if (networkError) {
+    console.log("[Error Link] Network Error")
+    console.error(networkError)
+  } else {
+    console.log("[Error Link] Unknown Type")
+    console.error(props)
+  }
 })
 
-const localUrl = "localhost:8080" // "68.106.160.235:8080" // "localhost:8080"
-let useLocal = true
+const httpUri = useLocal
+  ? `http://${localServerUrl}/graphql`
+  : "https://remix-platform-server.herokuapp.com/graphql"
 
-if (process.env.NODE_ENV === "production") useLocal = false
-
-const httpLink = useLocal
-  ? createHttpLink({
-      uri: `http://${localUrl}/graphql`,
-    })
-  : createHttpLink({
-      uri: "https://remix-platform-server.herokuapp.com/graphql",
-    })
+export const httpLink = createHttpLink({
+  uri: httpUri,
+})
 
 const authLink = setContext(async (_, { headers }) => {
   console.log("Attempting to find token")
@@ -54,8 +61,8 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
-const subEndpoint = useLocal
-  ? `ws://${localUrl}/subscriptions`
+export const subEndpoint = useLocal
+  ? `ws://${localServerUrl}/subscriptions`
   : "wss://remix-platform-server.herokuapp.com/subscriptions"
 
 const subOptions = {

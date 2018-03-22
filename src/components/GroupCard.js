@@ -55,7 +55,7 @@ class GroupCard extends Component {
             <Spacing size={15} />
             <Body>
               <Gradient
-                colors={[" rgba(255, 255, 255, 0)", "#FFFFFF"]}
+                colors={["rgba(255, 255, 255, 0)", "#FFFFFF"]}
                 size={90}
                 style={{
                   position: "absolute",

@@ -15,30 +15,76 @@ import Text from "../components/Text"
 import Card from "../components/Card"
 import FlexContainer from "../components/FlexContainer"
 import Device from "../components/Device"
+import Box from "../elements/Box"
+import { Platform } from "react-native"
+import UAParser from "ua-parser-js"
+import {
+  setCurrentDeviceId,
+  addDevice,
+  loginWithCurrentDevice,
+} from "../ducks/auth"
 
 class UserLogin extends Component {
+  getDeviceMeta() {
+    if (Platform.OS === "web") {
+      const agent = new UAParser()
+
+      console.log("CPU", agent.getCPU())
+
+      return {
+        operatingSystem:
+          agent.getDevice().vendor + " " + agent.getDevice().model,
+        browser: agent.getBrowser().name + ";" + agent.getBrowser().version,
+        cpu: agent.getCPU().architecture || "Unknown",
+        gpu: "Unknown",
+      }
+    }
+
+    return {
+      operatingSystem: "Unknown",
+      browser: "Unknown",
+      cpu: "Unknown",
+      gpu: "Unknown",
+    }
+  }
+
   @bind
-  attemptEmailLogin(email, password, deviceId) {
+  attemptEmailLogin(email, password) {
+    const { operatingSystem, browser, cpu, gpu } = this.getDeviceMeta()
+
     mutate(
       `
-      mutation loginUserWithEmail(
+      mutation loginWithNewDevice(
         $email: String!
         $password: String!
-        $deviceId: ID!
+        $deviceName: String
+        $operatingSystem: String!
+        $browser: String!
+        $cpu: String!
+        $gpu: String!
       ) {
-        loginUserWithEmail(
+        loginWithNewDevice(
           email: $email
           password: $password
-          deviceId: $deviceId
+          deviceName: $deviceName
+          operatingSystem: $operatingSystem
+          browser: $browser
+          cpu: $cpu
+          gpu: $gpu
         ) {
           id
-          userId
+          user {
+            id
+            name
+            email
+            username
+          }
           refreshToken
           accessToken
         }
       }
     `,
-      { email, password, deviceId }
+      { email, password, operatingSystem, browser, cpu, gpu }
     )
       .then(this.processLoginResponse)
       .catch(err => {
@@ -51,19 +97,14 @@ class UserLogin extends Component {
 
   @bind
   async processLoginResponse(response) {
-    console.log("LOGIN RESPONSE", response)
+    const { addDevice, setCurrentDeviceId, loginWithCurrentDevice } = this.props
+    const device = response.data.loginWithNewDevice
 
-    const {
-      data: { loginUserWithEmail: { id, userId, refreshToken, accessToken } },
-    } = response
+    addDevice(device)
+    setCurrentDeviceId(device.id)
+    loginWithCurrentDevice()
 
-    await set("accessToken", accessToken)
-    await set("refreshToken", refreshToken)
-    await set("userId", userId)
-    await set("deviceId", id)
-
-    this.props.loadInitialUser(userId)
-    this.props.history.replace("/", "")
+    this.props.history.push("/")
   }
 
   state = {
@@ -89,43 +130,26 @@ class UserLogin extends Component {
       loginPassword /* loginCredentialType */,
     } = this.state
 
-    const deviceId = await get("deviceId")
-
-    this.attemptEmailLogin(loginCredential, loginPassword, deviceId)
+    this.attemptEmailLogin(loginCredential, loginPassword)
   }
 
-  @bind
-  async checkPreviousEmail() {
-    const val = await get("previousEmail")
-    if (val || val.trim().length < 1)
-      this.setState({
-        previousEmail: val,
-        loginCredential: val,
-      })
-  }
+  renderDevices() {
+    const { devices } = this.state
 
-  @bind
-  clearPreviousEmail() {
-    set("previousEmail", "")
-    this.setState({
-      previousEmail: undefined,
-      loginCredential: "",
-    })
-  }
-
-  @bind
-  async checkDevices() {
-    if (exists("devices")) {
-      const devices = await getArray("devices")
-      this.setState({ devices })
-    } else {
-      this.setState({ devices: [] })
+    if (devices) {
+      return (
+        <Box>
+          <Text tier="thintitle">Devices</Text>
+          <Spacing size={5} />
+          <Text tier="subtitle">
+            Login using an account linked to this device
+          </Text>
+          <Spacing size={15} />
+          {devices.map(d => <Device {...d} />)}
+          <Spacing size={20} />
+        </Box>
+      )
     }
-  }
-
-  componentDidMount() {
-    // this.checkPreviousEmail()
-    this.checkDevices()
   }
 
   render() {
@@ -134,26 +158,8 @@ class UserLogin extends Component {
     return (
       <AppScrollContainer title="Login">
         <View>
-          <Text tier="thintitle">Devices</Text>
-          <Spacing size={5} />
-          <Text tier="subtitle">
-            Login using an account linked to this device
-          </Text>
-          <Spacing size={15} />
+          {this.renderDevices()}
 
-          {devices ? (
-            <View
-              style={{
-                alignItems: "flex-start",
-              }}
-            >
-              {devices.map(d => <Device {...d} />)}
-            </View>
-          ) : (
-            undefined
-          )}
-
-          <Spacing size={20} />
           <Text tier="thintitle">Login</Text>
           <Spacing size={5} />
           <Text tier="subtitle">
@@ -194,13 +200,9 @@ class UserLogin extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    subscribeToFriendRequests: id => {
-      dispatch(User.creators.subscribeToFriendRequests(id))
-    },
-    subscribeToMessages: id => {
-      dispatch(User.creators.subscribeToMessages(id))
-    },
-    loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
+    addDevice: device => dispatch(addDevice(device)),
+    setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
   }
 }
 

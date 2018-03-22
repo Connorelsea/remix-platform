@@ -1,7 +1,7 @@
 // @flow
 
 import Duck from "extensible-duck"
-import { client } from "../utilities/apollo"
+import { client, errorLink, subEndpoint, httpLink } from "../utilities/apollo"
 import gql from "graphql-tag"
 import { query } from "../utilities/gql_util"
 import createCachedSelector from "re-reselect"
@@ -10,6 +10,12 @@ import { remove, get, getArray } from "../utilities/storage"
 import { ApolloClient } from "apollo-client"
 import jwt from "jsonwebtoken"
 import { GlobalState } from "../reducers/rootReducer"
+import { setContext } from "apollo-link-context"
+import { ApolloLink, split } from "apollo-link"
+import { SubscriptionClient } from "subscriptions-transport-ws"
+import { WebSocketLink } from "apollo-link-ws"
+import { getMainDefinition } from "apollo-utilities"
+import { InMemoryCache } from "apollo-cache-inmemory"
 
 // Setting the auth device represents a logged in user. Removing
 // the auth device represents logging out of a user account.
@@ -56,13 +62,20 @@ type SetCurrentDeviceIdAction = {
   payload: { deviceId: string },
 }
 
-type LoginWithCurrentDevice = {
+type LoginWithCurrentDeviceAction = {
   type: "LOGIN_WITH_CURRENT_DEVICE",
 }
 
 type LoginWithDevicePasswordAction = {
   type: "LOGIN_WITH_DEVICE_PASSWORD",
   payload: { deviceId: string, password: string },
+}
+
+type SetApolloClientAction = {
+  type: "SET_APOLLO_CLIENT",
+  payload: {
+    apolloClient: any,
+  },
 }
 
 type LogoutAction = { type: "LOGOUT" }
@@ -80,11 +93,11 @@ type UpdateCurrentRefreshTokenType = {
 type UpdateCurrentAccessTokenType = { type: "UPDATE_CURRENT_ACCESS_TOKEN" }
 
 type Action =
-  | SetDevicesAction
   | AddDeviceAction
   | SetCurrentDeviceIdAction
-  | LoginWithCurrentDevice
+  | LoginWithCurrentDeviceAction
   | LoginWithDevicePasswordAction
+  | SetApolloClientAction
   | LogoutAction
   | SetAuthStatusAction
   | UpdateCurrentRefreshTokenType
@@ -99,37 +112,6 @@ type Dispatch = (
 ) => any
 
 // ACTION CREATORS
-
-/**
- * Load an array of one or more devices from the device's local
- * storage. The type of storage depends on the platform.
- */
-export function loadDevicesFromStorage(): ThunkAction {
-  return async function(dispatch) {
-    let devices: Array<Device> = await getArray("devices")
-    let currentDeviceId: string = await get("currentDeviceId")
-
-    // TODO: Use SELECTOR to get device from devices array using deviceId
-    // memoize
-
-    if (devices) dispatch(setDevices(devices))
-    if (currentDeviceId) {
-      dispatch(setCurrentDeviceId(currentDeviceId))
-      dispatch(loginWithCurrentDevice())
-    }
-  }
-}
-
-/**
- * Set initial  devices on the redux store
- * TODO: Save this to local storage
- */
-export function setDevices(devices: Array<Device>): SetDevicesAction {
-  return {
-    type: "SET_DEVICES",
-    payload: { devices },
-  }
-}
 
 /**
  * Add device to the existing array
@@ -169,18 +151,14 @@ export function loginWithCurrentDevice(): ThunkAction {
 
     const state = getState()
 
-    const decodedAccessToken = jwt.decode(
-      CurrentDeviceSelector(state).accessToken
-    )
-
-    const decodedRefreshToken = jwt.decode(
-      CurrentDeviceSelector(state).refreshToken
-    )
+    const accessToken = CurrentDeviceSelector(state).accessToken
+    const refreshToken = CurrentDeviceSelector(state).refreshToken
+    const decodedAccessToken = jwt.decode(accessToken)
+    const decodedRefreshToken = jwt.decode(refreshToken)
 
     console.log("ACCESS TOKENS", decodedAccessToken, decodedRefreshToken)
 
     const currentTime: number = Date.now().valueOf() / 1000
-
     console.log("why are my tokens expired here")
     console.log(currentTime, decodedAccessToken.exp, decodedRefreshToken.exp)
 
@@ -203,8 +181,54 @@ export function loginWithCurrentDevice(): ThunkAction {
     if (!accessTokenExpired && !refreshTokenExpired) {
       console.log("Both are not expired, authenticated true")
 
-      // configure apollo client with access token access
-      // how? idk yet TODO
+      // Configure new apollo client specifically for this
+      // authenticated user
+
+      // Add user's access token
+      let authLink = setContext((operation, prevContext) => {
+        let state = getState()
+
+        return {
+          headers: {
+            ...prevContext.headers,
+            authorization: CurrentDeviceSelector(state).accessToken,
+          },
+        }
+      })
+
+      // Setup subscription client and subscription access
+
+      const subOptions = {
+        reconnect: true,
+        connectionParams: async function() {
+          let state = getState()
+
+          return {
+            token: CurrentDeviceSelector(state).accessToken,
+          }
+        },
+      }
+
+      const subClient = new SubscriptionClient(subEndpoint, subOptions)
+      const subLink = new WebSocketLink(subClient)
+
+      const connectionLink = split(
+        ({ query }) => {
+          const { kind, operation } = getMainDefinition(query)
+          return kind === "OperationDefinition" && operation === "subscription"
+        },
+        subLink,
+        httpLink
+      )
+
+      const link = ApolloLink.from([errorLink, authLink, connectionLink])
+
+      const apolloClient = new ApolloClient({
+        link,
+        cache: new InMemoryCache(),
+      })
+
+      dispatch(setApolloClient(apolloClient))
 
       // set authenticated to true
       dispatch(setAuthStatus(true))
@@ -223,16 +247,6 @@ export function loginWithCurrentDevice(): ThunkAction {
 /**
  * Login using a specific inactive device from the device array.
  */
-function loginWithDeviceActive(deviceId: string): LoginWithDeviceActiveAction {
-  return {
-    type: "LOGIN_WITH_DEVICE_ACTIVE",
-    payload: { deviceId },
-  }
-}
-
-/**
- * Login using a specific inactive device from the device array.
- */
 function loginWithDevicePassword(
   deviceId: string,
   password: string
@@ -240,6 +254,15 @@ function loginWithDevicePassword(
   return {
     type: "LOGIN_WITH_DEVICE_PASSWORD",
     payload: { deviceId, password },
+  }
+}
+
+function setApolloClient(apolloClient: any): SetApolloClientAction {
+  return {
+    type: "SET_APOLLO_CLIENT",
+    payload: {
+      apolloClient,
+    },
   }
 }
 
@@ -289,6 +312,16 @@ export function setAuthStatus(status: boolean): SetAuthStatusAction {
   }
 }
 
+// Default non-authenticated apollo client for use before user
+// is logged in
+
+const link = ApolloLink.from([errorLink, httpLink])
+
+const apolloClient = new ApolloClient({
+  link,
+  cache: new InMemoryCache(),
+})
+
 // INITIAL STATE
 
 export type State = {
@@ -302,7 +335,7 @@ const initialState: State = {
   devices: [],
   currentDeviceId: undefined,
   authenticated: false,
-  apolloClient: undefined,
+  apolloClient,
 }
 
 // REDUCER
@@ -311,16 +344,6 @@ function reducer(state: State = initialState, action: Action): State {
   console.log("IN REDUCER", action)
 
   switch (action.type) {
-    case "SET_DEVICES": {
-      // const castAction: SetDevicesAction = (action: SetDevicesAction)
-
-      return {
-        ...state,
-        devices: action.payload.devices,
-      }
-      // Persist to local storage here
-    }
-
     case "ADD_DEVICE": {
       return {
         ...state,
@@ -334,15 +357,19 @@ function reducer(state: State = initialState, action: Action): State {
         currentDeviceId: action.payload.deviceId,
         authenticated: false, // needs to check validity first, then true
       }
-      // persist to local storage here
-      // TODO: Load devices from storage when application loads
     }
 
     case "SET_AUTH_STATUS": {
-      console.log("SETTING AUTH STATUS", action)
       return {
         ...state,
         authenticated: action.payload.status,
+      }
+    }
+
+    case "SET_APOLLO_CLIENT": {
+      return {
+        ...state,
+        apolloClient: action.payload.apolloClient,
       }
     }
 
