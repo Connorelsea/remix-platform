@@ -1,10 +1,10 @@
-import React, { Component } from "react"
-import Button from "../components/Button"
-import Spacing from "../components/Spacing"
-import styled from "styled-components"
-import styles from "../utilities/styles"
-import Text from "../components/Text"
-import Logo from "../components/Logo"
+import React, { Component } from "react";
+import Button from "../elements/Button";
+import Spacing from "../components/Spacing";
+import styled from "styled-components";
+import styles from "../utilities/styles";
+import Text from "../components/Text";
+import Logo from "../components/Logo";
 
 export default class Home extends Component {
   render() {
@@ -127,7 +127,7 @@ export default class Home extends Component {
         </Bar>
         <Spacing size={50} />
       </Container>
-    )
+    );
   }
 }
 
@@ -141,7 +141,7 @@ const Container = styled.div`
   overscroll-behavior: contain;
   overscroll-behavior-y: none;
   -webkit-overflow-scrolling: touch;
-`
+`;
 
 const Bar = styled.div`
   display: flex;
@@ -151,7 +151,7 @@ const Bar = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-`
+`;
 
 const InnerContainer = styled.div`
   display: flex;
@@ -165,7 +165,7 @@ const InnerContainer = styled.div`
     flex-direction: column;
     padding: 35px 25px;
   }
-`
+`;
 const InnerContainerColumn = styled.div`
   display: flex;
   width: 100%;
@@ -176,7 +176,7 @@ const InnerContainerColumn = styled.div`
   @media (max-width: 1000px) {
     padding: 35px 25px;
   }
-`
+`;
 
 const FeatureContainer = styled.div`
   width: 46%;
@@ -185,7 +185,7 @@ const FeatureContainer = styled.div`
   @media (max-width: 1000px) {
     width: 100%;
   }
-`
+`;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -193,4 +193,4 @@ const ButtonContainer = styled.div`
   @media (max-width: 1000px) {
     flex-direction: row;
   }
-`
+`;

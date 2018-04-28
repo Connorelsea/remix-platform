@@ -1,5 +1,33 @@
-import styled from "styled-components"
-import is from "styled-is"
+import styled, { css } from "styled-components";
+import is from "styled-is";
+import styles from "../utilities/styles";
+import { prop } from "styled-tools";
+import theme from "../utilities/theme";
+import ifProp from "styled-tools/dist/cjs/ifProp";
+
+type pad = {
+  x?: number,
+  y?: number
+};
+
+function determinePadding(
+  padding: pad | string | void,
+  key: string = "padding"
+) {
+  if (!padding) return "";
+
+  if (typeof padding === "string") return `${key}: ${padding}`;
+
+  const { x, y } = padding;
+
+  if (x && y) {
+    return `${key}: ${y}px ${x}px;`;
+  } else if (x && !y) {
+    return `${key}: 0 ${x}px;`;
+  } else {
+    return `${key}: ${y}px 0;`;
+  }
+}
 
 export default styled.div`
   display: flex;
@@ -8,10 +36,25 @@ export default styled.div`
   justify-content: flex-start;
   align-content: stretch;
 
+  ${ifProp(
+    "backgroundColor",
+    css`
+      background-color: ${prop("backgroundColor")};
+    `
+  )}
+
+  ${ifProp(
+    "minWidth",
+    css`
+      min-width: ${prop("minWidth")}px;
+    `
+  )}
+
+  ${props => determinePadding(props.padding)}
+  ${props => determinePadding(props.margin, "margin")}
   /********************************* display *********************************/
   /***************** http://cssreference.io/property/display *****************/
-
-  ${is("inline")`
+    ${is("inline")`
     display: inline-flex;
   `};
 
@@ -130,8 +173,12 @@ export default styled.div`
     flex-basis: 100%;
   `};
 
+    ${is("fullWidth")`
+      width: 100%;
+    `};
+
   ${is("center")`
     align-items: center;
     justify-content: center;
   `};
-`
+`;

@@ -1,36 +1,36 @@
-import React, { Component } from "react"
-import { withRouter } from "react-router"
-import styles from "../utilities/styles"
-import styled from "styled-components/native"
-import Text from "../components/Text"
-import distanceInWords from "date-fns/distance_in_words"
-import Option from "../components/Option"
-import { bind } from "decko"
-import { mutate } from "../utilities/gql_util"
-import Spacing from "./Spacing"
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+import styles from "../utilities/styles";
+import styled from "styled-components/native";
+import Text from "../components/Text";
+import distanceInWords from "date-fns/distance_in_words";
+import Option from "../components/Option";
+import { bind } from "decko";
+import { mutate } from "../utilities/gql_util";
+import Spacing from "./Spacing";
 
 class FriendRequest extends Component {
   state = {
     focus: false,
-    accepted: false,
-  }
+    accepted: false
+  };
 
   @bind
   onFocus() {
-    this.setState({ focus: true })
+    this.setState({ focus: true });
   }
 
   @bind
   onFocusOut() {
-    this.setState({ focus: false })
+    this.setState({ focus: false });
   }
 
   @bind
   onAcceptPress(id) {
-    const { removeFriendRequest } = this.props
+    const { removeFriendRequest } = this.props;
 
     return async () => {
-      setTimeout(() => removeFriendRequest(id), 2000)
+      setTimeout(() => removeFriendRequest(id), 2000);
 
       let request = await mutate(
         `
@@ -39,15 +39,15 @@ class FriendRequest extends Component {
         }
       `,
         { friendRequestId: id }
-      )
+      );
 
-      this.setState({ accepted: true })
-    }
+      this.setState({ accepted: true });
+    };
   }
 
   render() {
-    const { createdAt, fromUser, id } = this.props
-    const { focus, accepted } = this.state
+    const { createdAt, fromUser, id } = this.props;
+    const { focus, accepted } = this.state;
 
     return (
       <Request
@@ -74,25 +74,25 @@ class FriendRequest extends Component {
               {
                 text: "Accept",
                 color: "black",
-                action: this.onAcceptPress(id),
+                action: this.onAcceptPress(id)
               },
-              { text: "Deny", color: "rgba(0,0,0,0.5)", action: () => {} },
+              { text: "Deny", color: "rgba(0,0,0,0.5)", action: () => {} }
             ]}
           />
         )}
       </Request>
-    )
+    );
   }
 }
 
-export default withRouter(FriendRequest)
+export default withRouter(FriendRequest);
 
 const Flex = styled.View`
   flex-direction: ${props => (props.row ? "row" : "column")};
   flex: 1;
   justify-content: ${props => props.jc || "flex-start"};
   margin-right: 10px;
-`
+`;
 
 const Request = styled.View`
   padding: 15px;
@@ -103,9 +103,9 @@ const Request = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-`
+`;
 
 const Middle = styled.Text`
   color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
-`
+`;

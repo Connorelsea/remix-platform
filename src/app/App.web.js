@@ -2,7 +2,7 @@ import React from "react"
 
 import Routing, { Router } from "../utilities/routing"
 import { Platform, Text, View } from "react-native"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import Home from "../screens/Home"
 import Group from "../screens/Group"
 import Chat from "../screens/Chat"

@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { bind } from "decko"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import { mutate } from "../utilities/gql_util"
 import ChatInputArea from "../components/ChatInputArea"
 import User from "../ducks/user"

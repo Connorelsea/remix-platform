@@ -1,44 +1,44 @@
-import React from "react"
-import ReactNative from "react-native"
-import { AppContainer as HotContainer } from "react-hot-loader"
-import App from "./AppProviders"
+import React from "react";
+import ReactNative from "react-native";
+import { AppContainer as HotContainer } from "react-hot-loader";
+import AppProviders from "./AppProviders";
 
 // Uses the webpack cache url to set the font family
 
-import iconFont from "react-native-vector-icons/Fonts/Feather.ttf"
+import iconFont from "react-native-vector-icons/Fonts/Feather.ttf";
 
 const iconFontStyles = `
   @font-face {
     src: url(${iconFont});
     font-family: Feather;
   }
-`
+`;
 
 // Create stylesheet
-const style = document.createElement("style")
-style.type = "text/css"
+const style = document.createElement("style");
+style.type = "text/css";
 
 if (style.styleSheet) {
-  style.styleSheet.cssText = iconFontStyles
+  style.styleSheet.cssText = iconFontStyles;
 } else {
-  style.appendChild(document.createTextNode(iconFontStyles))
+  style.appendChild(document.createTextNode(iconFontStyles));
 }
 
 // Inject stylesheet
-document.head.appendChild(style)
+document.head.appendChild(style);
 
 if (process.env.NODE_ENV !== "production") {
-  const { whyDidYouUpdate } = require("why-did-you-update")
-  whyDidYouUpdate(React)
+  const { whyDidYouUpdate } = require("why-did-you-update");
+  whyDidYouUpdate(React);
 }
 
 const render = Component => {
   ReactNative.render(
     <HotContainer>
-      <App />
+      <Component />
     </HotContainer>,
     document.getElementById("root")
-  )
-}
+  );
+};
 
-render(App)
+render(AppProviders);

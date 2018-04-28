@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import styled from "styled-components/native"
-import colors from "../utilities/colors"
-import { Motion, spring } from "react-motion"
+import React, { Component } from "react";
+import styled from "styled-components/native";
+import colors from "../utilities/colors";
+import { Motion, spring } from "react-motion";
 
 export default class Logo extends Component {
   state = {
-    multiplier: 0,
-  }
+    multiplier: 0
+  };
 
   componentDidMount() {
     // setTimeout(() => this.setState({ multiplier: spring(5) }), 600)
@@ -14,7 +14,7 @@ export default class Logo extends Component {
   }
 
   render() {
-    const { multiplier } = this.state
+    const { multiplier } = this.state;
     let colorsRealBlack = [
       "black", // black
       "#751489", // purple
@@ -29,8 +29,8 @@ export default class Logo extends Component {
       "#B42525", // red
       "#FF8383", // salmon
       "#FFCACA", // light pink
-      "#D1D5DB", // grey
-    ]
+      "#D1D5DB" // grey
+    ];
 
     return (
       <Container>
@@ -55,28 +55,28 @@ export default class Logo extends Component {
                     multiplier={Math.max(value.multiplier, 1.75)}
                   >
                     emix
-                  </RText>,
+                  </RText>
                 ]
               )}
             </RainbowContainer>
           )}
         </Motion>
       </Container>
-    )
+    );
   }
 }
 
-const Container = styled.View``
+const Container = styled.View``;
 
 const RainbowContainer = styled.View`
   /* position: relative; */
   height: 50px;
-`
+`;
 
 const Text = styled.Text`
   font-size: 50px;
   font-weight: 900;
-`
+`;
 
 const RText = styled.Text`
   font-size: 50px;
@@ -85,4 +85,4 @@ const RText = styled.Text`
   position: absolute;
   left: ${props => props.i * props.multiplier}px;
   z-index: ${props => -props.i};
-`
+`;

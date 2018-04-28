@@ -1,6 +1,6 @@
 import React from "react"
 import Message from "./Message"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import Spacing from "./Spacing"
 
 class MessageList extends React.Component {

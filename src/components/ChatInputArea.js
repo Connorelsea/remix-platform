@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import styles from "../utilities/styles"
 import Spacing from "../components/Spacing"
 import { bind } from "decko"

@@ -3,6 +3,7 @@ query initialUserQuery($id: ID!) {
     id
     name
     username
+    email
     color
     currentReadPositions {
       userId
@@ -53,6 +54,7 @@ query initialUserQuery($id: ID!) {
   relevantUsers {
     id
     name
+    email
     username
     color
     iconUrl

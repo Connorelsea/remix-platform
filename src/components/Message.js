@@ -1,44 +1,44 @@
-import React, { Component } from "react"
-import styled from "styled-components/native"
-import styles from "../utilities/styles"
-import Text from "../components/Text"
-import Spacing from "../components/Spacing"
-import fontColorContrast from "font-color-contrast"
-import Icon from "react-native-vector-icons/dist/Feather"
-import { Motion, spring } from "react-motion"
-import { View, TouchableOpacity } from "react-native"
-import { bind } from "decko"
+import React, { Component } from "react";
+import styled from "styled-components/native";
+import styles from "../utilities/styles";
+import Text from "../components/Text";
+import Spacing from "../components/Spacing";
+import fontColorContrast from "font-color-contrast";
+import Icon from "react-native-vector-icons/dist/Feather";
+import { Motion, spring } from "react-motion";
+import { View, TouchableOpacity } from "react-native";
+import { bind } from "decko";
 
 class Message extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.user.color !== this.props.user.color) {
-      return true
+      return true;
     }
 
     if (nextProps.user.name !== this.props.user.name) {
-      return true
+      return true;
     }
 
     if (
       nextProps.content.type === "remix/text" &&
       nextProps.content.data.text !== this.props.content.data.text
     ) {
-      return true
+      return true;
     }
 
     if (nextProps.readPositions !== this.props.readPositions) {
-      return true
+      return true;
     }
 
-    return false
+    return false;
   }
 
   @bind
   renderContent(type, data, style) {
-    const { user: { id, name, color }, small, currentUser } = this.props
-    const textColor = fontColorContrast(color)
-    const { opacity, offset } = style
-    let isCurrentUser = currentUser.id === id ? 1 : 0
+    const { user: { id, name, color }, small, currentUser } = this.props;
+    const textColor = fontColorContrast(color);
+    const { opacity, offset } = style;
+    let isCurrentUser = currentUser.id === id ? 1 : 0;
 
     if (type === "remix/text") {
       return (
@@ -57,7 +57,7 @@ class Message extends Component {
               : data.text}
           </Text>
         </Bubble>
-      )
+      );
     } else if (type === "remix/spotify/track") {
       if (small) {
         return (
@@ -74,7 +74,7 @@ class Message extends Component {
               Spotify
             </Text>
           </Bubble>
-        )
+        );
       }
 
       return (
@@ -88,7 +88,7 @@ class Message extends Component {
             allowtransparency="true"
           />
         </FrameContainer>
-      )
+      );
     } else if (type === "remix/spotify/album") {
       //https://open.spotify.com/embed/album/1BzMONuUlgUnqOrg2aQeAY
       if (small) {
@@ -106,7 +106,7 @@ class Message extends Component {
               Spotify Album
             </Text>
           </Bubble>
-        )
+        );
       }
 
       return (
@@ -120,14 +120,14 @@ class Message extends Component {
             allowtransparency="true"
           />
         </FrameContainer>
-      )
+      );
     }
   }
 
   @bind
   onSelect() {
-    const { id, addSelectedMessage } = this.props
-    addSelectedMessage(id)
+    const { id, addSelectedMessage } = this.props;
+    addSelectedMessage(id);
   }
 
   render() {
@@ -138,14 +138,14 @@ class Message extends Component {
       prev,
       currentUser,
       small,
-      isSelected,
-    } = this.props
+      isSelected
+    } = this.props;
 
-    let sameUserAsPrev = prev.user && prev.user.id === id
-    let isCurrentUser = currentUser.id === id ? 1 : 0
-    const space = <Spacing size={6} />
+    let sameUserAsPrev = prev.user && prev.user.id === id;
+    let isCurrentUser = currentUser.id === id ? 1 : 0;
+    const space = <Spacing size={6} />;
 
-    const align = isCurrentUser ? "flex-end" : "flex-start"
+    const align = isCurrentUser ? "flex-end" : "flex-start";
 
     return (
       <Row>
@@ -183,36 +183,36 @@ class Message extends Component {
           {space}
         </Container>
       </Row>
-    )
+    );
   }
 }
 
-export default Message
+export default Message;
 
 const Row = styled.View`
   flex-direction: row;
   width: 100%;
   padding: 0px 15px;
-`
+`;
 
 const HeaderArea = styled.View`
   align-items: ${props => props.align};
-`
+`;
 const BodyArea = styled.View`
   align-items: ${props => props.align};
-`
-const IconArea = styled.View``
+`;
+const IconArea = styled.View``;
 
 const SelectedRadio = styled.View`
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: blue;
-`
+`;
 
 const ReadPos = styled.View`
   flex-direction: row;
-`
+`;
 
 const Container = styled.View`
   align-self: ${({ iscurrentuser }) =>
@@ -220,7 +220,7 @@ const Container = styled.View`
   align-items: ${({ iscurrentuser }) =>
     iscurrentuser ? "flex-end" : "flex-start"};
   flex: 1;
-`
+`;
 
 const Bubble = styled.View`
   padding: ${props => (props.small ? "5px 11px" : "9px 13px")};
@@ -231,11 +231,11 @@ const Bubble = styled.View`
   flex-direction: row;
   position: relative;
   ${({ left }) => left && `left: ${left};`} ${({ right }) =>
-      right && `right: ${right};`};
-`
+    right && `right: ${right};`};
+`;
 
 const FrameContainer = styled.View`
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid ${styles.colors.grey[300]};
-`
+`;

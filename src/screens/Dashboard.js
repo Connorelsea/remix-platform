@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import styled from "styled-components/native"
-import AppScrollContainer from "../components/AppScrollContainer"
-import Button from "../components/Button"
-import Spacing from "../components/Spacing"
-import FriendRequest from "../components/FriendRequest"
-import GroupCard from "../components/GroupCard"
-import Icon from "react-native-vector-icons/dist/Feather"
-import HelpCard from "../components/HelpCard"
-import User from "../ducks/user"
-import Text from "../components/Text"
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components/native";
+import AppScrollContainer from "../components/AppScrollContainer";
+import Button from "../components/Button";
+import Spacing from "../components/Spacing";
+import FriendRequest from "../components/FriendRequest";
+import GroupCard from "../components/GroupCard";
+import Icon from "react-native-vector-icons/dist/Feather";
+import HelpCard from "../components/HelpCard";
+import User from "../ducks/user";
+import Text from "../components/Text";
 
 class Dashboard extends Component {
   render() {
@@ -18,8 +18,8 @@ class Dashboard extends Component {
       friendRequests,
       groups,
       removeFriendRequest,
-      addGroups,
-    } = this.props
+      addGroups
+    } = this.props;
 
     return (
       <AppScrollContainer user={reduxUser} backText="remove" title="Remix">
@@ -61,7 +61,7 @@ class Dashboard extends Component {
         <Spacing size={10} />
         <Button onPress={this.props.logout} title="Logout" small={1} />
       </AppScrollContainer>
-    )
+    );
   }
 }
 
@@ -69,21 +69,21 @@ function mapDispatchToProps(dispatch) {
   return {
     logout: () => dispatch(User.creators.logout()),
     addGroups: groups => dispatch(User.creators.addGroups(groups)),
-    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
-  }
+    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id))
+  };
 }
 
 function mapStateToProps(state) {
   return {
     reduxUser: state.user,
     friendRequests: state.user.friendRequests,
-    groups: state.user.groups,
-  }
+    groups: state.user.groups
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 const ActionContainer = styled.View`
   flex-direction: row;
   margin-bottom: 20px;
-`
+`;

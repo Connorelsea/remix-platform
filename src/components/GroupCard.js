@@ -1,22 +1,22 @@
-import React, { Component } from "react"
-import { withRouter } from "react-router"
-import styled from "styled-components/native"
-import Text from "../components/Text"
-import { bind } from "decko"
-import { TouchableOpacity } from "react-native"
-import styles from "../utilities/styles"
-import Card from "../components/Card"
-import Spacing from "./Spacing"
-import { connect } from "react-redux"
-import User from "../ducks/user"
-import Message from "./Message"
-import Gradient from "./Gradient"
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+import styled from "styled-components/native";
+import Text from "../components/Text";
+import { bind } from "decko";
+import { TouchableOpacity } from "react-native";
+import styles from "../utilities/styles";
+import Card from "../components/Card";
+import Spacing from "./Spacing";
+import { connect } from "react-redux";
+import User from "../ducks/user";
+import Message from "./Message";
+import Gradient from "./Gradient";
 
 class GroupCard extends Component {
   @bind
   onPress() {
-    const { id } = this.props.group
-    this.props.history.push(`/+${id}`)
+    const { id } = this.props.group;
+    this.props.history.push(`/+${id}`);
   }
 
   render() {
@@ -26,21 +26,21 @@ class GroupCard extends Component {
       name,
       description,
       isDirectMessage,
-      members,
-    } = this.props.group
-    const { user, messages, users } = this.props
+      members
+    } = this.props.group;
+    const { user, messages, users } = this.props;
 
-    let title = name
-    let icon = iconUrl
+    let title = name;
+    let icon = iconUrl;
 
     if (isDirectMessage) {
-      console.log(isDirectMessage)
-      console.log(members)
+      console.log(isDirectMessage);
+      console.log(members);
 
-      const otherUser = members.find(member => member.id !== user.id)
-      const otherUserFound = users.find(u => u.id === otherUser.id) || {}
-      title = otherUserFound.name
-      icon = otherUserFound.iconUrl
+      const otherUser = members.find(member => member.id !== user.id);
+      const otherUserFound = users.find(u => u.id === otherUser.id) || {};
+      title = otherUserFound.name;
+      icon = otherUserFound.iconUrl;
     }
 
     return (
@@ -49,7 +49,7 @@ class GroupCard extends Component {
           <Container>
             <Image
               source={{
-                uri: icon || "https://www.arete.net/Content/Images/nopic.jpg",
+                uri: icon || "https://www.arete.net/Content/Images/nopic.jpg"
               }}
             />
             <Spacing size={15} />
@@ -61,7 +61,7 @@ class GroupCard extends Component {
                   position: "absolute",
                   bottom: 0,
                   // border: "1px solid black",
-                  zIndex: 9999,
+                  zIndex: 9999
                 }}
               />
               <Text tier="title">{title}</Text>
@@ -85,21 +85,21 @@ class GroupCard extends Component {
           </Container>
         </Card>
       </TouchableOpacity>
-    )
+    );
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     subscribeToFriendRequests: id => {
-      dispatch(User.creators.subscribeToFriendRequests(id))
+      dispatch(User.creators.subscribeToFriendRequests(id));
     },
     subscribeToMessages: id => {
-      dispatch(User.creators.subscribeToMessages(id))
+      dispatch(User.creators.subscribeToMessages(id));
     },
     loadInitialUser: id => dispatch(User.creators.loadInitialUser(id)),
-    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id)),
-  }
+    removeFriendRequest: id => dispatch(User.creators.removeFriendRequest(id))
+  };
 }
 
 function mapStateToProps(state, props) {
@@ -107,15 +107,15 @@ function mapStateToProps(state, props) {
     user: state.user,
     users: state.user.users,
     friendRequests: state.user.friendRequests,
-    messages: User.selectors.getGroupMessages(state, props.group.id),
-  }
+    messages: User.selectors.getGroupMessages(state, props.group.id)
+  };
 }
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(GroupCard)
-)
+);
 
-const imageSize = 100
+const imageSize = 100;
 
 const Image = styled.Image`
   height: ${imageSize}px;
@@ -123,17 +123,17 @@ const Image = styled.Image`
   border-radius: ${imageSize / 2};
   background-color: ${styles.colors.grey[100]};
   overflow: hidden;
-`
+`;
 
 const Container = styled.View`
   flex-direction: row;
-`
+`;
 
 const MessageContainer = styled.View`
   align-items: center;
   width: 100%;
-`
+`;
 
 const Body = styled.View`
   flex: 1;
-`
+`;

@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import styled from "styled-components/native"
-import styles from "../utilities/styles"
+import React, { Component } from "react";
+import styled from "styled-components/native";
+import styles from "../utilities/styles";
 
 export default class Input extends Component {
   render() {
@@ -11,8 +11,8 @@ export default class Input extends Component {
       onSubmitEditing,
       innerRef,
       type,
-      secureTextEntry = false,
-    } = this.props
+      secureTextEntry = false
+    } = this.props;
 
     return (
       <StyledInput
@@ -25,7 +25,7 @@ export default class Input extends Component {
         type={type}
         secureTextEntry={secureTextEntry}
       />
-    )
+    );
   }
 }
 
@@ -38,4 +38,4 @@ const StyledInput = styled.TextInput`
   background-color: white;
   flex: 1;
   width: 100%;
-`
+`;

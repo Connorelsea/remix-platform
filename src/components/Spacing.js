@@ -1,7 +1,29 @@
-import styled from "styled-components/native"
+import React, { Component, Node } from "React";
+import styled from "styled-components/native";
 
-export default styled.View`
+type Props = {
+  size: string,
+  color: string,
+  fullWidth?: boolean
+};
+
+class SpacingComponent extends Component<Props> {
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render(): Node {
+    const { size, color, fullWidth = false } = this.props;
+    return <Spacing size={size} color={color} fullWidth={fullWidth} />;
+  }
+}
+
+const Spacing = styled.View`
   height: ${props => props.size}px;
   background-color: ${props => props.color || "transparent"};
-  width: ${props => (props.fullwidth ? "100%" : props.size + "px")};
-`
+  width: ${props => {
+    return props.fullwidth ? "100%" : props.size + "px";
+  }};
+`;
+
+export default SpacingComponent;

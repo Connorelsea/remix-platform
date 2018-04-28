@@ -1,9 +1,9 @@
 {
-  "presets": ["react-native", "env"],
+  "presets": ["env", "react-native"],
   "plugins": [
+    ["styled-components", { "displayName": true }],
     "react-hot-loader/babel",
     "react-native-web",
-    ["styled-components", { "displayName": true, "minify": false }],
     "transform-decorators-legacy",
     "transform-class-properties"
   ],

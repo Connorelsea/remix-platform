@@ -1,27 +1,28 @@
-import React, { Component } from "react"
-import styled from "styled-components/native"
-import { withRouter } from "react-router"
-import Button from "../components/Button"
-import AppScrollContainer from "../components/AppScrollContainer"
-import TextInput from "../components/Input"
-import { mutate } from "../utilities/gql_util"
-import { bind } from "decko"
-import ColorPicker from "../components/ColorPicker"
-import Text from "../components/Text"
-import Spacing from "../components/Spacing"
-import styles from "../utilities/styles"
-import MessageMock from "../components/MessageMock"
-import Card from "../components/Card"
-import FlexContainer from "../components/FlexContainer"
-import FlexContainerItem from "../components/FlexContainerItem"
-import { set, exists, setArray, addToArray } from "../utilities/storage"
-import { connect } from "react-redux"
+import React, { Component } from "react";
+import styled from "styled-components";
+import { withRouter } from "react-router";
+import Button from "../components/Button";
+import AppScrollContainer from "../components/AppScrollContainer";
+import TextInput from "../components/Input";
+import { mutate } from "../utilities/gql_util";
+import { bind } from "decko";
+import ColorPicker from "../components/ColorPicker";
+import Text from "../components/Text";
+import Spacing from "../components/Spacing";
+import styles from "../utilities/styles";
+import MessageMock from "../components/MessageMock";
+import Card from "../components/Card";
+import FlexContainer from "../components/FlexContainer";
+import FlexContainerItem from "../components/FlexContainerItem";
+import { set, exists, setArray, addToArray } from "../utilities/storage";
+import { connect } from "react-redux";
 import {
   setCurrentDeviceId,
   setDevices,
   addDevice,
-  loginWithCurrentDevice,
-} from "../ducks/auth"
+  loginWithCurrentDevice
+} from "../ducks/auth";
+import Box from "../elements/Box";
 
 class UserLogin extends Component {
   @bind
@@ -32,7 +33,7 @@ class UserLogin extends Component {
     name,
     description,
     color,
-    iconUrl,
+    iconUrl
   }) {
     mutate(
       `
@@ -72,23 +73,23 @@ class UserLogin extends Component {
         name,
         description,
         color,
-        iconUrl,
+        iconUrl
       }
     )
       .then(async res => {
-        const device = res.data.createUser
+        const device = res.data.createUser;
 
         const {
           addDevice,
           setCurrentDeviceId,
-          loginWithCurrentDevice,
-        } = this.props
+          loginWithCurrentDevice
+        } = this.props;
 
-        addDevice(device)
-        setCurrentDeviceId(device.id)
-        loginWithCurrentDevice()
+        addDevice(device);
+        setCurrentDeviceId(device.id);
+        loginWithCurrentDevice();
 
-        this.props.history.push("/")
+        this.props.history.push("/");
       })
       .catch(error => {
         this.setState({
@@ -96,32 +97,32 @@ class UserLogin extends Component {
             {
               key: "form",
               error:
-                "There was a server side error. Review your inputs and try again",
-            },
-          ],
-        })
-        console.log(error)
-      })
+                "There was a server side error. Review your inputs and try again"
+            }
+          ]
+        });
+        console.log(error);
+      });
   }
 
   @bind
   onCreatePress() {
-    const { color, email, username, password, name } = this.state
+    const { color, email, username, password, name } = this.state;
 
-    let errors = []
+    let errors = [];
 
     if (color === "") {
       errors.push({
         key: "color",
-        error: "Choose a personal color above",
-      })
+        error: "Choose a personal color above"
+      });
     }
 
     if (!email) {
       errors.push({
         key: "email",
-        error: "Enter your email",
-      })
+        error: "Enter your email"
+      });
     } else if (
       !email.match(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -129,77 +130,77 @@ class UserLogin extends Component {
     ) {
       errors.push({
         key: "email",
-        error: "Enter a valid email address",
-      })
+        error: "Enter a valid email address"
+      });
     }
 
     if (!username) {
       errors.push({
         key: "username",
-        error: "Enter a username",
-      })
+        error: "Enter a username"
+      });
     } else if (username.includes(" ")) {
       errors.push({
         key: "username",
-        error: "Username cannot contain whitespace",
-      })
+        error: "Username cannot contain whitespace"
+      });
     } else if (!username.match(/^[a-z0-9]+$/i)) {
       errors.push({
         key: "username",
-        error: "Username must only contain letters and numbers",
-      })
+        error: "Username must only contain letters and numbers"
+      });
     }
 
     if (!name) {
       errors.push({
         key: "name",
-        error: "Enter your display name",
-      })
+        error: "Enter your display name"
+      });
     }
 
     if (!password) {
       errors.push({
         key: "password",
-        error: "Enter a password",
-      })
+        error: "Enter a password"
+      });
     } else if (password.trim().length < 4) {
       errors.push({
         key: "password",
-        error: "Enter a longer password",
-      })
+        error: "Enter a longer password"
+      });
     }
 
     if (errors.length === 0) {
-      this.setState({ errors: [] })
-      this.attemptCreateUser(this.state)
-    } else this.setState({ errors })
+      this.setState({ errors: [] });
+      this.attemptCreateUser(this.state);
+    } else this.setState({ errors });
   }
 
   onTextChangeFor(name) {
-    return value => this.setState({ [name]: value })
+    return value => this.setState({ [name]: value });
   }
 
   state = {
     color: "",
     messages: [],
-    errors: [],
-  }
+    errors: []
+  };
 
   @bind
   onColorChange(color) {
-    this.setState({ color })
+    this.setState({ color });
   }
 
   @bind
   fieldHasError(field) {
-    let errors = this.state.errors.find(e => e.key === field)
-    if (!errors) return false
-    if (errors.length > 0) return true
-    return false
+    let errors = this.state.errors.find(e => e.key === field);
+    if (!errors) return false;
+    if (errors.length > 0) return true;
+    return false;
   }
 
   render() {
-    const { name, color, errors } = this.state
+    const { name, color, errors } = this.state;
     return (
       <AppScrollContainer title="New User">
         <Text tier="thintitle">Personal Color</Text>
@@ -217,21 +218,26 @@ class UserLogin extends Component {
               This is what your messages will look like to other users
             </Text>
             <Spacing size={15} />
+
             <Card>
-              <Spacing size={10} />
-              <Text tier="title">{name ? name : "Display Name"}</Text>
-              <Spacing size={10} />
-              <MessageMock
-                text={"Welcome to Remix!"}
-                color={styles.colors.grey[200]}
-              />
-              <MessageMock
-                text={`Thank you ` + (name ? `- I'm ${name}` : "")}
-                name={name}
-                color={color}
-                currentUser
-              />
-              <Spacing size={10} />
+              <Box full column>
+                <Spacing size={5} />
+                <Box padding={{ x: 15 }}>
+                  <Text tier="title">{name ? name : "Display Name"}</Text>
+                </Box>
+                <Spacing size={10} />
+                <MessageMock
+                  text={"Welcome to Remix!"}
+                  color={styles.colors.grey[200]}
+                />
+                <MessageMock
+                  text={`Thank you ` + (name ? `- I'm ${name}` : "")}
+                  name={name}
+                  color={color}
+                  currentUser
+                />
+                <Spacing size={5} />
+              </Box>
             </Card>
           </FlexContainerItem>
 
@@ -248,7 +254,7 @@ class UserLogin extends Component {
               <Spacing size={15} />,
               [errors.map(e => <Text tier="error">{e.error}</Text>)],
               <Spacing size={10} />,
-              <Text tier="body">Once fixed, try to join again</Text>,
+              <Text tier="body">Once fixed, try to join again</Text>
             ]}
 
             <Spacing size={15} />
@@ -301,7 +307,7 @@ class UserLogin extends Component {
 
         <Spacing size={35} />
       </AppScrollContainer>
-    )
+    );
   }
 }
 
@@ -309,16 +315,16 @@ function mapDispatchToProps(dispatch) {
   return {
     addDevice: device => dispatch(addDevice(device)),
     setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
-    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
-  }
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice())
+  };
 }
 
 function mapStateToProps(state, props) {
   return {
-    devices: state.auth.devices,
-  }
+    devices: state.auth.devices
+  };
 }
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(UserLogin)
-)
+);

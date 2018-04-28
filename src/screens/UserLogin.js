@@ -1,56 +1,56 @@
-import React, { Component } from "react"
-import styled from "styled-components/native"
-import Button from "../components/Button"
-import AppScrollContainer from "../components/AppScrollContainer"
-import Input from "../components/Input"
-import { mutate } from "../utilities/gql_util"
-import { bind } from "decko"
-import { set, get, getArray, exists } from "../utilities/storage"
-import { withRouter } from "react-router"
-import { connect } from "react-redux"
-import User from "../ducks/user"
-import { View } from "react-native"
-import Spacing from "../components/Spacing"
-import Text from "../components/Text"
-import Card from "../components/Card"
-import FlexContainer from "../components/FlexContainer"
-import Device from "../components/Device"
-import Box from "../elements/Box"
-import { Platform } from "react-native"
-import UAParser from "ua-parser-js"
+import React, { Component } from "react";
+import styled from "styled-components";
+import Button from "../elements/Button";
+import AppScrollContainer from "../components/AppScrollContainer";
+import Input from "../components/Input";
+import { mutate } from "../utilities/gql_util";
+import { bind } from "decko";
+import { set, get, getArray, exists } from "../utilities/storage";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
+import User from "../ducks/user";
+import { View } from "react-native";
+import Spacing from "../components/Spacing";
+import Text from "../components/Text";
+import Card from "../components/Card";
+import FlexContainer from "../components/FlexContainer";
+import DeviceCard from "../components/DeviceCard";
+import Box from "../elements/Box";
+import { Platform } from "react-native";
+import UAParser from "ua-parser-js";
 import {
   setCurrentDeviceId,
   addDevice,
-  loginWithCurrentDevice,
-} from "../ducks/auth"
+  loginWithCurrentDevice
+} from "../ducks/auth";
 
 class UserLogin extends Component {
   getDeviceMeta() {
     if (Platform.OS === "web") {
-      const agent = new UAParser()
+      const agent = new UAParser();
 
-      console.log("CPU", agent.getCPU())
+      console.log("CPU", agent.getCPU());
 
       return {
         operatingSystem:
           agent.getDevice().vendor + " " + agent.getDevice().model,
         browser: agent.getBrowser().name + ";" + agent.getBrowser().version,
         cpu: agent.getCPU().architecture || "Unknown",
-        gpu: "Unknown",
-      }
+        gpu: "Unknown"
+      };
     }
 
     return {
       operatingSystem: "Unknown",
       browser: "Unknown",
       cpu: "Unknown",
-      gpu: "Unknown",
-    }
+      gpu: "Unknown"
+    };
   }
 
   @bind
   attemptEmailLogin(email, password) {
-    const { operatingSystem, browser, cpu, gpu } = this.getDeviceMeta()
+    const { operatingSystem, browser, cpu, gpu } = this.getDeviceMeta();
 
     mutate(
       `
@@ -88,53 +88,57 @@ class UserLogin extends Component {
     )
       .then(this.processLoginResponse)
       .catch(err => {
-        console.log("USER LOGIN ERROR ", err)
+        console.log("USER LOGIN ERROR ", err);
         this.setState({
-          error: err,
-        })
-      })
+          error: err
+        });
+      });
   }
 
   @bind
   async processLoginResponse(response) {
-    const { addDevice, setCurrentDeviceId, loginWithCurrentDevice } = this.props
-    const device = response.data.loginWithNewDevice
+    const {
+      addDevice,
+      setCurrentDeviceId,
+      loginWithCurrentDevice
+    } = this.props;
+    const device = response.data.loginWithNewDevice;
 
-    addDevice(device)
-    setCurrentDeviceId(device.id)
-    loginWithCurrentDevice()
+    addDevice(device);
+    setCurrentDeviceId(device.id);
+    loginWithCurrentDevice();
 
-    this.props.history.push("/")
+    this.props.history.push("/");
   }
 
   state = {
     loginCredential: undefined,
     loginPassword: undefined,
-    loginCredentialType: "email",
-  }
+    loginCredentialType: "email"
+  };
 
   @bind
   onChangeCredential(text) {
-    this.setState({ loginCredential: text })
+    this.setState({ loginCredential: text });
   }
 
   @bind
   onChangePassword(text) {
-    this.setState({ loginPassword: text })
+    this.setState({ loginPassword: text });
   }
 
   @bind
   async onLoginPress() {
     const {
       loginCredential,
-      loginPassword /* loginCredentialType */,
-    } = this.state
+      loginPassword /* loginCredentialType */
+    } = this.state;
 
-    this.attemptEmailLogin(loginCredential, loginPassword)
+    this.attemptEmailLogin(loginCredential, loginPassword);
   }
 
   renderDevices() {
-    const { devices } = this.state
+    const { devices } = this.state;
 
     if (devices) {
       return (
@@ -145,15 +149,15 @@ class UserLogin extends Component {
             Login using an account linked to this device
           </Text>
           <Spacing size={15} />
-          {devices.map(d => <Device {...d} />)}
+          {devices.map(d => <DeviceCard {...d} />)}
           <Spacing size={20} />
         </Box>
-      )
+      );
     }
   }
 
   render() {
-    const { devices, error } = this.state
+    const { devices, error } = this.state;
 
     return (
       <AppScrollContainer title="Login">
@@ -189,12 +193,12 @@ class UserLogin extends Component {
             <Text tier="body">{error.name}</Text>,
             <Text tier="body">{error.message}</Text>,
             <Text tier="body">{JSON.stringify(error, null, 2)}</Text>,
-            <Spacing size={20} />,
+            <Spacing size={20} />
           ]}
-          <Button onPress={this.onLoginPress} title="Login" />
+          <Button onClick={this.onLoginPress} title="Login" />
         </View>
       </AppScrollContainer>
-    )
+    );
   }
 }
 
@@ -202,14 +206,14 @@ function mapDispatchToProps(dispatch) {
   return {
     addDevice: device => dispatch(addDevice(device)),
     setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
-    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
-  }
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice())
+  };
 }
 
 function mapStateToProps(state, props) {
-  return {}
+  return {};
 }
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(UserLogin)
-)
+);

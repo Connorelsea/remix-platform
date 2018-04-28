@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import styled from "styled-components/native"
+import styled from "styled-components"
 import AppScrollContainer from "../components/AppScrollContainer"
 import { mutate } from "../utilities/gql_util"
 import styles from "../utilities/styles"
