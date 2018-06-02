@@ -1,0 +1,13 @@
+#import "../types/fragments.graphql"
+
+query fetchMessagesData($userId: ID!) {
+  User(id: $userId) {
+    allMessages {
+      ...message
+    }
+
+    currentReadPositions {
+      ...readPosition
+    }
+  }
+}

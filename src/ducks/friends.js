@@ -1,32 +1,42 @@
+import { query } from "../utilities/gql_util";
+import friendsDataQuery from "./friends-data.graphql";
+import { CurrentDeviceSelector } from "./auth";
+import { type GlobalState } from "../reducers/rootReducer";
+
 // @flow
 
 // State
 // Type definitions and initial state
 
 export type State = {
-  friendIds: Array<string>
+  friends: Array<string>,
+  friendsRequests: Array<any>,
 };
 
 const initialState: State = {
-  friendIds: [],
+  friends: [],
   friendRequests: [],
-  groupInvitations: []
+  groupInvitations: [],
+  pendingFriendRequests: [],
+  pendingGroupRequests: [],
 };
 
 // Action Types
 // Type definitions
 
-type NameAction = {
-  type: "NAME",
-  payload: any
+type GetDataAction = { type: "GET_DATA_ACTION" };
+
+type SetDataAction = {
+  type: "SET_FRIENDS_DATA_ACTION",
+  payload: { data: State },
 };
 
-type Action = NameAction | NameAction;
+type Action = GetDataAction | SetDataAction;
 
 // Middleware action types
 
 type PromiseAction = Promise<Action>;
-type ThunkAction = (dispatch: Dispatch, getState: () => State) => any;
+type ThunkAction = (dispatch: GlobalState, getState: () => State) => any;
 
 type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
@@ -34,25 +44,48 @@ type Dispatch = (
 
 // Action creators
 
-export function doNameAction(args: any): NameAction {
+export function fetchFriendsData(userId): ThunkAction {
+  return async function(dispatch, getState) {
+    const state: GlobalState = getState();
+
+    const response = await query(
+      friendsDataQuery,
+      { userId },
+      state.auth.apolloClient
+    );
+
+    const payload = response.data.User;
+    console.log("friends payload", payload);
+    dispatch(setData(payload));
+  };
+}
+
+export function setData(data: State): SetDataAction {
   return {
-    type: "NAME",
-    payload: {}
+    type: "SET_FRIENDS_DATA_ACTION",
+    payload: { data },
   };
 }
 
 // Reducer
 
-function reducer(state: State = initialState, action: Action): State {
+export function reducer(
+  state: State = {
+    friends: [],
+    friendRequests: [],
+    groupInvitations: [],
+    pendingFriendRequests: [],
+    pendingGroupRequests: [],
+  },
+  action: Action
+): State {
   switch (action.type) {
-    case "NAME": {
+    case "SET_FRIENDS_DATA_ACTION": {
       return {
-        ...state
+        ...action.payload.data,
       };
     }
     default:
       return state;
   }
 }
-
-export default reducer;

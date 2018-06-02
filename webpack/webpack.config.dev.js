@@ -1,6 +1,9 @@
-const path = require("path")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin")
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
+const history = require("connect-history-api-fallback");
+const convert = require("koa-connect");
+const webpackServeWaitpage = require("webpack-serve-waitpage");
 
 module.exports = {
   mode: "development",
@@ -87,4 +90,15 @@ module.exports = {
   },
 
   devtool: "source-map", //eval is faster
-}
+};
+
+// Modifications for webpack-serve
+// see webpack-serve docs for add and middlewares
+
+module.exports.serve = {
+  content: [__dirname],
+  add: (app, middleware, options) => {
+    app.use(convert(history()));
+    app.use(webpackServeWaitpage(options));
+  },
+};

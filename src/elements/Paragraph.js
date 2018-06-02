@@ -8,10 +8,16 @@ type Props = {
   children?: Node,
   color?: string,
   center?: boolean,
-  fontSize?: number
+  fontSize?: number,
 };
 
 class Paragraph extends Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
+    if (nextProps.children !== this.props.children) return true;
+    if (nextProps.color !== this.props.color) return true;
+    else return false;
+  }
+
   render(): Node {
     const { children, color, center, fontSize } = this.props;
     return (

@@ -1,5 +1,7 @@
 // @flow
 
+import { type GlobalState } from "../reducers/rootReducer";
+
 // State
 // Type definitions and initial state
 
@@ -24,7 +26,7 @@ type Action = NameAction | NameAction;
 // Middleware action types
 
 type PromiseAction = Promise<Action>;
-type ThunkAction = (dispatch: Dispatch, getState: () => State) => any;
+type ThunkAction = (dispatch: Dispatch, getState: () => GlobalState) => any;
 
 type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

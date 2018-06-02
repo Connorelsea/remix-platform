@@ -20,7 +20,7 @@ function mapStateToProps(state: GlobalState) {
   console.log("SELECTED THEME", themeSelector(state));
   return {
     theme: themeSelector(state),
-    apolloClient: state.auth.apolloClient
+    apolloClient: state.auth.apolloClient,
   };
 }
 

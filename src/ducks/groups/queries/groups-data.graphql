@@ -1,0 +1,9 @@
+#import "../../../types/fragments.graphql"
+
+query fetchGroupsData($userId: ID!) {
+  User(id: $userId) {
+    groups {
+      ...group
+    }
+  }
+}

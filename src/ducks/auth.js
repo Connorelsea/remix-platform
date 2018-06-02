@@ -17,15 +17,17 @@ import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { type Device } from "../types/device";
+import { initData } from "./app";
+import { setCurrentUserId } from "./identity";
 
 // Default non-authenticated apollo client for use before user
 // is logged in
 
 const link = ApolloLink.from([errorLink, httpLink]);
 
-const apolloClient = new ApolloClient({
+export const defaultApolloClient = new ApolloClient({
   link,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 // INITIAL STATE
@@ -35,15 +37,15 @@ export type State = {
   +currentDeviceId: string | void,
   +apolloClient: ApolloClient,
   +authenticated: boolean,
-  +expiredRefreshToken: boolean
+  +expiredRefreshToken: boolean,
 };
 
 const initialState: State = {
   devices: [],
   currentDeviceId: undefined,
   authenticated: false,
-  apolloClient,
-  expiredRefreshToken: false
+  apolloClient: defaultApolloClient,
+  expiredRefreshToken: false,
 };
 
 // Setting the auth device represents a logged in user. Removing
@@ -64,38 +66,38 @@ const initialState: State = {
 
 type SetDevicesAction = {
   type: "SET_DEVICES",
-  payload: { devices: Array<Device> }
+  payload: { devices: Array<Device> },
 };
 
 type AddDeviceAction = {
   type: "ADD_DEVICE",
-  payload: { device: Device }
+  payload: { device: Device },
 };
 
 type ReplaceDeviceAction = {
   type: "REPLACE_DEVICE",
-  payload: { device: Device }
+  payload: { device: Device },
 };
 
 type SetCurrentDeviceIdAction = {
   type: "SET_CURRENT_DEVICE_ID",
-  payload: { deviceId: string }
+  payload: { deviceId: string },
 };
 
 type LoginWithCurrentDeviceAction = {
-  type: "LOGIN_WITH_CURRENT_DEVICE"
+  type: "LOGIN_WITH_CURRENT_DEVICE",
 };
 
 type LoginWithDevicePasswordAction = {
   type: "LOGIN_WITH_DEVICE_PASSWORD",
-  payload: { deviceId: string, password: string }
+  payload: { deviceId: string, password: string },
 };
 
 type SetApolloClientAction = {
   type: "SET_APOLLO_CLIENT",
   payload: {
-    apolloClient: any
-  }
+    apolloClient: any,
+  },
 };
 
 type LogoutAction = { type: "LOGOUT" };
@@ -103,18 +105,18 @@ type LogoutAction = { type: "LOGOUT" };
 type SetExpiredRefreshTokenAction = {
   type: "SET_EXPIRED_REFRESH_TOKEN",
   payload: {
-    expired: boolean
-  }
+    expired: boolean,
+  },
 };
 
 type SetAuthStatusAction = {
   type: "SET_AUTH_STATUS",
-  payload: { status: boolean }
+  payload: { status: boolean },
 };
 
 type UpdateCurrentRefreshTokenType = {
   type: "UPDATE_CURRENT_REFRESH_TOKEN",
-  payload: { password: string }
+  payload: { password: string },
 };
 
 type UpdateCurrentAccessTokenType = { type: "UPDATE_CURRENT_ACCESS_TOKEN" };
@@ -134,7 +136,7 @@ type Action =
 
 // Middleware action types
 type PromiseAction = Promise<Action>;
-type ThunkAction = (dispatch: Dispatch, getState: () => State) => any;
+type ThunkAction = (dispatch: Dispatch, getState: () => GlobalState) => any;
 
 type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
@@ -148,7 +150,7 @@ type Dispatch = (
 export function addDevice(device: Device): AddDeviceAction {
   return {
     type: "ADD_DEVICE",
-    payload: { device }
+    payload: { device },
   };
 }
 
@@ -158,7 +160,7 @@ export function addDevice(device: Device): AddDeviceAction {
 export function replaceDevice(device: Device): ReplaceDeviceAction {
   return {
     type: "REPLACE_DEVICE",
-    payload: { device }
+    payload: { device },
   };
 }
 /**
@@ -169,7 +171,7 @@ export function replaceDevice(device: Device): ReplaceDeviceAction {
 export function setCurrentDeviceId(deviceId: string): SetCurrentDeviceIdAction {
   return {
     type: "SET_CURRENT_DEVICE_ID",
-    payload: { deviceId }
+    payload: { deviceId },
   };
 }
 
@@ -205,7 +207,7 @@ async function getNewAccessToken(dispatch: Dispatch, refreshToken) {
 export type TokenMeta = {
   isExpired: boolean,
   expiresIn: number,
-  updateAfterMs: number
+  updateAfterMs: number,
 };
 
 function decodeToken(token: string): TokenMeta {
@@ -215,7 +217,7 @@ function decodeToken(token: string): TokenMeta {
   return {
     isExpired: decoded.exp < currentTime,
     expiresIn: decoded.exp - currentTime,
-    updateAfterMs: (decoded.exp - currentTime - 3) * 1000
+    updateAfterMs: (decoded.exp - currentTime - 3) * 1000,
   };
 }
 
@@ -238,7 +240,7 @@ export function loginWithCurrentDevice(): ThunkAction {
     const accessToken = CurrentDeviceSelector(state).accessToken;
     const refreshToken = CurrentDeviceSelector(state).refreshToken;
 
-    const accessTokenMeta: TokenMeta = decodeToken(accessToken);
+    let accessTokenMeta: TokenMeta = decodeToken(accessToken);
     const refreshTokenMeta: TokenMeta = decodeToken(refreshToken);
 
     console.log(
@@ -281,6 +283,7 @@ export function loginWithCurrentDevice(): ThunkAction {
 
       const response = await mutate(getNewAccessTokenSource, { refreshToken });
       const newDevice = response.data.getNewAccessToken;
+      accessTokenMeta = decodeToken(newDevice.accessToken);
 
       dispatch(replaceDevice(newDevice));
 
@@ -332,11 +335,16 @@ export function loginWithCurrentDevice(): ThunkAction {
       let authLink = setContext((operation, prevContext) => {
         let state = getState();
 
+        console.log(
+          "AUTH CONTEXTZZZ",
+          CurrentDeviceSelector(state).accessToken
+        );
+
         return {
           headers: {
             ...prevContext.headers,
-            authorization: CurrentDeviceSelector(state).accessToken
-          }
+            authorization: CurrentDeviceSelector(state).accessToken,
+          },
         };
       });
 
@@ -347,16 +355,23 @@ export function loginWithCurrentDevice(): ThunkAction {
         connectionParams: async function() {
           let state = getState();
 
+          console.log("CONNECTION PARAMS", CurrentDeviceSelector(state));
+
           return {
-            token: CurrentDeviceSelector(state).accessToken
+            token: CurrentDeviceSelector(state).accessToken,
           };
-        }
+        },
+        connectionCallback: function(error) {
+          console.log("SUBZ CONNECTION ERROR");
+          console.error(error);
+        },
       };
 
       const subClient = new SubscriptionClient(subEndpoint, subOptions);
       const subLink = new WebSocketLink(subClient);
 
       const connectionLink = split(
+        // split based on operation type
         ({ query }) => {
           const { kind, operation } = getMainDefinition(query);
           return kind === "OperationDefinition" && operation === "subscription";
@@ -369,7 +384,7 @@ export function loginWithCurrentDevice(): ThunkAction {
 
       const apolloClient = new ApolloClient({
         link,
-        cache: new InMemoryCache()
+        cache: new InMemoryCache(),
       });
 
       console.log(
@@ -379,6 +394,16 @@ export function loginWithCurrentDevice(): ThunkAction {
       dispatch(setApolloClient(apolloClient));
       dispatch(setAuthStatus(true));
       dispatch(setRefreshTokenExpired(false));
+
+      const state = getState();
+
+      console.log("sttatteeetete", state);
+
+      const device: Device = CurrentDeviceSelector(state);
+      const { accessToken, user } = device;
+
+      dispatch(setCurrentUserId(user.id));
+      dispatch(initData(user.id));
     }
   };
 }
@@ -434,13 +459,13 @@ export function getNewRefreshToken(
     const variables = {
       refreshToken: device.refreshToken,
       email,
-      password
+      password,
     };
 
     let getNewRefreshTokenResponse: {
       data: {
-        getNewRefreshToken: Device
-      }
+        getNewRefreshToken: Device,
+      },
     } | void;
 
     try {
@@ -474,7 +499,7 @@ function loginWithDevicePassword(
 ): LoginWithDevicePasswordAction {
   return {
     type: "LOGIN_WITH_DEVICE_PASSWORD",
-    payload: { deviceId, password }
+    payload: { deviceId, password },
   };
 }
 
@@ -482,8 +507,8 @@ function setApolloClient(apolloClient: any): SetApolloClientAction {
   return {
     type: "SET_APOLLO_CLIENT",
     payload: {
-      apolloClient
-    }
+      apolloClient,
+    },
   };
 }
 
@@ -497,7 +522,7 @@ function updateCurrentRefreshToken(
 ): UpdateCurrentRefreshTokenType {
   return {
     type: "UPDATE_CURRENT_REFRESH_TOKEN",
-    payload: { password }
+    payload: { password },
   };
 }
 
@@ -508,7 +533,7 @@ function updateCurrentRefreshToken(
  */
 function updateCurrentAccessToken(): UpdateCurrentAccessTokenType {
   return {
-    type: "UPDATE_CURRENT_ACCESS_TOKEN"
+    type: "UPDATE_CURRENT_ACCESS_TOKEN",
   };
 }
 
@@ -521,7 +546,7 @@ function setRefreshTokenExpired(
 ): SetExpiredRefreshTokenAction {
   return {
     type: "SET_EXPIRED_REFRESH_TOKEN",
-    payload: { expired }
+    payload: { expired },
   };
 }
 
@@ -542,18 +567,27 @@ function logout(): LogoutAction {
 export function setAuthStatus(status: boolean): SetAuthStatusAction {
   return {
     type: "SET_AUTH_STATUS",
-    payload: { status }
+    payload: { status },
   };
 }
 
 // REDUCER
 
-function reducer(state: State = initialState, action: Action): State {
+export function reducer(
+  state: State = {
+    devices: [],
+    currentDeviceId: undefined,
+    authenticated: false,
+    apolloClient: defaultApolloClient,
+    expiredRefreshToken: false,
+  },
+  action: Action
+): State {
   switch (action.type) {
     case "ADD_DEVICE": {
       return {
         ...state,
-        devices: [...state.devices, action.payload.device]
+        devices: [...state.devices, action.payload.device],
       };
     }
 
@@ -562,7 +596,7 @@ function reducer(state: State = initialState, action: Action): State {
 
       return {
         ...state,
-        devices: [...state.devices.filter(d => d.id !== device.id), device]
+        devices: [...state.devices.filter(d => d.id !== device.id), device],
       };
     }
 
@@ -570,28 +604,28 @@ function reducer(state: State = initialState, action: Action): State {
       return {
         ...state,
         currentDeviceId: action.payload.deviceId,
-        authenticated: false // needs to check validity first, then true
+        authenticated: false, // needs to check validity first, then true
       };
     }
 
     case "SET_AUTH_STATUS": {
       return {
         ...state,
-        authenticated: action.payload.status
+        authenticated: action.payload.status,
       };
     }
 
     case "SET_APOLLO_CLIENT": {
       return {
         ...state,
-        apolloClient: action.payload.apolloClient
+        apolloClient: action.payload.apolloClient,
       };
     }
 
     case "SET_EXPIRED_REFRESH_TOKEN": {
       return {
         ...state,
-        expiredRefreshToken: action.payload.expired
+        expiredRefreshToken: action.payload.expired,
       };
     }
 
@@ -599,5 +633,3 @@ function reducer(state: State = initialState, action: Action): State {
       return state;
   }
 }
-
-export default reducer;

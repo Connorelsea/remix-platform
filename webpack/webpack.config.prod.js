@@ -1,17 +1,17 @@
-const path = require("path")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const CompressionPlugin = require("compression-webpack-plugin")
-const webpack = require("webpack")
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const webpack = require("webpack");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 // Bundle analyzer plugins
 var WebpackBundleSizeAnalyzerPlugin = require("webpack-bundle-size-analyzer")
-  .WebpackBundleSizeAnalyzerPlugin
+  .WebpackBundleSizeAnalyzerPlugin;
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin
-var Visualizer = require("webpack-visualizer-plugin")
+  .BundleAnalyzerPlugin;
+var Visualizer = require("webpack-visualizer-plugin");
 
-const WebappWebpackPlugin = require("webapp-webpack-plugin")
+const WebappWebpackPlugin = require("webapp-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -128,4 +128,4 @@ module.exports = {
   },
 
   devtool: "cheap-module-source-map",
-}
+};

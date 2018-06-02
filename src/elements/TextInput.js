@@ -7,7 +7,7 @@ type Props = {
   value: string,
   placeholder?: string,
   secure?: boolean,
-  onChange: any
+  onChange: any,
 };
 
 class TextInput extends Component<Props> {
@@ -28,6 +28,18 @@ const StyledInput = styled.input`
   font-size: ${p => p.theme.fontSize.body}px;
   color: ${p => p.theme.text.primary};
   outline: none;
+
+  ::placeholder {
+    color: ${p => p.theme.text.secondary};
+  }
+
+  :-ms-input-placeholder {
+    color: ${p => p.theme.text.secondary};
+  }
+
+  ::-ms-input-placeholder {
+    color: ${p => p.theme.text.secondary};
+  }
 
   &:focus {
     box-shadow: 0 0 3pt 2pt ${p => p.theme.appColors.inputOutline};

@@ -18,7 +18,8 @@ type Props = {
   theme: any,
   to: string,
   onClick?: any,
-  disabled?: boolean
+  disabled?: boolean,
+  icon?: Node,
 };
 
 type State = {};
@@ -52,7 +53,8 @@ class Button extends Component<Props, State> {
       theme,
       to,
       onClick = this.onClick,
-      disabled = false
+      disabled = false,
+      icon,
     } = this.props;
 
     const { getButtonTheme } = this;
@@ -68,6 +70,7 @@ class Button extends Component<Props, State> {
         disabled={disabled}
         getButtonTheme={getButtonTheme}
       >
+        {icon ? icon : undefined}
         <Paragraph
           fontSize={
             size === "SMALL"
@@ -94,6 +97,10 @@ const Container = styled.button`
   border: 0;
   border-bottom: 2px solid ${p => p.getButtonTheme().bottom};
   transition: all 0.25s;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 
   &:hover {
     background-color: ${p => p.getButtonTheme().hover};

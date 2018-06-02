@@ -37,7 +37,7 @@ export default new Duck({
     "END_USER_LOADING",
     "LOGOUT",
     "ADD_READ_POSITION",
-    "ADD_CHAT"
+    "ADD_CHAT",
   ],
   initialState: {
     id: undefined,
@@ -47,7 +47,7 @@ export default new Duck({
     messages: [],
     users: [],
     loading: false,
-    readPositions: []
+    readPositions: [],
   },
   reducer: (state, action, duck) => {
     console.log("[Redux:Action]", action);
@@ -57,7 +57,7 @@ export default new Duck({
         const { id } = action.payload;
         return {
           ...state,
-          id
+          id,
         };
       }
 
@@ -65,7 +65,7 @@ export default new Duck({
         const { friendRequest } = action;
         return {
           ...state,
-          friendRequests: [...state.friendRequests, friendRequest]
+          friendRequests: [...state.friendRequests, friendRequest],
         };
       }
 
@@ -73,7 +73,7 @@ export default new Duck({
         const { requests } = action;
         return {
           ...state,
-          friendRequests: [...state.friendRequests, ...requests]
+          friendRequests: [...state.friendRequests, ...requests],
         };
       }
 
@@ -108,12 +108,12 @@ export default new Duck({
         console.log("GROUPsss FOUND", groups);
         let newGroup = {
           ...groupFound,
-          chats: [...groupFound.chats, chat]
+          chats: [...groupFound.chats, chat],
         };
         groups = [...groups, newGroup];
         return {
           ...state,
-          groups
+          groups,
         };
       }
 
@@ -189,8 +189,8 @@ export default new Duck({
             .filter(rp => rp.messageId === m.id)
             .map(rp => ({
               ...rp,
-              user: state.user.users.find(u => u.id === rp.userId)
-            }))
+              user: state.user.users.find(u => u.id === rp.userId),
+            })),
         };
       }),
 
@@ -207,7 +207,7 @@ export default new Duck({
         [
           selectors.getMessages,
           selectors.getGroups,
-          (state, groupId) => groupId
+          (state, groupId) => groupId,
         ],
 
         (messages, groups, groupId) => {
@@ -215,7 +215,7 @@ export default new Duck({
           if (!foundGroup) return [];
 
           const foundMessages = messages.filter(msg =>
-            foundGroup.chats.find(c => c.id == msg.chatId)
+            foundGroup.chats.find(chat => chat.id == msg.chatId)
           );
 
           return foundMessages;
@@ -228,14 +228,14 @@ export default new Duck({
         [
           (state, groupId, chatId) =>
             selectors.getGroupMessages(state, groupId),
-          (state, groupId, chatId) => chatId
+          (state, groupId, chatId) => chatId,
         ],
         (groupMessages, chatId) => {
           const foundMessages = groupMessages.filter(m => m.chatId == chatId);
           return foundMessages;
         }
       )((state, chatId) => chatId)
-    )
+    ),
 
     // getGroupMessages: createSelector(
     //   [duck.selectors.getAllMessages],
@@ -275,7 +275,7 @@ export default new Duck({
             }
           }
         }
-      `
+      `,
       });
 
       console.log("SUBSCRIBING TO NEW FRIENDS");
@@ -300,7 +300,7 @@ export default new Duck({
             messageId
           }
         }
-      `
+      `,
       });
 
       console.log("SUBSCRIBING TO READ POSITIONS");
@@ -327,7 +327,7 @@ export default new Duck({
             }
           }
         }
-      `
+      `,
       });
 
       console.log("SUBSCRIBING TO MESSAGES");
@@ -359,8 +359,8 @@ export default new Duck({
           }
         `,
         variables: {
-          toUserId: id
-        }
+          toUserId: id,
+        },
       });
 
       // TODO: Use graphql fragment for friend request
@@ -419,9 +419,9 @@ export default new Duck({
             groups = [],
             allMessages = [],
             readPositions,
-            token
+            token,
           },
-          relevantUsers = []
+          relevantUsers = [],
         } = response.data;
 
         console.log("READ POSITIONS??", readPositions);
@@ -526,7 +526,7 @@ export default new Duck({
       addChat,
       addMessages,
       removeFriendRequest,
-      logout
+      logout,
     };
-  }
+  },
 });

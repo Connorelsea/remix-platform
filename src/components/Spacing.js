@@ -1,10 +1,10 @@
 import React, { Component, Node } from "React";
-import styled from "styled-components/native";
+import styled from "styled-components";
 
 type Props = {
   size: string,
   color: string,
-  fullWidth?: boolean
+  fullWidth?: boolean,
 };
 
 class SpacingComponent extends Component<Props> {
@@ -18,7 +18,7 @@ class SpacingComponent extends Component<Props> {
   }
 }
 
-const Spacing = styled.View`
+const Spacing = styled.div`
   height: ${props => props.size}px;
   background-color: ${props => props.color || "transparent"};
   width: ${props => {

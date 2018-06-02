@@ -1,29 +1,31 @@
-import React, { Component } from "react"
-import styled from "styled-components"
-import Header from "./Header"
-import styles from "../utilities/styles"
-import Spacing from "./Spacing"
-import { bind } from "decko"
+import React, { Component } from "react";
+import styled from "styled-components";
+import Header from "./Header";
+import styles from "../utilities/styles";
+import Spacing from "./Spacing";
+import { bind } from "decko";
+import TabBar from "../components/TabBar";
+import { Theme } from "../utilities/theme";
 
 export default class AppScrollContainer extends Component {
   state = {
     largeHeader: true,
-  }
+  };
 
   @bind
   onScroll(event) {
-    const scrollTop = event.currentTarget.scrollTop
-    const { largeHeader } = this.state
+    const scrollTop = event.currentTarget.scrollTop;
+    const { largeHeader } = this.state;
 
     if (scrollTop > 10 && largeHeader === true)
-      this.setState({ largeHeader: false })
+      this.setState({ largeHeader: false });
     if (scrollTop < 10 && largeHeader === false)
-      this.setState({ largeHeader: true })
+      this.setState({ largeHeader: true });
   }
 
   render() {
-    const { user, fullwidth = false, title, backText, children } = this.props
-    const { largeHeader } = this.state
+    const { user, fullwidth = false, title, backText, children } = this.props;
+    const { largeHeader } = this.state;
 
     return (
       <Container id="scroll" onScroll={this.onScroll}>
@@ -35,10 +37,11 @@ export default class AppScrollContainer extends Component {
         />
         <Spacing size={120} />
         <Scroll fullwidth={fullwidth}>
-          <PaddingContainer>{children}</PaddingContainer>
+          <InnerScroll>{children}</InnerScroll>
         </Scroll>
+        <TabBar />
       </Container>
-    )
+    );
   }
 }
 
@@ -46,30 +49,32 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: ${styles.colors.grey[100]};
-  height: 100vh;
+  background-color: ${p => p.theme.background.secondary};
+  height: 100%;
   width: 100%;
+`;
+
+const InnerScroll = styled.div`
+  /* padding: 25px; */
+  width: 100%;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* flex: 1; */
+  /* @media (min-width: 999px) {
+    padding: 20px;
+  } */
   overflow: auto;
   overflow-x: hidden;
-`
-
-const PaddingContainer = styled.div`
-  padding: 25px;
-  width: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  @media (min-width: 999px) {
-    padding: 20px;
-  }
-`
+`;
 
 const Scroll = styled.div`
   width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  /* flex: 1; */
   align-self: center;
   ${props => (!props.fullwidth ? "max-width: 1000px" : "")};
 
@@ -86,4 +91,4 @@ const Scroll = styled.div`
     background: #f8f8f8;
     border-radius: 20px;
   }
-`
+`;

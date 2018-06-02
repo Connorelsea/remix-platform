@@ -1,0 +1,7 @@
+#import "../../../types/fragments.graphql"
+
+query getUsersById($userIdentifiers: [ID]) {
+  getUsersById(userIdentifiers: $userIdentifiers) {
+    ...user
+  }
+}

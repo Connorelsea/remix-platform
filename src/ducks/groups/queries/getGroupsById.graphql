@@ -1,0 +1,7 @@
+#import "../../../types/fragments.graphql"
+
+query getGroupsById($groupIdentifiers: [ID]) {
+  getGroupsById(groupIdentifiers: $groupIdentifiers) {
+    ...group
+  }
+}

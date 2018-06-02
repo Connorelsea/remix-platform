@@ -10,7 +10,7 @@ export type TitleSize = "SMALL" | "MEDIUM" | "LARGE";
 type Props = {
   type: TitleType,
   size: TitleSize,
-  children?: Node
+  children?: Node,
 };
 
 class Title extends Component<Props> {
@@ -29,17 +29,17 @@ const Text = styled.Text`
     switchProp("size", {
       SMALL: `${p.theme.fontSize.title_sm}px`,
       MEDIUM: `${p.theme.fontSize.title_md}px`,
-      LARGE: `${p.theme.fontSize.title_lg}px`
+      LARGE: `${p.theme.fontSize.title_lg}px`,
     })};
 
   font-weight: ${switchProp("type", {
     SUB: "500",
     THIN: "300",
     REGULAR: "400",
-    BOLD: "900"
+    BOLD: "900",
   })};
 
-  color: ${p => p.theme.text.primary}
+  color: ${p => p.theme.text.primary};
 
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

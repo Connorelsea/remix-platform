@@ -12,11 +12,12 @@ import styles from "../utilities/styles";
 import Spacing from "../components/Spacing";
 import { type Device } from "../types/device";
 import DeviceCard from "../components/DeviceCard";
-import ProviderUsers from "../providers/ProviderUsers";
 import { bind } from "decko";
 import { type User } from "../types/user";
 
-import { type ProvideUsersRenderProps } from "../providers/ProviderUsers";
+import ProvideUsers, {
+  type ProvideUsersRenderProps,
+} from "../providers/ProvideUsers";
 import { withTheme } from "styled-components";
 import Subtitle from "../elements/Subtitle";
 import TextInput from "../elements/TextInput";
@@ -35,14 +36,14 @@ type Props = {
     email: string,
     password: string
   ) => Device,
-  dispatchLoginWithCurrentDevice: () => any
+  dispatchLoginWithCurrentDevice: () => any,
 };
 
 type State = {
   password: string,
   passwordIsValid: boolean,
   loginIsDisabled: boolean,
-  passwordInfoState: PasswordInfoState
+  passwordInfoState: PasswordInfoState,
 };
 
 type PasswordInfoState = "UNTOUCHED" | "LOADING" | "SUCCESS" | "FAILURE";
@@ -52,7 +53,7 @@ class ExpiredRefreshToken extends Component<Props, State> {
     password: "",
     passwordIsValid: false,
     loginIsDisabled: true,
-    passwordInfoState: "UNTOUCHED"
+    passwordInfoState: "UNTOUCHED",
   };
 
   debounced_onPasswordStopTyping = debounce(this.onPasswordStopTyping, 1500);
@@ -63,7 +64,7 @@ class ExpiredRefreshToken extends Component<Props, State> {
     this.setState({
       password,
       loginIsDisabled: true,
-      passwordInfoState: "LOADING"
+      passwordInfoState: "LOADING",
     });
     console.log("password:onChange");
     this.debounced_onPasswordStopTyping();
@@ -143,7 +144,7 @@ class ExpiredRefreshToken extends Component<Props, State> {
           password every three days.
         </Paragraph>
         <Spacing size={25} />
-        <Paragraph center color={styles.colors.grey[400]}>
+        <Paragraph center>
           To enter your password less often, trust this device. Only trust safe
           devices that are personal and unshared. Learn More
         </Paragraph>
@@ -215,7 +216,7 @@ class ExpiredRefreshToken extends Component<Props, State> {
     const { currentDevice } = this.props;
 
     return (
-      <ProviderUsers
+      <ProvideUsers
         userIds={[currentDevice.user.id]}
         render={this.renderBody}
       />
@@ -225,7 +226,7 @@ class ExpiredRefreshToken extends Component<Props, State> {
 
 function mapStateToProps(state: GlobalState) {
   return {
-    users: state.identity.users
+    users: state.identity.users,
   };
 }
 
@@ -233,7 +234,7 @@ function mapDispatchToProps(dispatch, getState) {
   return {
     dispatchGetNewRefreshToken: (deviceId, email, password) =>
       dispatch(getNewRefreshToken(deviceId, email, password)),
-    dispatchLoginWithCurrentDevice: () => dispatch(loginWithCurrentDevice())
+    dispatchLoginWithCurrentDevice: () => dispatch(loginWithCurrentDevice()),
   };
 }
 

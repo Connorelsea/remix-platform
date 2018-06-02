@@ -16,7 +16,7 @@ import Title from "../elements/Title";
 
 type Props = {
   device: Device,
-  user: User
+  user: User,
 };
 
 class DeviceCard extends Component<Props> {

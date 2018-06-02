@@ -7,7 +7,7 @@ import ifProp from "styled-tools/dist/cjs/ifProp";
 
 type pad = {
   x?: number,
-  y?: number
+  y?: number,
 };
 
 function determinePadding(

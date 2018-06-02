@@ -7,15 +7,23 @@ import AppStateManager from "./AppStateManager";
 import DataManager from "../components/DataManager";
 import store from "../utilities/storage/store";
 import App from "./NewApp";
-import { type State, loginWithCurrentDevice } from "../ducks/auth";
+import { loginWithCurrentDevice } from "../ducks/auth";
+import { fetchRelevantUsers } from "../ducks/identity/index.js";
+import { GlobalState } from "../reducers/rootReducer";
 
 class Container extends React.Component<{}> {
   // needs to run after store is init from localstorage
   onAppStart() {
     console.log("[AppStart] Checking for current device");
 
-    const state: State = store.getState().auth;
-    if (state.currentDeviceId) store.dispatch(loginWithCurrentDevice());
+    const state: GlobalState = store.getState();
+    const currentDeviceId = state.auth.currentDeviceId;
+
+    if (currentDeviceId) store.dispatch(loginWithCurrentDevice());
+
+    console.log("ATTEMPTING TO RUN FETCH RELEVANT USERS");
+
+    store.dispatch(fetchRelevantUsers());
   }
 
   componentDidMount() {

@@ -1,0 +1,25 @@
+#import "../types/fragments.graphql"
+
+query fetchFriendsData($userId: ID!) {
+  User(id: $userId) {
+    friends {
+      id
+    }
+
+    friendRequests {
+      ...friendRequest
+    }
+
+    pendingFriendRequests {
+      ...friendRequest
+    }
+
+    groupInvitations {
+      ...groupInvitation
+    }
+
+    pendingGroupRequests {
+      ...groupRequest
+    }
+  }
+}
