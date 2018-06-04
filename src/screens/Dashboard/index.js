@@ -18,6 +18,7 @@ import { getGroups } from "../../ducks/groups/index.js";
 import { type Tab } from "../../types/tab";
 import { type Group } from "../../types/group";
 import TabBar from "../../components/TabBar";
+import Box from "../../elements/Box.web";
 
 type Props = {
   friends: Array<User>,
@@ -41,7 +42,13 @@ class Dashboard extends Component<Props> {
     if (usersLoading) return "loading users";
 
     return (
-      <AppScrollContainer title="Remix" backText="remove">
+      // <AppScrollContainer title="Remix" backText="remove">
+      <Box
+        padding="20px"
+        column
+        backgroundColor={p => p.theme.background.secondary}
+      >
+        <SpacingComponent size={20} />
         <Subtitle>Notifications</Subtitle>
         <SpacingComponent size={15} />
         <div>Hello World Dashboard</div>
@@ -60,14 +67,11 @@ class Dashboard extends Component<Props> {
         <SpacingComponent size={15} />
         {groups.map(g => [
           <MessageDisplayCard key={g.id} group={g} />,
-          <SpacingComponent key={g.id + "space"} size={15} />,
+          <SpacingComponent key={g.id + "space"} size={20} />,
         ])}
 
         <SpacingComponent size={25} />
-        <Subtitle>Your Tabs</Subtitle>
-        <SpacingComponent size={15} />
-        <DisplayJson>{this.props.tabs}</DisplayJson>
-      </AppScrollContainer>
+      </Box>
     );
   }
 }

@@ -4,7 +4,7 @@ import React, { Component, type Node } from "react";
 import { connect } from "react-redux";
 import { bind } from "decko";
 import { type Tab as TabType } from "../../types/tab";
-import { createTab, replaceAllTabs } from "../../ducks/tabs";
+import { createTab, replaceAllTabs, createNewTab } from "../../ducks/tabs";
 import Tab from "../Tab";
 import Button from "../../elements/Button";
 import Box from "../../elements/Box";
@@ -21,11 +21,18 @@ import {
   type DroppableProvided,
   type DroppableStateSnapshot,
 } from "react-beautiful-dnd";
+import Paragraph from "../../elements/Paragraph";
 
 type Props = {
   theme: Theme,
   tabs: Array<TabType>,
   dispatchReplaceAllTabs: (tabs: Array<Tab>) => Promise<any>,
+  createNewTab: (
+    url: string,
+    title?: string,
+    subtitle?: string,
+    iconUrl?: string
+  ) => any,
 };
 
 class TabBar extends Component<Props> {
@@ -40,27 +47,8 @@ class TabBar extends Component<Props> {
     };
   }
 
-  @bind
-  renderDroppableBody(
-    provided: DroppableProvided,
-    snapshot: DroppableStateSnapshot
-  ) {
-    // BEFORE, TabContainer held the tabs
-    const { tabs } = this.props;
-
-    return (
-      <Box
-        innerRef={provided.innerRef}
-        style={this.getListStyle(snapshot.isDraggingOver)}
-        {...provided.droppableProps}
-      >
-        {tabs.map((tab, i) => <Tab tab={tab} index={i} key={tab.id} />)}
-      </Box>
-    );
-  }
-
   render(): Node {
-    const { tabs, theme } = this.props;
+    const { tabs, theme, createNewTab } = this.props;
 
     return (
       <Box fullWidth row backgroundColor={theme.background.secondary} alignEnd>
@@ -73,12 +61,23 @@ class TabBar extends Component<Props> {
               size="SMALL"
               type="DEFAULT"
               icon={
+                <Icon name="home" size={22} color={theme.button.default.text} />
+              }
+              to="/"
+            />
+            <SpacingComponent size={10} />
+            <Button
+              title=""
+              size="SMALL"
+              type="DEFAULT"
+              icon={
                 <Icon
                   name="layers"
                   size={22}
                   color={theme.button.default.text}
                 />
               }
+              onClick={() => createNewTab("/tabs/all", "All Tabs")}
             />
             <SpacingComponent size={10} />
             <Button
@@ -88,6 +87,7 @@ class TabBar extends Component<Props> {
               icon={
                 <Icon name="plus" size={22} color={theme.button.default.text} />
               }
+              onClick={() => createNewTab("/tabs/new", "New Tab")}
             />
           </Box>
           <SpacingComponent size={10} />
@@ -95,7 +95,23 @@ class TabBar extends Component<Props> {
         <SpacingComponent size={10} />
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
-            {this.renderDroppableBody}
+            {(
+              provided: DroppableProvided,
+              snapshot: DroppableStateSnapshot
+            ) => {
+              return (
+                <Box
+                  fullWidth
+                  innerRef={provided.innerRef}
+                  style={this.getListStyle(snapshot.isDraggingOver)}
+                  {...provided.droppableProps}
+                >
+                  {tabs.map((tab, i) => (
+                    <Tab tab={tab} index={i} key={tab.id} />
+                  ))}
+                </Box>
+              );
+            }}
           </Droppable>
         </DragDropContext>
       </Box>
@@ -148,10 +164,16 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchCreateTab: (tab: TabType) => dispatch(createTab(tab)),
+    createNewTab: (
+      url: string,
+      title?: string,
+      subtitle?: string,
+      iconUrl?: string
+    ) => dispatch(createNewTab(url, title, subtitle, iconUrl)),
+
     dispatchReplaceAllTabs: (tabs: Array<Tab>) =>
       dispatch(replaceAllTabs(tabs)),
   };
 }
 
-export default withTheme(connect(mapStateToProps, mapDispatchToProps)(TabBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(TabBar));

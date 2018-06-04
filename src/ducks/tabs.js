@@ -1,5 +1,6 @@
-import { Tab } from "../types/tab";
+import { type Tab, createTabObject } from "../types/tab";
 import { push } from "react-router-redux";
+import { type GlobalState } from "../reducers/rootReducer";
 
 // @flow
 
@@ -20,8 +21,8 @@ const initialState: State = {
 
 // Action Types
 
-type CreateTab = {
-  type: "CREATE_TAB",
+type AddTab = {
+  type: "ADD_TAB",
   payload: {
     tab: Tab,
   },
@@ -48,7 +49,7 @@ type ReplaceAllTabs = {
   },
 };
 
-type Action = CreateTab | ShowTabView | SetCurrentTabId | ReplaceAllTabs;
+type Action = AddTab | ShowTabView | SetCurrentTabId | ReplaceAllTabs;
 
 // Middleware action types
 
@@ -61,9 +62,9 @@ type Dispatch = (
 
 // Action creators
 
-export function createTab(tab: Tab): CreateTab {
+export function addTab(tab: Tab): AddTab {
   return {
-    type: "CREATE_TAB",
+    type: "ADD_TAB",
     payload: {
       tab,
     },
@@ -74,6 +75,27 @@ export function showTabView(value: boolean): ShowTabView {
   return {
     type: "SHOW_TAB_VIEW",
     payload: { value },
+  };
+}
+
+export function createNewTab(
+  url: string,
+  title?: string,
+  subtitle?: string,
+  iconUrl?: string
+): ThunkAction {
+  return async function(dispatch, getState) {
+    const state: GlobalState = getState();
+    const currentTabs: Array<Tab> = state.tabs.tabs;
+    const matchingTab: ?Tab = currentTabs.find(t => t.url === url);
+
+    if (matchingTab !== undefined) {
+      dispatch(setCurrentTab(matchingTab));
+    } else {
+      const newTab = createTabObject(url, title, subtitle, iconUrl);
+      dispatch(addTab(newTab));
+      dispatch(setCurrentTab(newTab));
+    }
   };
 }
 
@@ -109,7 +131,7 @@ export function replaceAllTabs(tabs: Array<Tab>): ReplaceAllTabs {
 
 export function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
-    case "CREATE_TAB": {
+    case "ADD_TAB": {
       return {
         ...state,
         tabs: [...state.tabs, action.payload.tab],

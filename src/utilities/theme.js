@@ -62,6 +62,10 @@ export type Theme = {
       active_bottom: string,
     },
   },
+  shadow: {
+    primary: string,
+    secondary: string,
+  },
 };
 
 const fontSize = {
@@ -134,6 +138,12 @@ const LightTheme: Theme = {
       active_bottom: "#6F94BC",
     },
   },
+  shadow: {
+    primary:
+      "0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2)",
+    secondary:
+      "0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2)",
+  },
 };
 
 const DarkTheme: Theme = {
@@ -185,6 +195,10 @@ const DarkTheme: Theme = {
       active: "#062343",
       active_bottom: "#00162F",
     },
+  },
+  shadow: {
+    primary: "0 15px 30px 0px rgba(10,65,126,0.4)",
+    secondary: "0 15px 30px 0px rgba(10,65,126,0.4)",
   },
 };
 

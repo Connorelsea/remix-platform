@@ -84,6 +84,7 @@
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0-rc.0",
+    "react-measure": "^2.0.2",
     "react-media": "^1.8.0",
     "react-motion": "^0.5.2",
     "react-native": "0.52.0",

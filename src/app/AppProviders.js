@@ -10,6 +10,10 @@ import App from "./NewApp";
 import { loginWithCurrentDevice } from "../ducks/auth";
 import { fetchRelevantUsers } from "../ducks/identity/index.js";
 import { GlobalState } from "../reducers/rootReducer";
+import ConnectedRouter from "react-router-redux/ConnectedRouter";
+import history from "../utilities/storage/history";
+import ResponsiveManager from "./ResponsiveManager";
+import AuthManager from "./AuthManager";
 
 class Container extends React.Component<{}> {
   // needs to run after store is init from localstorage
@@ -36,7 +40,11 @@ class Container extends React.Component<{}> {
       <Provider store={store}>
         <DataManager>
           <AppStateManager>
-            <App />
+            <ConnectedRouter history={history}>
+              <AuthManager>
+                <ResponsiveManager />
+              </AuthManager>
+            </ConnectedRouter>
           </AppStateManager>
         </DataManager>
       </Provider>

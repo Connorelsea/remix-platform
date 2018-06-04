@@ -25,13 +25,6 @@ type Props = {
 
 class App extends Component<Props> {
   render(): Node {
-    return (
-      <ConnectedRouter history={history}>{this.currentView()}</ConnectedRouter>
-    );
-  }
-
-  @bind
-  currentView() {
     const { expiredRefreshToken, authenticated } = this.props;
 
     if (expiredRefreshToken) return this.viewExpiredRefreshToken();
@@ -47,11 +40,13 @@ class App extends Component<Props> {
    */
   viewNonUser(): Node {
     return (
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={UserLogin} />
-        <Route exact path="/create" component={UserCreate} />
-      </Switch>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={UserLogin} />
+          <Route exact path="/create" component={UserCreate} />
+        </Switch>
+      </ConnectedRouter>
     );
   }
 
@@ -60,10 +55,12 @@ class App extends Component<Props> {
    */
   viewUser(): Node {
     return (
-      <Switch>
-        <Route exact path="/" component={NewDashboard} />
-        <Route component={TabView} />
-      </Switch>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route exact path="/" component={NewDashboard} />
+          <Route component={TabView} />
+        </Switch>
+      </ConnectedRouter>
     );
   }
 

@@ -13,9 +13,17 @@ export type Tab = {
   iconUrl?: string,
 };
 
-export function createTabObject(tab: Tab) {
+export function createTabObject(
+  url: string,
+  title?: string,
+  subtitle?: string,
+  iconUrl?: string
+) {
   return {
-    ...tab,
     id: uuidv4(),
+    url,
+    title,
+    subtitle,
+    iconUrl,
   };
 }

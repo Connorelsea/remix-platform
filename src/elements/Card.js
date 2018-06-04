@@ -4,6 +4,6 @@ export default styled.div`
   background-color: ${p => p.theme.background.primary};
   padding: 14px 15px;
   border-radius: 8px;
-  box-shadow: 0px 7px 13px -4px #d5d9db;
+  box-shadow: ${p => p.theme.shadow.primary};
   ${props => !props.small && "width: 100%"};
 `;

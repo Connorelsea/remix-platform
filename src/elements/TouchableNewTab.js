@@ -4,27 +4,26 @@ import React, { Component, type Node } from "react";
 import { connect } from "react-redux";
 import { bind } from "decko";
 import { type Tab, createTabObject } from "../types/tab";
-import { createTab } from "../ducks/tabs";
+import { createNewTab } from "../ducks/tabs";
 import { withRouter, Link } from "react-router-dom";
 
 type Props = {
   url: string,
   children: Node,
-  createTab: (tab: Tab) => any,
-  history: any,
+  createNewTab: (
+    url: string,
+    title?: string,
+    subtitle?: string,
+    iconUrl?: string
+  ) => any,
 };
 
 class TouchableNewTab extends Component<Props> {
   @bind
   onPress() {
-    const { url, createTab, history } = this.props;
-    // history.push(url);
-    createTab(
-      createTabObject({
-        title: url,
-        url,
-      })
-    );
+    const { url, createNewTab } = this.props;
+
+    createNewTab(url, url);
   }
 
   render(): Node {
@@ -32,7 +31,7 @@ class TouchableNewTab extends Component<Props> {
     const { onPress } = this;
 
     return (
-      <Link to={url} onClick={onPress}>
+      <Link to={url} onClick={onPress} style={{ textDecoration: "none" }}>
         {children}
       </Link>
     );
@@ -45,10 +44,13 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createTab: (tab: Tab) => dispatch(createTab(tab)),
+    createNewTab: (
+      url: string,
+      title?: string,
+      subtitle?: string,
+      iconUrl?: string
+    ) => dispatch(createNewTab(url, title, subtitle, iconUrl)),
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TouchableNewTab)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(TouchableNewTab);

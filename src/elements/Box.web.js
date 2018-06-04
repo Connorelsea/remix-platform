@@ -170,12 +170,19 @@ export default styled.div`
   ${is("full")`
     width: 100%;
     height: 100%;
-    flex-basis: 100%;
   `};
 
-    ${is("fullWidth")`
-      width: 100%;
-    `};
+  ${is("flexfill")`
+    flex: 1;
+  `}
+
+  ${is("fullWidth")`
+    width: 100%;
+  `};
+
+  ${is("fullHeight")`
+    height: 100%
+  `}
 
   ${is("center")`
     align-items: center;

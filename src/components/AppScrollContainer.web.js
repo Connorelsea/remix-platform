@@ -76,7 +76,6 @@ const Scroll = styled.div`
   flex-direction: column;
   /* flex: 1; */
   align-self: center;
-  ${props => (!props.fullwidth ? "max-width: 1000px" : "")};
 
   ::-webkit-scrollbar {
     width: 5px;

@@ -15,7 +15,33 @@
 
 TODO before release:
 
-* Ensure vibrancy view in header correctly matches current theme. Color needs to be alpha value so its a bit weird, and it has a large and small state
+* Theme
+
+- Ensure vibrancy view in header correctly matches current theme. Color needs to be alpha value so its a bit weird, and it has a large and small state
+- Manage app-wide background shadow color in theme
+
+* Views
+
+- Desktop view VS Mobile view
+  * Desktop view has two modes (sidebar and full tabs)
+  * Mobile view has two modes (dashboard and tabview)
+
+* Tabs
+
+- Delete tab (UI and in the duck)
+- Fix tab re-organizing/dragging bug
+- Full tab view / Hide sidebar
+
+* Subscriptions
+
+- for user: new group
+- for user: new friend request
+- for user: new group invitation
+- for user: new friend
+- for user: new message
+- for user: new tab sync from other device (device sync)
+- for user: new activity (online, offline, inactive) from their relevant users
+- for groups: new group requests
 
 ## [0.0.1]
 
