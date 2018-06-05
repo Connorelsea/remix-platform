@@ -18,7 +18,7 @@ import { type User } from "../types/user";
 import ProvideUsers, {
   type ProvideUsersRenderProps,
 } from "../providers/ProvideUsers";
-import { withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import Subtitle from "../elements/Subtitle";
 import TextInput from "../elements/TextInput";
 import Button from "../elements/Button";
@@ -26,6 +26,10 @@ import Button from "../elements/Button";
 import debounce from "lodash/debounce";
 import { getNewRefreshToken, loginWithCurrentDevice } from "../ducks/auth";
 import { GlobalState } from "../reducers/rootReducer";
+
+import ScrollContainer from "../elements/ScrollContainer";
+import ContentContainer from "../elements/ContentContainer";
+import InnerContentContainer from "../elements/InnerContentContainer";
 
 type Props = {
   theme: any,
@@ -127,88 +131,86 @@ class ExpiredRefreshToken extends Component<Props, State> {
     if (usersLoading) return <div>Loading</div>;
 
     return (
-      <Box
-        full
-        alignCenter
-        column
-        padding="20px"
-        backgroundColor={theme.background.secondary}
-      >
-        <Spacing size={25} />
-        <Title type="THIN" size="LARGE">
-          Password Expired
-        </Title>
-        <Spacing size={25} />
-        <Paragraph center>
-          Re-enter your password. For your security, this device asks for your
-          password every three days.
-        </Paragraph>
-        <Spacing size={25} />
-        <Paragraph center>
-          To enter your password less often, trust this device. Only trust safe
-          devices that are personal and unshared. Learn More
-        </Paragraph>
-        <Spacing size={15} />
+      <ScrollContainer>
+        <ContentContainer>
+          <InnerContentContainer>
+            <Spacing size={25} />
+            <Title type="THIN" size="LARGE">
+              Password Expired
+            </Title>
+            <Spacing size={25} />
+            <Paragraph center>
+              Re-enter your password. For your security, this device asks for
+              your password every three days.
+            </Paragraph>
+            <Spacing size={25} />
+            <Paragraph center>
+              To enter your password less often, trust this device. Only trust
+              safe devices that are personal and unshared. Learn More
+            </Paragraph>
+            <Spacing size={15} />
 
-        <Box full alignStart column>
-          <Subtitle>Current User</Subtitle>
-          <Spacing size={10} />
-          <DeviceCard
-            device={currentDevice}
-            user={users.find(u => u.id === currentDevice.user.id)}
-          />
-          <Spacing size={25} />
-
-          <Subtitle>Re-enter your password</Subtitle>
-          <Spacing size={10} />
-
-          <Box fullWidth>
-            <TextInput
-              value={password}
-              placeholder="Password"
-              secure
-              onChange={this.onPasswordChange}
-            />
-            <Spacing size={10} />
-            <Button
-              title="Login"
-              size="MEDIUM"
-              type="EMPHASIS"
-              disabled={loginIsDisabled}
-              onClick={onClickLogin}
-            />
-          </Box>
-
-          {this.viewPasswordInfoState(passwordInfoState)}
-
-          {passwordInfoState === "SUCCESS" && (
-            <Fragment>
+            <Box full alignStart column>
+              <Subtitle>Current User</Subtitle>
+              <Spacing size={10} />
+              <DeviceCard
+                device={currentDevice}
+                user={users.find(u => u.id === currentDevice.user.id)}
+              />
               <Spacing size={25} />
-              <Subtitle>Device Options</Subtitle>
+
+              <Subtitle>Re-enter your password</Subtitle>
+              <Spacing size={10} />
+
+              <Box fullWidth>
+                <TextInput
+                  value={password}
+                  placeholder="Password"
+                  secure
+                  onChange={this.onPasswordChange}
+                />
+                <Spacing size={10} />
+                <Button
+                  title="Login"
+                  size="MEDIUM"
+                  type="EMPHASIS"
+                  disabled={loginIsDisabled}
+                  onClick={onClickLogin}
+                />
+              </Box>
+
+              {this.viewPasswordInfoState(passwordInfoState)}
+
+              {passwordInfoState === "SUCCESS" && (
+                <Fragment>
+                  <Spacing size={25} />
+                  <Subtitle>Device Options</Subtitle>
+                  <Spacing size={10} />
+
+                  <Box>
+                    <Button title="Trust" size="SMALL" />
+                    <Spacing size={10} />
+                    <Button title="Change Password" size="SMALL" />
+                    <Spacing size={10} />
+                    <Button title="Delete Device" size="SMALL" />
+                    <Spacing size={10} />
+                  </Box>
+                </Fragment>
+              )}
+
+              <Spacing size={25} />
+              <Subtitle>Not you?</Subtitle>
               <Spacing size={10} />
 
               <Box>
-                <Button title="Trust" size="SMALL" />
-                <Spacing size={10} />
-                <Button title="Change Password" size="SMALL" />
-                <Spacing size={10} />
-                <Button title="Delete Device" size="SMALL" />
-                <Spacing size={10} />
+                <Button title="Change Account" size="SMALL" />
               </Box>
-            </Fragment>
-          )}
 
-          <Spacing size={25} />
-          <Subtitle>Not you?</Subtitle>
-          <Spacing size={10} />
-
-          <Box>
-            <Button title="Change Account" size="SMALL" />
-          </Box>
-
-          <Spacing size={10} />
-        </Box>
-      </Box>
+              <Spacing size={10} />
+            </Box>
+          </InnerContentContainer>
+        </ContentContainer>
+      </ScrollContainer>
     );
   }
 

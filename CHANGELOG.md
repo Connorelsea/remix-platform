@@ -12,6 +12,7 @@
   * Revoke device access if lost, stolen, or old
   * Set up trusted and untrusted devices
   * Secure password expiration checking system
+* Responsive Desktop and mobile support
 
 TODO before release:
 
@@ -22,9 +23,14 @@ TODO before release:
 
 * Views
 
-- Desktop view VS Mobile view
-  * Desktop view has two modes (sidebar and full tabs)
+- DONE Desktop view VS Mobile view
+
+  * DONE Desktop view has two modes (sidebar and full tabs)
   * Mobile view has two modes (dashboard and tabview)
+
+- New Tab page
+
+- All Tab page
 
 * Tabs
 

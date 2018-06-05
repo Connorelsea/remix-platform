@@ -18,15 +18,15 @@ class MessageDisplayCard extends Component<Props> {
     const { group } = this.props;
 
     const url = group.isDirectMessage
-      ? `/u/${group.username}`
-      : `/g/${group.username}`;
+      ? `/u/+${group.username}`
+      : `/g/+${group.username}`;
 
     if (!group) return <div>failed</div>;
 
     console.log("GROUP", group);
 
     return (
-      <TouchableNewTab url={url}>
+      <TouchableNewTab url={url} iconUrl={group.iconUrl}>
         <Card>
           <Box>
             <div>

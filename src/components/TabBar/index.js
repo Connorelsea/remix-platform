@@ -40,8 +40,13 @@ class TabBar extends Component<Props> {
   getListStyle(isDraggingOver) {
     const { theme } = this.props;
     return {
-      background: isDraggingOver ? "lightblue" : theme.background.secondary,
-      display: "flex",
+      background: isDraggingOver
+        ? theme.background.primary
+        : theme.background.secondary,
+      // border: isDraggingOver
+      //   ? `1px solid ${theme.background.tertiary}`
+      //   : `1px solid ${theme.background.secondary}`,
+      // display: "flex",
       overflow: "auto",
       width: "100%",
     };
@@ -51,48 +56,13 @@ class TabBar extends Component<Props> {
     const { tabs, theme, createNewTab } = this.props;
 
     return (
-      <Box fullWidth row backgroundColor={theme.background.secondary} alignEnd>
-        <SpacingComponent size={10} />
-        <Box column>
-          <SpacingComponent size={10} />
-          <Box>
-            <Button
-              title=""
-              size="SMALL"
-              type="DEFAULT"
-              icon={
-                <Icon name="home" size={22} color={theme.button.default.text} />
-              }
-              to="/"
-            />
-            <SpacingComponent size={10} />
-            <Button
-              title=""
-              size="SMALL"
-              type="DEFAULT"
-              icon={
-                <Icon
-                  name="layers"
-                  size={22}
-                  color={theme.button.default.text}
-                />
-              }
-              onClick={() => createNewTab("/tabs/all", "All Tabs")}
-            />
-            <SpacingComponent size={10} />
-            <Button
-              title=""
-              size="SMALL"
-              type="DEFAULT"
-              icon={
-                <Icon name="plus" size={22} color={theme.button.default.text} />
-              }
-              onClick={() => createNewTab("/tabs/new", "New Tab")}
-            />
-          </Box>
-          <SpacingComponent size={10} />
-        </Box>
-        <SpacingComponent size={10} />
+      <Box
+        height="80px"
+        fullWidth
+        row
+        backgroundColor={theme.background.secondary}
+        alignEnd
+      >
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
             {(
@@ -176,4 +146,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(TabBar));
+export default withTheme(connect(mapStateToProps, mapDispatchToProps)(TabBar));

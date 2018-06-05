@@ -17,11 +17,16 @@ import ProvideGroups, {
 } from "../../providers/ProvideGroups";
 import Subtitle from "../../elements/Subtitle";
 import Icon from "../../components/Icon";
+import { withTheme } from "styled-components";
+import { type Theme } from "../../utilities/theme";
+
+import ChatCard from "./ChatCard";
 
 type Props = {
   match: {
     params: any,
   },
+  theme: Theme,
 };
 
 class GroupComponent extends Component<Props> {
@@ -35,24 +40,31 @@ class GroupComponent extends Component<Props> {
 
     const group: Group = groups[0];
 
-    return (
-      <div>
-        <Box padding="15px">
-          <Box>
-            <Icon iconUrl={group.iconUrl} iconSize={200} />
-          </Box>
+    const { theme } = this.props;
 
-          <Spacing size={15} />
+    return (
+      <Box full column backgroundColor={theme.background.secondary}>
+        <Box padding="25px" backgroundColor={theme.background.primary}>
+          <Icon iconUrl={group.iconUrl} iconSize={200} />
+
+          <Spacing size={25} />
 
           <Box column>
             <Title type="BOLD" size="LARGE">
               {group.name}
             </Title>
+            <Spacing size={10} />
             <Subtitle>@{group.username}</Subtitle>
+            <Spacing size={10} />
             <Paragraph>{group.description}</Paragraph>
           </Box>
         </Box>
-      </div>
+        <Box padding="25px">
+          {group.chats.map(chat => (
+            <ChatCard group={group} chat={chat} key={chat.id} />
+          ))}
+        </Box>
+      </Box>
     );
   }
 
@@ -74,6 +86,6 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(GroupComponent)
+export default withTheme(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupComponent))
 );

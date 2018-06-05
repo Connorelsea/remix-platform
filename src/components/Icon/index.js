@@ -13,11 +13,9 @@ class Icon extends Component<Props> {
   render(): Node {
     const { iconUrl, iconSize = 60, altText = "a round icon" } = this.props;
     return (
-      <div>
-        <ImageContainer iconSize={iconSize}>
-          <img src={iconUrl} alt={altText} />
-        </ImageContainer>
-      </div>
+      <ImageContainer iconSize={iconSize}>
+        <img src={iconUrl} alt={altText} />
+      </ImageContainer>
     );
   }
 }

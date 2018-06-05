@@ -154,15 +154,15 @@ const DarkTheme: Theme = {
     tertiary: styles.colors.darkblackblue[200],
   },
   border: {
-    primary: styles.colors.grey[300],
-    secondary: styles.colors.grey[400],
+    primary: styles.colors.darkblackblue[400],
+    secondary: styles.colors.darkblackblue[500],
   },
   appColors: {
     inputOutline: "#4A90E2",
     cardShadow: "black",
   },
   text: {
-    primary: styles.colors.darkblackblue[600],
+    primary: styles.colors.darkblackblue[700],
     secondary: styles.colors.darkblackblue[500],
     tertiary: styles.colors.darkblackblue[600],
     ...sharedTextColors,
@@ -197,8 +197,8 @@ const DarkTheme: Theme = {
     },
   },
   shadow: {
-    primary: "0 15px 30px 0px rgba(10,65,126,0.4)",
-    secondary: "0 15px 30px 0px rgba(10,65,126,0.4)",
+    primary: "0 11px 30px 0px rgba(10, 65, 126, 0.54)",
+    secondary: "0 15px 30px 0px rgba(10, 65, 126, 0.88)",
   },
 };
 

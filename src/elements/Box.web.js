@@ -50,6 +50,20 @@ export default styled.div`
     `
   )}
 
+  ${ifProp(
+    "borderRadius",
+    css`
+      border-radius: ${prop("borderRadius")};
+    `
+  )}
+
+  ${ifProp(
+    "height",
+    css`
+      min-height: ${prop("height")};
+    `
+  )}
+
   ${props => determinePadding(props.padding)}
   ${props => determinePadding(props.margin, "margin")}
   /********************************* display *********************************/

@@ -42,6 +42,28 @@ type SetCurrentTabId = {
   },
 };
 
+type UpdateTabByName = {
+  type: "UPDATE_TAB_BY_NAME",
+  payload: {
+    tabName: string,
+    url: string,
+    title: string,
+    subtitle: string,
+    iconUrl: string,
+  },
+};
+
+type UpdateTab = {
+  type: "UPDATE_TAB",
+  payload: {
+    tabId: string,
+    url: string,
+    title: string,
+    subtitle: string,
+    iconUrl: string,
+  },
+};
+
 type ReplaceAllTabs = {
   type: "REPLACE_ALL_TABS",
   payload: {
@@ -49,7 +71,13 @@ type ReplaceAllTabs = {
   },
 };
 
-type Action = AddTab | ShowTabView | SetCurrentTabId | ReplaceAllTabs;
+type Action =
+  | AddTab
+  | ShowTabView
+  | SetCurrentTabId
+  | UpdateTab
+  | UpdateTabByName
+  | ReplaceAllTabs;
 
 // Middleware action types
 
@@ -113,6 +141,43 @@ export function setCurrentTabId(currentTabId: string): SetCurrentTabId {
   };
 }
 
+export function updateTabByUrl(
+  tabUrl: string,
+  url: string,
+  title: string,
+  subtitle: string,
+  iconUrl: string
+): ThunkAction {
+  return async function(dispatch, getState) {
+    const state: GlobalState = getState();
+    const foundTab: ?Tab = state.tabs.tabs.find(t => t.url === tabUrl);
+
+    if (foundTab) {
+      dispatch(push(url));
+      dispatch(updateTab(foundTab.id, url, title, subtitle, iconUrl));
+    }
+  };
+}
+
+function updateTab(
+  tabId: string,
+  url: string,
+  title: string,
+  subtitle: string,
+  iconUrl: string
+): UpdateTab {
+  return {
+    type: "UPDATE_TAB",
+    payload: {
+      tabId,
+      url,
+      title,
+      subtitle,
+      iconUrl,
+    },
+  };
+}
+
 /**
  * This replaces the previous tabs array with a new tabs array. It is
  * used by other components when the user drags, to update to a newly
@@ -144,6 +209,27 @@ export function reducer(state: State = initialState, action: Action): State {
         ...state,
         currentTabId: action.payload.currentTabId,
         isShowingTabView: true,
+      };
+    }
+
+    case "UPDATE_TAB": {
+      const { payload: { tabId, url, title, subtitle, iconUrl } } = action;
+      const tabIndex = state.tabs.findIndex(t => t.id === tabId);
+      const oldTab = state.tabs[tabIndex];
+      const otherTabs = state.tabs.filter(t => t.id !== tabId);
+
+      return {
+        ...state,
+        tabs: [
+          ...otherTabs,
+          {
+            ...oldTab,
+            url: url ? url : oldTab.url,
+            title: title ? title : oldTab.title,
+            subtitle: subtitle ? subtitle : oldTab.subtitle,
+            iconUrl: iconUrl ? iconUrl : oldTab.iconUrl,
+          },
+        ],
       };
     }
 

@@ -20,6 +20,11 @@ import { type Group } from "../../types/group";
 import TabBar from "../../components/TabBar";
 import Box from "../../elements/Box.web";
 
+import ScrollContainer from "../../elements/ScrollContainer";
+import ContentContainer from "../../elements/ContentContainer";
+import InnerContentContainer from "../../elements/InnerContentContainer";
+import TabControls from "../../components/TabControls/index";
+
 type Props = {
   friends: Array<User>,
   groups: Array<Group>,
@@ -42,42 +47,41 @@ class Dashboard extends Component<Props> {
     if (usersLoading) return "loading users";
 
     return (
-      // <AppScrollContainer title="Remix" backText="remove">
-      <Box
-        padding="20px"
-        column
-        backgroundColor={p => p.theme.background.secondary}
-      >
-        <SpacingComponent size={20} />
-        <Subtitle>Notifications</Subtitle>
-        <SpacingComponent size={15} />
-        <div>Hello World Dashboard</div>
+      <ScrollContainer>
+        <ContentContainer>
+          <Box column padding="25px">
+            <TabControls />
+            <SpacingComponent size={20} />
+            <Subtitle>Notifications</Subtitle>
+            <SpacingComponent size={15} />
+            <div>Hello World Dashboard</div>
 
-        <SpacingComponent size={25} />
-        <Subtitle>Online Friends</Subtitle>
-        <SpacingComponent size={15} />
-        {friends.map(f => {
-          const foundUser: ?User = users.find(u => f.id === u.id);
-          if (!foundUser) return "not found";
-          return <Icon key={f.id} iconUrl={foundUser.iconUrl} />;
-        })}
+            <SpacingComponent size={25} />
+            <Subtitle>Online Friends</Subtitle>
+            <SpacingComponent size={15} />
+            {friends.map(f => {
+              const foundUser: ?User = users.find(u => f.id === u.id);
+              if (!foundUser) return "not found";
+              return <Icon key={f.id} iconUrl={foundUser.iconUrl} />;
+            })}
 
-        <SpacingComponent size={25} />
-        <Subtitle>Recent Messages</Subtitle>
-        <SpacingComponent size={15} />
-        {groups.map(g => [
-          <MessageDisplayCard key={g.id} group={g} />,
-          <SpacingComponent key={g.id + "space"} size={20} />,
-        ])}
+            <SpacingComponent size={25} />
+            <Subtitle>Recent Messages</Subtitle>
+            <SpacingComponent size={15} />
+            {groups.map(g => [
+              <MessageDisplayCard key={g.id} group={g} />,
+              <SpacingComponent key={g.id + "space"} size={20} />,
+            ])}
 
-        <SpacingComponent size={25} />
-      </Box>
+            <SpacingComponent size={25} />
+          </Box>
+        </ContentContainer>
+      </ScrollContainer>
     );
   }
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     friends: state.friends.friends,
     friendRequests: state.friends.friendRequests,

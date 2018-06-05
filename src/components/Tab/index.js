@@ -7,7 +7,7 @@ import Button from "../../elements/Button";
 import TouchableArea from "../../elements/TouchableArea";
 import { type Tab as TabType } from "../../types/tab";
 import { setCurrentTab } from "../../ducks/tabs";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import Subtitle from "../../elements/Subtitle";
 import Paragraph from "../../elements/Paragraph";
 
@@ -16,11 +16,19 @@ import {
   type DraggableProvided,
   type DraggableStateSnapshot,
 } from "react-beautiful-dnd";
+import { type Theme } from "../../utilities/theme";
+import Box from "../../elements/Box.web";
+import Icon from "../Icon/index";
+import Spacing from "../Spacing";
+
+import tinycolor from "tinycolor2";
 
 type Props = {
   tab: TabType,
   index: number,
   setCurrentTab: (tab: TabType) => Promise<any>,
+  theme: Theme,
+  currentTabId: string,
 };
 
 class Tab extends Component<Props> {
@@ -32,11 +40,12 @@ class Tab extends Component<Props> {
 
   grid: number = 8;
 
+  @bind
   getTabStyle(isDragging, draggableStyle) {
     return {
       // some basic styles to make the items look a bit nicer
       userSelect: "none",
-      boxShadow: "0px 7px 13px -4px #D5D9DB",
+      boxShadow: isDragging ? this.props.theme.shadow.secondary : undefined,
 
       // change background colour if dragging
       // background: isDragging ? "lightgreen" : "grey",
@@ -46,32 +55,6 @@ class Tab extends Component<Props> {
     };
   }
 
-  @bind
-  renderDraggableBody(
-    provided: DraggableProvided,
-    snapshot: DraggableStateSnapshot
-  ): Node {
-    const { tab } = this.props;
-    const { onPress } = this;
-
-    return (
-      <TouchableArea
-        onPress={onPress}
-        innerRef={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        style={this.getTabStyle(
-          snapshot.isDragging,
-          provided.draggableProps.style
-        )}
-      >
-        <Body>
-          <Paragraph>{tab.title}</Paragraph>
-        </Body>
-      </TouchableArea>
-    );
-  }
-
   render(): Node {
     const { tab } = this.props;
 
@@ -79,7 +62,40 @@ class Tab extends Component<Props> {
 
     return (
       <Outer>
-        <Draggable draggableId={tab.id}>{this.renderDraggableBody}</Draggable>
+        <Draggable draggableId={tab.id}>
+          {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
+            const { tab, theme, currentTabId } = this.props;
+            const { onPress } = this;
+
+            return (
+              <TouchableArea
+                onPress={onPress}
+                innerRef={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                style={this.getTabStyle(
+                  snapshot.isDragging,
+                  provided.draggableProps.style
+                )}
+              >
+                <Body justifyAround isCurrentTab={currentTabId === tab.id}>
+                  {tab.iconUrl !== undefined && [
+                    <Icon iconSize={45} iconUrl={tab.iconUrl} />,
+                    <Spacing size={10} />,
+                  ]}
+                  <Box column fullHeight justifyCenter>
+                    <Paragraph color={theme.text.primary}>
+                      {tab.title}
+                    </Paragraph>
+                    {tab.subtitle !== undefined && (
+                      <Paragraph>{tab.subtitle}</Paragraph>
+                    )}
+                  </Box>
+                </Body>
+              </TouchableArea>
+            );
+          }}
+        </Draggable>
       </Outer>
     );
   }
@@ -90,14 +106,31 @@ const Outer = styled.div`
 `;
 
 const Body = styled.div`
-  border: 1px solid ${p => p.theme.border.primary};
-  background-color: ${p => p.theme.background.primary};
+  border: 1px solid ${p => p.theme.border.secondary};
+  border-bottom: ${p =>
+    p.isCurrentTab
+      ? `1px solid ${p.theme.background.primary}`
+      : `1px solid ${p.theme.border.secondary}`};
+  background-color: ${p =>
+    p.isCurrentTab
+      ? p.theme.background.primary
+      : tinycolor(p.theme.background.primary)
+          .darken(5)
+          .toString()};
   padding: 10px;
   border-radius: 10px 10px 0 0;
+  height: 65px;
+  min-height: 65px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 function mapStateToProps(state, props) {
-  return {};
+  return {
+    currentTabId: state.tabs.currentTabId,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -106,4 +139,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tab);
+export default withTheme(connect(mapStateToProps, mapDispatchToProps)(Tab));

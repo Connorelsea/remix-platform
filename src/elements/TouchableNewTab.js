@@ -9,6 +9,9 @@ import { withRouter, Link } from "react-router-dom";
 
 type Props = {
   url: string,
+  title?: string,
+  subtitle?: string,
+  iconUrl?: string,
   children: Node,
   createNewTab: (
     url: string,
@@ -21,9 +24,9 @@ type Props = {
 class TouchableNewTab extends Component<Props> {
   @bind
   onPress() {
-    const { url, createNewTab } = this.props;
+    const { url, title, subtitle, iconUrl, createNewTab } = this.props;
 
-    createNewTab(url, url);
+    createNewTab(url, title !== undefined ? title : url, subtitle, iconUrl);
   }
 
   render(): Node {

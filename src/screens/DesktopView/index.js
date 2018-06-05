@@ -20,7 +20,7 @@ class DesktopView extends Component<Props, State> {
   render(): Node {
     return (
       <Box full>
-        <Box fullHeight style={{ width: "35%" }}>
+        <Box fullHeight style={{ width: "45%" }}>
           <Dashboard />
         </Box>
         <Box full>
