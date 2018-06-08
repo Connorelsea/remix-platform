@@ -96,7 +96,7 @@ export function invalidateActiveSubsriptions(): ThunkAction {
 export function reducer(
   state: State = {
     themes,
-    themeIndex: 2,
+    themeIndex: 0,
     activeSubscriptions: [],
   },
   action: Action
