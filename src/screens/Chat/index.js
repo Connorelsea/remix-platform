@@ -19,6 +19,7 @@ import Message from "../../components/Message/index";
 import ChatInput from "../../components/ChatInput";
 import Paragraph from "../../elements/Paragraph";
 import { CurrentDeviceSelector } from "../../ducks/auth";
+import { bind } from "decko";
 
 type Props = {
   chat: ChatType,
@@ -29,6 +30,16 @@ type Props = {
 type State = {};
 
 class Chat extends Component<Props, State> {
+  @bind
+  scrollToBottom() {
+    if (this.scrollContainer === undefined) return;
+    this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render(): Node {
     const { messages, chat, currentUserId } = this.props;
 
@@ -37,7 +48,7 @@ class Chat extends Component<Props, State> {
 
     return (
       <OuterContainer>
-        <ScrollContainer>
+        <ScrollContainer innerRef={e => (this.scrollContainer = e)}>
           <ContentContainer>
             <ProvideUsers
               userIds={messages.map(m => m.userId)}

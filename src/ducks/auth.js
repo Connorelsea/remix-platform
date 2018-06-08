@@ -17,7 +17,7 @@ import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { type Device } from "../types/device";
-import { initData } from "./app";
+import { initData, invalidateActiveSubsriptions } from "./app";
 import { setCurrentUserId } from "./identity";
 
 // Default non-authenticated apollo client for use before user
@@ -408,6 +408,7 @@ export function loginWithCurrentDevice(): ThunkAction {
       const device: Device = CurrentDeviceSelector(state);
       const { accessToken, user } = device;
 
+      dispatch(invalidateActiveSubsriptions());
       dispatch(setCurrentUserId(user.id));
       dispatch(initData(user.id));
     }

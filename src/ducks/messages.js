@@ -86,6 +86,8 @@ export function subscribeToMessages(userId: string): ThunkAction {
     `,
     });
 
+    console.log("SUBSCRIPTION OBSERVABLE", observable);
+
     return observable.subscribe({
       next(result) {
         console.log("SUB_RESULT", result);

@@ -11,8 +11,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "build"),
     publicPath: "/",
-    filename: "js/bundle.js",
-    chunkFilename: "js/[name].chunk.js",
+    filename: "js/[name].[hash:8].js",
+    chunkFilename: "js/[name].[hash:8].chunk.js",
   },
   module: {
     rules: [
@@ -25,6 +25,12 @@ module.exports = {
           limit: 10000,
           name: "media/[name].[hash:8].[ext]",
         },
+      },
+
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
       },
 
       // Process .js files with babel
@@ -86,7 +92,7 @@ module.exports = {
     alias: {
       "react-native": "react-native-web",
     },
-    extensions: [".web.js", ".js", ".json", ".web.jsx", ".jsx"],
+    extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".jsx"],
   },
 
   devtool: "source-map", //eval is faster

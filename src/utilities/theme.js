@@ -201,9 +201,126 @@ const DarkTheme: Theme = {
   },
 };
 
-const SolarizedDarkTheme: Theme = {};
+const SolarizedLightTheme: Theme = {
+  fontSize,
+  background: {
+    primary: styles.colors.solarizedlight[300],
+    secondary: styles.colors.solarizedlight[100],
+    tertiary: styles.colors.solarizedlight[200],
+  },
+  border: {
+    primary: styles.colors.solarizedlight[400],
+    secondary: styles.colors.solarizedlight[500],
+  },
+  appColors: {
+    inputOutline: "#4A90E2",
+    cardShadow: "black",
+  },
+  text: {
+    primary: styles.colors.solarizedlight[700],
+    secondary: styles.colors.solarizedlight[500],
+    tertiary: styles.colors.solarizedlight[600],
+    ...sharedTextColors,
+  },
+  button: {
+    disabled: {
+      text: styles.colors.solarizedlight[500],
+      background: styles.colors.solarizedlight[200],
+      bottom: styles.colors.solarizedlight[200],
+      hover: styles.colors.solarizedlight[400],
+      hover_bottom: styles.colors.solarizedlight[200],
+      active: styles.colors.grey[400],
+      active_bottom: styles.colors.grey[200],
+    },
+    default: {
+      text: styles.colors.solarizedlight[600],
+      background: styles.colors.solarizedlight[300],
+      bottom: styles.colors.solarizedlight[200],
+      hover: styles.colors.solarizedlight[400],
+      hover_bottom: styles.colors.solarizedlight[200],
+      active: "#0F2343",
+      active_bottom: "#00162F",
+    },
+    emphasis: {
+      text: "#0F72E0",
+      background: "#09305A",
+      bottom: "#05203D",
+      hover: "#004793",
+      hover_bottom: "#033369",
+      active: "#062343",
+      active_bottom: "#00162F",
+    },
+  },
+  shadow: {
+    primary: "0 7px 24px 2px rgba(0, 0, 0, 0.11)",
+    secondary:
+      "0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2)",
+  },
+};
 
-export const themes = [LightTheme, DarkTheme, SolarizedDarkTheme];
+const SolarizedDarkTheme: Theme = {
+  fontSize,
+  background: {
+    primary: styles.colors.solarizeddark[300],
+    secondary: styles.colors.solarizeddark[100],
+    tertiary: styles.colors.solarizeddark[200],
+  },
+  border: {
+    primary: styles.colors.solarizeddark[400],
+    secondary: styles.colors.solarizeddark[500],
+  },
+  appColors: {
+    inputOutline: "#4A90E2",
+    cardShadow: "black",
+  },
+  text: {
+    primary: styles.colors.solarizeddark[700],
+    secondary: styles.colors.solarizeddark[500],
+    tertiary: styles.colors.solarizeddark[600],
+    ...sharedTextColors,
+  },
+  button: {
+    disabled: {
+      text: styles.colors.solarizeddark[500],
+      background: styles.colors.solarizeddark[200],
+      bottom: styles.colors.solarizeddark[200],
+      hover: styles.colors.solarizeddark[400],
+      hover_bottom: styles.colors.solarizeddark[200],
+      active: styles.colors.grey[400],
+      active_bottom: styles.colors.grey[200],
+    },
+    default: {
+      text: styles.colors.solarizeddark[600],
+      background: styles.colors.solarizeddark[300],
+      bottom: styles.colors.solarizeddark[200],
+      hover: styles.colors.solarizeddark[400],
+      hover_bottom: styles.colors.solarizeddark[200],
+      active: "#0F2343",
+      active_bottom: "#00162F",
+    },
+    emphasis: {
+      text: "#0F72E0",
+      background: "#09305A",
+      bottom: "#05203D",
+      hover: "#004793",
+      hover_bottom: "#033369",
+      active: "#062343",
+      active_bottom: "#00162F",
+    },
+  },
+  shadow: {
+    primary: "0 7px 24px 2px rgba(0, 0, 0, 0.11)",
+    secondary:
+      "0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2)",
+  },
+};
+
+export const themes = [
+  LightTheme,
+  DarkTheme,
+  SolarizedLightTheme,
+  SolarizedDarkTheme,
+];
 
 const theme = createTheme(...Object.keys(LightTheme));
 export default theme;
