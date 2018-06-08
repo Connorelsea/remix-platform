@@ -1,4 +1,4 @@
-import React, { Component, Node } from "React";
+import React, { Component, Node } from "react";
 import styled from "styled-components";
 
 type Props = {
