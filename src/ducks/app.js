@@ -1,7 +1,7 @@
 import { themes, Theme } from "../utilities/theme";
 import { fetchFriendsData } from "./friends";
 import { fetchGroupsData } from "./groups/index.js";
-import { fetchMessagesData } from "./messages";
+import { fetchMessagesData, subscribeToMessages } from "./messages";
 import { type GlobalState } from "../reducers/rootReducer";
 
 // Middleware action types
@@ -45,6 +45,10 @@ export function initData(userId) {
       dispatch(fetchGroupsData(userId)),
       dispatch(fetchMessagesData(userId)),
     ]);
+
+    const subscriptions = await Promise.all([
+      dispatch(subscribeToMessages(userId)),
+    ]);
   };
 }
 
@@ -53,7 +57,7 @@ export function initData(userId) {
 export function reducer(
   state: State = {
     themes,
-    themeIndex: 1,
+    themeIndex: 0,
   },
   action: Action
 ): State {

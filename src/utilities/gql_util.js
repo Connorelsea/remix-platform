@@ -7,15 +7,15 @@ export const query = (query, variables, clientOverride = client) =>
     query: gql`
       ${query}
     `,
-    variables
+    variables,
   });
 
-export const mutate = (mutation, variables) =>
-  client.mutate({
+export const mutate = (mutation, variables, clientOverride = client) =>
+  clientOverride.mutate({
     mutation: gql`
       ${mutation}
     `,
-    variables
+    variables,
   });
 
 export const subscribe = (subscription, variables) =>
@@ -23,5 +23,5 @@ export const subscribe = (subscription, variables) =>
     subscription: gql`
       ${subscription}
     `,
-    variables
+    variables,
   });

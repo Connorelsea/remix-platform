@@ -1,11 +1,11 @@
-import React from "react"
-import Message from "./Message"
-import styled from "styled-components"
-import Spacing from "./Spacing"
+import React from "react";
+import Message from "./Message";
+import styled from "styled-components/native";
+import Spacing from "./Spacing";
 
 class MessageList extends React.Component {
   render() {
-    const { messages, currentUser } = this.props
+    const { messages, currentUser } = this.props;
     return (
       <Container id="messageList">
         <Spacing size={130} />
@@ -24,15 +24,15 @@ class MessageList extends React.Component {
         <Spacing size={70} />
         <Spacing size={10} name="messageListEnd" />
       </Container>
-    )
+    );
   }
 }
 
-export default MessageList
+export default MessageList;
 
 const Container = styled.View`
   flex: 1;
   overflow: scroll;
   overflow-x: hidden;
   overscroll-behavior: contain;
-`
+`;

@@ -10,6 +10,7 @@ import { type User } from "../types/user";
 import createCachedSelector from "re-reselect";
 import { type Group } from "../types/group";
 import { getGroups } from "./groups/index.js";
+import gql from "graphql-tag";
 
 // State
 // Type definitions and initial state
@@ -19,17 +20,14 @@ export type State = {
   readPositions: Array<any>,
 };
 
-const initialState: State = {
-  messages: [],
-  readPositions: [],
-};
-
 // Action Types
 // Type definitions
 
-type NameAction = {
-  type: "NAME",
-  payload: any,
+type AddMessage = {
+  type: "ADD_MESSAGE",
+  payload: {
+    message: Message,
+  },
 };
 
 type SetDataAction = {
@@ -37,7 +35,7 @@ type SetDataAction = {
   payload: { data: MessagesDataType },
 };
 
-type Action = NameAction | SetDataAction;
+type Action = AddMessage | SetDataAction;
 
 // Middleware action types
 
@@ -65,6 +63,41 @@ export function fetchMessagesData(userId: string): ThunkAction {
   };
 }
 
+export function subscribeToMessages(userId: string): ThunkAction {
+  return async function(dispatch, getState) {
+    const state: GlobalState = getState();
+    const { apolloClient } = state.auth;
+
+    console.log("SUBSCRIBING TO NEW MESSAGES");
+
+    const observable = apolloClient.subscribe({
+      query: gql`
+      subscription newMessage {
+        newMessage(forUserId: ${userId}) {
+          id
+          chatId
+          userId
+          content {
+            type
+            data
+          }
+        }
+      }
+    `,
+    });
+
+    return observable.subscribe({
+      next(result) {
+        console.log("SUB_RESULT", result);
+        dispatch(addMessage(result.data.newMessage));
+      },
+      error(error) {
+        console.log("SUB_ERROR", error);
+      },
+    });
+  };
+}
+
 type MessagesDataType = {
   allMessages: Array<Message>,
   currentReadPositions: Array<any>,
@@ -74,6 +107,13 @@ export function setData(data: MessagesDataType): SetDataAction {
   return {
     type: "SET_MESSAGES_DATA_ACTION",
     payload: { data },
+  };
+}
+
+export function addMessage(message: Message): AddMessage {
+  return {
+    type: "ADD_MESSAGE",
+    payload: { message },
   };
 }
 
@@ -89,13 +129,15 @@ const getMessages = (state: GlobalState) => state.messages.messages;
  *
  */
 export const getAllMessages = createSelector(
+  state => state,
   getAllUsers,
   getMessages,
-  (users: Array<User>, messages: Array<Message>) => {
+  (state: GlobalState, users: Array<User>, messages: Array<Message>) => {
+    console.log("ALL MESSAGES ALL USERS", users);
     return messages.map(message => {
       return {
         ...message,
-        user: getUserById(users, message.userId),
+        user: getUserById(state, message.userId),
         readPositions: [],
       };
     });
@@ -131,7 +173,9 @@ export const getGroupMessages = createCachedSelector(
  */
 export const getChatMessages = createCachedSelector(
   getAllMessages,
+  (messages: Array<Message>, chatId: string) => chatId,
   (messages: Array<Message>, chatId: string) => {
+    console.log("MESSGGZZZ", messages, chatId);
     return messages.filter(msg => msg.chatId === chatId);
   }
 )((state: GlobalState, chatId: string) => chatId);
@@ -152,6 +196,13 @@ export function reducer(
         ...state,
         messages: allMessages,
         readPositions: currentReadPositions,
+      };
+    }
+    case "ADD_MESSAGE": {
+      const { message } = action.payload;
+      return {
+        ...state,
+        messages: [...state.messages, message],
       };
     }
     default:

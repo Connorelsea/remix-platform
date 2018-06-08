@@ -7,7 +7,7 @@ import { type Tab as TabType } from "../../types/tab";
 import { Route, Switch } from "react-router-dom";
 import UserComponent from "../User";
 import GroupComponent from "../Group/index";
-import Chat from "../Chat/index";
+import GroupChat from "../GroupChat/index";
 import TabBar from "../../components/TabBar";
 import EmptyView from "../EmptyView";
 import Box from "../../elements/Box.web";
@@ -31,16 +31,14 @@ class TabView extends Component<Props> {
         <TabBar />
 
         <ScrollContainer>
-          <ContentContainer
-            style={{ borderLeft: `1px solid ${theme.border.secondary}` }}
-          >
+          <ContentContainer>
             <Switch>
               <Route exact path="/" component={EmptyView} />
               <Route exact path="/tabs/new" component={NewTab} />
               <Route exact path="/tabs/all" component={AllTabs} />
               <Route exact path="/u/@:username" component={UserComponent} />
               <Route exact path="/g/+:username" component={GroupComponent} />
-              <Route exact path="/g/+:username/:chat" component={Chat} />
+              <Route exact path="/g/+:username/:chat" component={GroupChat} />
             </Switch>
           </ContentContainer>
         </ScrollContainer>
@@ -48,5 +46,11 @@ class TabView extends Component<Props> {
     );
   }
 }
+
+const Outline = styled.div`
+  border: 1px solid ${p => p.theme.border.secondary};
+  min-height: 100%;
+  display: flex;
+`;
 
 export default withTheme(TabView);

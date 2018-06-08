@@ -1,35 +1,35 @@
-import React, { Component } from "react"
-import styled from "styled-components"
-import styles from "../utilities/styles"
-import Spacing from "../components/Spacing"
-import { bind } from "decko"
+import React, { Component } from "react";
+import styled from "styled-components/native";
+import styles from "../utilities/styles";
+import Spacing from "../components/Spacing";
+import { bind } from "decko";
 
-import Input from "./Input"
-import { mutate } from "../utilities/gql_util"
-import { View } from "react-native"
-import VibrancyView from "./VibrancyView"
-import Text from "./Text"
+import Input from "./Input";
+import { mutate } from "../utilities/gql_util";
+import { View } from "react-native";
+import VibrancyView from "./VibrancyView";
+import Text from "./Text";
 
 class ChatInputArea extends Component {
   state = {
     value: "",
-  }
+  };
 
   @bind
   onChangeText(value) {
-    this.setState({ value })
+    this.setState({ value });
   }
 
   @bind
   onPressSend() {
-    const { value } = this.state
-    const { chatId, scrollToBottom, updateFocus } = this.props
+    const { value } = this.state;
+    const { chatId, scrollToBottom, updateFocus } = this.props;
 
     this.setState({
       value: "",
-    })
+    });
 
-    console.log("BEFORE SEND")
+    console.log("BEFORE SEND");
 
     mutate(`
       mutation createMessage {
@@ -42,15 +42,15 @@ class ChatInputArea extends Component {
         }
       }
     `).then(() => {
-      console.log("SCROLLING TO BOTTOM")
-      scrollToBottom()
-      updateFocus()
-    })
+      console.log("SCROLLING TO BOTTOM");
+      scrollToBottom();
+      updateFocus();
+    });
   }
 
   render() {
-    const { value } = this.state
-    const { innerRef } = this.props
+    const { value } = this.state;
+    const { innerRef } = this.props;
 
     return [
       <VibrancyView
@@ -87,11 +87,11 @@ class ChatInputArea extends Component {
           <Text tier="body">Send</Text>
         </Button>
       </View>,
-    ]
+    ];
   }
 }
 
-export default ChatInputArea
+export default ChatInputArea;
 
 const ChatInput = styled.TextInput`
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -103,7 +103,7 @@ const ChatInput = styled.TextInput`
   -webkit-backdrop-filter: blur(60px);
   background-color: rgba(255, 255, 255, 0.7);
   outline: none;
-`
+`;
 
 const Button = styled.TouchableOpacity`
   padding: 14px 15px;
@@ -112,4 +112,4 @@ const Button = styled.TouchableOpacity`
   border-radius: 50px;
   -webkit-backdrop-filter: blur(60px);
   background-color: rgba(255, 255, 255, 0.8);
-`
+`;

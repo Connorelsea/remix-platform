@@ -71,6 +71,7 @@ export function addOrUpdateUser(user: any): AddOrUpdateUser {
  * Returns all users in the redux store
  */
 export function getAllUsers(state: GlobalState): Array<User> {
+  console.log("GETALLUSERS", state);
   return state.identity.users;
 }
 

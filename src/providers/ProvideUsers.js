@@ -59,6 +59,8 @@ class ProvideUsers extends Component<Props, State> {
 
     const result: Array<Array<User>> = await Promise.all(promises);
 
+    console.log("INPUT", userIds, userNames);
+
     console.log("PROVIDE USERS RESULT", result);
 
     const users: Array<User> = result.reduce(
@@ -66,10 +68,14 @@ class ProvideUsers extends Component<Props, State> {
       []
     );
 
+    console.log("PROVIDE USERS RESULT", users);
+
     this.setState({
       users,
       usersLoading: false,
     });
+
+    console.log("AFTRER SET STATE IN PROVIDE USERS", this.state);
   }
 
   componentDidMount() {
@@ -88,7 +94,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (userIds: Array<string>) => dispatch(getUsers(userIds)),
     dispatchFetchUsersById: (userIds: Array<string>) =>
       dispatch(fetchUsersById(userIds)),
     dispatchFetchUsersByName: (userIds: Array<string>) =>

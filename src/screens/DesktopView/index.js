@@ -5,8 +5,13 @@ import ConnectedRouter from "react-router-redux/ConnectedRouter";
 import { Route } from "react-router-dom";
 import history from "../../utilities/storage/history";
 import Dashboard from "../../screens/Dashboard/index";
+import SplitPane from "react-split-pane";
+import { withTheme } from "styled-components";
+import { type Theme } from "../../utilities/theme";
 
-type Props = {};
+type Props = {
+  theme: Theme,
+};
 
 type State = {
   showSidebar: boolean,
@@ -18,17 +23,23 @@ class DesktopView extends Component<Props, State> {
   };
 
   render(): Node {
+    const { theme } = this.props;
+
     return (
-      <Box full>
-        <Box fullHeight style={{ width: "45%" }}>
-          <Dashboard />
-        </Box>
-        <Box full>
-          <TabView />
-        </Box>
-      </Box>
+      <SplitPane
+        split="vertical"
+        minSize={300}
+        defaultSize={350}
+        resizerStyle={{
+          backgroundColor: theme.background.secondary,
+          opacity: 1,
+        }}
+      >
+        <Dashboard />
+        <TabView />
+      </SplitPane>
     );
   }
 }
 
-export default DesktopView;
+export default withTheme(DesktopView);

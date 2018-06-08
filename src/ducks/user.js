@@ -173,9 +173,9 @@ export default new Duck({
   selectors: {
     isAuthenticated: state => state.user.id !== undefined,
 
-    getUserById: (state, id) => {
-      console.log(state, id);
-      return state.user.users.find(u => u.id === id);
+    getUserById: (users, id) => {
+      console.log(users, id);
+      return users.find(u => u.id === id);
     },
 
     getMessages: state =>

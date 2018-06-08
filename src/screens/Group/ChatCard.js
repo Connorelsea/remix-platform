@@ -40,10 +40,10 @@ class ChatCard extends Component<Props, State> {
 
     return (
       <Card onClick={this.onClick}>
-        <Title type="BOLD" size="LARGE">
+        <Title type="BOLD" size="MEDIUM">
           {chat.name}
         </Title>
-        <Spacing size={10} />
+        <Spacing size={5} />
         <Subtitle>{chat.description}</Subtitle>
       </Card>
     );

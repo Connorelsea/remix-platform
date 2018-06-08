@@ -22,6 +22,9 @@ import { type Theme } from "../../utilities/theme";
 
 import ChatCard from "./ChatCard";
 
+import ScrollContainer from "../../elements/ScrollContainer";
+import ContentContainer from "../../elements/ContentContainer";
+
 type Props = {
   match: {
     params: any,
@@ -43,28 +46,38 @@ class GroupComponent extends Component<Props> {
     const { theme } = this.props;
 
     return (
-      <Box full column backgroundColor={theme.background.secondary}>
-        <Box padding="25px" backgroundColor={theme.background.primary}>
-          <Icon iconUrl={group.iconUrl} iconSize={200} />
+      <ScrollContainer>
+        <ContentContainer>
+          <Box fullWidth column>
+            <Box padding="20px" backgroundColor={theme.background.primary}>
+              <Box minWidth={150}>
+                <Icon iconUrl={group.iconUrl} iconSize={150} />
+              </Box>
 
-          <Spacing size={25} />
+              <Spacing size={25} />
 
-          <Box column>
-            <Title type="BOLD" size="LARGE">
-              {group.name}
-            </Title>
-            <Spacing size={10} />
-            <Subtitle>@{group.username}</Subtitle>
-            <Spacing size={10} />
-            <Paragraph>{group.description}</Paragraph>
+              <Box column>
+                <Title type="BOLD" size="LARGE">
+                  {group.name}
+                </Title>
+                <Spacing size={10} />
+                <Paragraph>
+                  {group.members.length} {group.chats.length}
+                </Paragraph>
+                <Spacing size={10} />
+                <Subtitle>@{group.username}</Subtitle>
+                <Spacing size={10} />
+                <Paragraph>{group.description}</Paragraph>
+              </Box>
+            </Box>
+            <Box padding="20px">
+              {group.chats.map(chat => (
+                <ChatCard group={group} chat={chat} key={chat.id} />
+              ))}
+            </Box>
           </Box>
-        </Box>
-        <Box padding="25px">
-          {group.chats.map(chat => (
-            <ChatCard group={group} chat={chat} key={chat.id} />
-          ))}
-        </Box>
-      </Box>
+        </ContentContainer>
+      </ScrollContainer>
     );
   }
 

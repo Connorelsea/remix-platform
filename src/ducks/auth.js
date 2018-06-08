@@ -335,10 +335,8 @@ export function loginWithCurrentDevice(): ThunkAction {
       let authLink = setContext((operation, prevContext) => {
         let state = getState();
 
-        console.log(
-          "AUTH CONTEXTZZZ",
-          CurrentDeviceSelector(state).accessToken
-        );
+        console.log("Auth Link - Setting Header Context");
+        console.log("Auth Link - Current Device", CurrentDeviceSelector(state));
 
         return {
           headers: {
@@ -352,23 +350,33 @@ export function loginWithCurrentDevice(): ThunkAction {
 
       const subOptions = {
         reconnect: true,
-        connectionParams: async function() {
+        connectionParams: function() {
           let state = getState();
 
-          console.log("CONNECTION PARAMS", CurrentDeviceSelector(state));
-
-          return {
+          let params = {
             token: CurrentDeviceSelector(state).accessToken,
           };
+
+          console.log("Sub Connection Params", params);
+
+          return params;
         },
         connectionCallback: function(error) {
-          console.log("SUBZ CONNECTION ERROR");
-          console.error(error);
+          if (error) {
+            console.log("Sub Connection - Error");
+            console.error(error);
+          } else {
+            console.log("Sub Connection - No Error", error);
+          }
         },
       };
 
       const subClient = new SubscriptionClient(subEndpoint, subOptions);
       const subLink = new WebSocketLink(subClient);
+
+      subClient.onError(error => {
+        console.log("Sub Client - Error", error);
+      });
 
       const connectionLink = split(
         // split based on operation type
@@ -396,8 +404,6 @@ export function loginWithCurrentDevice(): ThunkAction {
       dispatch(setRefreshTokenExpired(false));
 
       const state = getState();
-
-      console.log("sttatteeetete", state);
 
       const device: Device = CurrentDeviceSelector(state);
       const { accessToken, user } = device;
