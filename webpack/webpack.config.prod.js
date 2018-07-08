@@ -11,8 +11,6 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 var Visualizer = require("webpack-visualizer-plugin");
 
-const WebappWebpackPlugin = require("webapp-webpack-plugin");
-
 module.exports = {
   mode: "production",
   entry: ["babel-polyfill", "./src/app/index.js"],
@@ -98,8 +96,6 @@ module.exports = {
       title: "Remix",
       template: "public/index.html",
     }),
-
-    new WebappWebpackPlugin("./logo.svg"),
 
     new CompressionPlugin({
       cache: true,
