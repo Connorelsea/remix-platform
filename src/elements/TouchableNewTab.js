@@ -8,6 +8,7 @@ import { createNewTab } from "../ducks/tabs";
 import { withRouter, Link } from "react-router-dom";
 
 type Props = {
+  full?: boolean,
   url: string,
   title?: string,
   subtitle?: string,
@@ -30,11 +31,15 @@ class TouchableNewTab extends Component<Props> {
   }
 
   render(): Node {
-    const { children, url } = this.props;
+    const { children, url, full } = this.props;
     const { onPress } = this;
 
     return (
-      <Link to={url} onClick={onPress} style={{ textDecoration: "none" }}>
+      <Link
+        to={url}
+        onClick={onPress}
+        style={{ textDecoration: "none", width: full ? "100%" : undefined }}
+      >
         {children}
       </Link>
     );

@@ -1,5 +1,5 @@
 import React, { Component, type Node } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router";
 import ProvideGroups, { type ProvideGroupsRenderProps } from "./ProvideGroups";
 
 type Props = {};

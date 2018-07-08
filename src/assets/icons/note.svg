@@ -1,0 +1,46 @@
+<svg width="257" height="318" viewBox="0 0 257 318" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="note">
+<path id="Rectangle 51" fill-rule="evenodd" clip-rule="evenodd" d="M0 48C0 31.1984 0 22.7976 3.2698 16.3803C6.14601 10.7354 10.7354 6.14601 16.3803 3.2698C22.7976 0 31.1984 0 48 0H209C225.802 0 234.202 0 240.62 3.2698C246.265 6.14601 250.854 10.7354 253.73 16.3803C257 22.7976 257 31.1984 257 48V270C257 286.802 257 295.202 253.73 301.62C250.854 307.265 246.265 311.854 240.62 314.73C234.202 318 225.802 318 209 318H48C31.1984 318 22.7976 318 16.3803 314.73C10.7354 311.854 6.14601 307.265 3.2698 301.62C0 295.202 0 286.802 0 270V48Z" fill="url(#paint0_linear)"/>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="257" height="318">
+<path id="Rectangle 51_2" fill-rule="evenodd" clip-rule="evenodd" d="M0 48C0 31.1984 0 22.7976 3.2698 16.3803C6.14601 10.7354 10.7354 6.14601 16.3803 3.2698C22.7976 0 31.1984 0 48 0H209C225.802 0 234.202 0 240.62 3.2698C246.265 6.14601 250.854 10.7354 253.73 16.3803C257 22.7976 257 31.1984 257 48V270C257 286.802 257 295.202 253.73 301.62C250.854 307.265 246.265 311.854 240.62 314.73C234.202 318 225.802 318 209 318H48C31.1984 318 22.7976 318 16.3803 314.73C10.7354 311.854 6.14601 307.265 3.2698 301.62C0 295.202 0 286.802 0 270V48Z" fill="white"/>
+</mask>
+<g mask="url(#mask0)">
+<g id="rpws">
+<g id="row">
+<path id="Rectangle 3" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H61.3682C68.4316 0 74.1576 5.72604 74.1576 12.7895C74.1576 19.8529 68.4316 25.5789 61.3682 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(31 258)" fill="#FCC770"/>
+<path id="Rectangle 3_2" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H53.7623C60.8257 0 66.5517 5.72604 66.5517 12.7895C66.5517 19.8529 60.8257 25.5789 53.7623 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(113.715 258)" fill="#FEAB5D"/>
+<path id="Rectangle 3_3" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H23.3386C30.402 0 36.1281 5.72604 36.1281 12.7895C36.1281 19.8529 30.402 25.5789 23.3386 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(187.871 258)" fill="#FCC770"/>
+</g>
+<g id="row_2">
+<path id="Rectangle 3_4" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H52.8115C59.8749 0 65.601 5.72604 65.601 12.7895C65.601 19.8529 59.8749 25.5789 52.8115 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(31 214.421)" fill="#FCC770"/>
+<path id="Rectangle 3_5" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H103.201C110.264 0 115.99 5.72604 115.99 12.7895C115.99 19.8529 110.264 25.5789 103.201 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(108.01 214.421)" fill="#FEAB5D"/>
+</g>
+<g id="row_3">
+<path id="Rectangle 3_6" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H34.5603C41.6237 0 47.3498 5.72604 47.3498 12.7895C47.3498 19.8529 41.6237 25.5789 34.5603 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(31 168.947)" fill="#FCC770"/>
+<path id="Rectangle 3_7" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H41.2105C48.274 0 54 5.72604 54 12.7895C54 19.8529 48.274 25.5789 41.2105 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(87.6758 168.947)" fill="#FEAB5D"/>
+<path id="Rectangle 3_8" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H60.2105C67.274 0 73 5.72604 73 12.7895C73 19.8529 67.274 25.5789 60.2105 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(151 168.947)" fill="#FCC770"/>
+</g>
+<g id="row_4">
+<path id="Rectangle 3_9" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H107.211C114.274 0 120 5.72604 120 12.7895C120 19.8529 114.274 25.5789 107.211 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(31 123.474)" fill="#FCC770"/>
+<path id="Rectangle 3_10" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H49.0086C56.072 0 61.798 5.72604 61.798 12.7895C61.798 19.8529 56.072 25.5789 49.0086 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(162.201 123.474)" fill="#FEAB5D"/>
+</g>
+<g id="row_5">
+<path id="Rectangle 3_11" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H61.3682C68.4316 0 74.1576 5.72604 74.1576 12.7895C74.1576 19.8529 68.4316 25.5789 61.3682 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(31 78)" fill="#FCC770"/>
+<path id="Rectangle 3_12" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H53.7623C60.8257 0 66.5517 5.72604 66.5517 12.7895C66.5517 19.8529 60.8257 25.5789 53.7623 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(113.715 78)" fill="#FEAB5D"/>
+<path id="Rectangle 3_13" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.7895C0 5.72604 5.72604 0 12.7895 0H23.3386C30.402 0 36.1281 5.72604 36.1281 12.7895C36.1281 19.8529 30.402 25.5789 23.3386 25.5789H12.7895C5.72604 25.5789 0 19.8529 0 12.7895Z" transform="translate(187.871 78)" fill="#FCC770"/>
+</g>
+</g>
+<path id="Rectangle 2" fill-rule="evenodd" clip-rule="evenodd" d="M0 0H270V68H0V0Z" transform="translate(-6 -16)" fill="url(#paint1_linear)"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(54.9894 13.379) scale(321.499 397.808) rotate(55.3687)">
+<stop stop-color="#FFF4CF"/>
+<stop offset="1" stop-color="#FFE796"/>
+</linearGradient>
+<linearGradient id="paint1_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(97.5764 -18.8551) scale(508.051 127.954) rotate(81.6342)">
+<stop stop-color="#D19C63"/>
+<stop offset="1" stop-color="#A76E30"/>
+</linearGradient>
+</defs>
+</svg>

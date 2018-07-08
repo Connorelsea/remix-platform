@@ -117,6 +117,8 @@ export function createNewTab(
     const currentTabs: Array<Tab> = state.tabs.tabs;
     const matchingTab: ?Tab = currentTabs.find(t => t.url === url);
 
+    console.log("CREATING NEW TAB", url, title, subtitle, iconUrl);
+
     if (matchingTab !== undefined) {
       dispatch(setCurrentTab(matchingTab));
     } else {
@@ -238,6 +240,60 @@ export function reducer(state: State = initialState, action: Action): State {
         ...state,
         tabs: action.payload.tabs,
       };
+    }
+
+    case "@@router/LOCATION_CHANGE": {
+      const location = action.payload.location;
+      const { tabs } = state;
+
+      const foundMatchTabIndex = tabs.findIndex(
+        t => t.url === location.pathname
+      );
+      const foundMatchTab =
+        foundMatchTabIndex !== -1 ? tabs[foundMatchTabIndex] : undefined;
+
+      const foundStartTabIndex = tabs.findIndex(t =>
+        location.pathname.includes(t.url)
+      );
+
+      console.log("START TAB INDEX", foundStartTabIndex, tabs);
+
+      const foundStartTab =
+        foundStartTabIndex !== -1 ? tabs[foundStartTabIndex] : undefined;
+
+      console.log("FOUND TAB INFO");
+      console.log(tabs, foundMatchTab, foundStartTab);
+
+      if (foundMatchTab) {
+        return { ...state, currentTabId: foundMatchTab.id };
+      }
+
+      if (foundStartTab) {
+        console.log("FOUND START TAB", foundStartTab, tabs);
+        let updatedTabs = tabs;
+        const newTab = {
+          ...foundStartTab,
+          url: location.pathname,
+        };
+        console.log("NEW TAB", newTab);
+        updatedTabs.splice(foundStartTabIndex, 1, newTab);
+
+        console.log("UPDATED TABS", updatedTabs);
+
+        return { ...state, tabs: updatedTabs, currentTabId: newTab.id };
+      }
+
+      if (foundStartTab === undefined && foundMatchTab === undefined) {
+        console.log("CREATING NEW TAB FOR ", location);
+        const newTab = createTabObject(location.pathname, location.pathname);
+        return {
+          ...state,
+          tabs: [...state.tabs, newTab],
+          currentTabId: newTab.id,
+        };
+      }
+
+      return state;
     }
 
     default: {

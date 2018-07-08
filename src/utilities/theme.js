@@ -25,6 +25,7 @@ export type Theme = {
   appColors: {
     inputOutline: string,
     cardShadow: string,
+    chat_background_color: string,
   },
   text: {
     primary: string,
@@ -76,7 +77,7 @@ const fontSize = {
   subtitle: 17,
   title_sm: 20,
   title_md: 24,
-  title_lg: 30,
+  title_lg: 34,
 };
 
 // THEME MIXINS
@@ -102,6 +103,7 @@ const LightTheme: Theme = {
   appColors: {
     inputOutline: "#4A90E2",
     cardShadow: "black",
+    chat_background_color: "white",
   },
   text: {
     primary: styles.colors.grey[900],
@@ -119,6 +121,15 @@ const LightTheme: Theme = {
       active: styles.colors.grey[200],
       active_bottom: styles.colors.grey[300],
     },
+    clear: {
+      text: styles.colors.grey[800],
+      background: "transparent",
+      bottom: "transparent",
+      hover: "transparent",
+      hover_bottom: "transparent",
+      active: "transparent",
+      active_bottom: "transparent",
+    },
     default: {
       text: styles.colors.grey[800],
       background: styles.colors.grey[300],
@@ -128,6 +139,7 @@ const LightTheme: Theme = {
       active: styles.colors.grey[400],
       active_bottom: styles.colors.grey[600],
     },
+
     emphasis: {
       text: "#0F72E0",
       background: "#C7E0FB",
@@ -242,12 +254,12 @@ const SolarizedLightTheme: Theme = {
       active_bottom: "#00162F",
     },
     emphasis: {
-      text: "#0F72E0",
-      background: "#09305A",
-      bottom: "#05203D",
-      hover: "#004793",
-      hover_bottom: "#033369",
-      active: "#062343",
+      text: styles.colors.solarizeddark[600],
+      background: styles.colors.solarizeddark[300],
+      bottom: styles.colors.solarizeddark[200],
+      hover: styles.colors.solarizeddark[400],
+      hover_bottom: styles.colors.solarizeddark[200],
+      active: "#0F2343",
       active_bottom: "#00162F",
     },
   },
@@ -299,12 +311,12 @@ const SolarizedDarkTheme: Theme = {
       active_bottom: "#00162F",
     },
     emphasis: {
-      text: "#0F72E0",
-      background: "#09305A",
-      bottom: "#05203D",
-      hover: "#004793",
-      hover_bottom: "#033369",
-      active: "#062343",
+      text: styles.colors.solarizedlight[600],
+      background: styles.colors.solarizedlight[300],
+      bottom: styles.colors.solarizedlight[200],
+      hover: styles.colors.solarizedlight[400],
+      hover_bottom: styles.colors.solarizedlight[200],
+      active: "#0F2343",
       active_bottom: "#00162F",
     },
   },

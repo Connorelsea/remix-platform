@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for providers/ProvideUsers.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">providers</a> ProvideUsers.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/18</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// @flow
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import React, { Component, type Node } from "react";</span>
+<span class="cstat-no" title="statement not covered" >import { bind } from "decko";</span>
+<span class="cstat-no" title="statement not covered" >import { fetchUsersById, fetchUsersByName } from "../ducks/identity/index.js";</span>
+<span class="cstat-no" title="statement not covered" >import { connect } from "react-redux";</span>
+import { type User } from "../types/user";
+&nbsp;
+type State = {
+  users: Array&lt;User&gt;,
+  usersLoading: boolean,
+};
+&nbsp;
+/**
+ * Either userIds or userNames can be provided, and metadata will be
+ * retrieved about the users who match these unique identifiers
+ */
+&nbsp;
+type Props = {
+  userIds: Array&lt;string&gt;,
+  userNames: Array&lt;string&gt;,
+  render: (props: State) =&gt; Node,
+&nbsp;
+  dispatchFetchUsersById: (userIds: Array&lt;string&gt;) =&gt; Promise&lt;Array&lt;User&gt;&gt;,
+  dispatchFetchUsersByName: (userNames: Array&lt;string&gt;) =&gt; Promise&lt;Array&lt;User&gt;&gt;,
+};
+&nbsp;
+export type ProvideUsersRenderProps = State;
+&nbsp;
+const initialState: State = <span class="cstat-no" title="statement not covered" >{</span>
+  users: [],
+  usersLoading: true,
+};
+&nbsp;
+/**
+ * ProvideUsers
+ *
+ * Given an array of unique identifiers representing remix users,
+ * this component ensures that these users' metadata will be available
+ * on the client. If a user's metadata is not already on the client,
+ * it will be fetched from the server. Read more about these techniques
+ * in the identity reducer.
+ */
+class ProvideUsers extends Component&lt;Props, State&gt; {
+  state: State = initialState;
+&nbsp;
+  @bind
+  async init() {
+    const {
+      userIds,
+      userNames,
+      dispatchFetchUsersById,
+      dispatchFetchUsersByName,
+    } = this.props;
+&nbsp;
+    let promises = [];
+<span class="cstat-no" title="statement not covered" >    if (userIds) <span class="cstat-no" title="statement not covered" >p</span>romises.push(dispatchFetchUsersById(userIds));</span>
+    if (userNames) promises.push(dispatchFetchUsersByName(userNames));
+&nbsp;
+    const result: Array&lt;Array&lt;User&gt;&gt; = await Promise.all(promises);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("INPUT", userIds, userNames);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("PROVIDE USERS RESULT", result);</span>
+&nbsp;
+    const users: Array&lt;User&gt; = result.reduce(
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      (</span>prev, next) =&gt; prev.concat(next),</span>
+      []
+    );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("PROVIDE USERS RESULT", users);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.setState({</span>
+      users,
+      usersLoading: false,
+    });
+&nbsp;
+    console.log("AFTRER SET STATE IN PROVIDE USERS", this.state);
+  }
+&nbsp;
+  componentDidMount() {
+<span class="cstat-no" title="statement not covered" >    this.init();</span>
+  }
+&nbsp;
+  render(): Node {
+    const { props, state } = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >    return props.render(state);</span>
+  }
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >mapStateToProps(state) {</span>
+<span class="cstat-no" title="statement not covered" >  return {};</span>
+}
+&nbsp;
+function mapDispatchToProps(dispatch) {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    dispatchFetchUsersById: <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>userIds: Array&lt;string&gt;) =&gt;</span>
+      dispatch(fetchUsersById(userIds)),
+    dispatchFetchUsersByName: <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>userIds: Array&lt;string&gt;) =&gt;</span>
+      dispatch(fetchUsersByName(userIds)),
+  };
+}
+&nbsp;
+export default connect(mapStateToProps, mapDispatchToProps)(ProvideUsers);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 09 2018 14:38:45 GMT-0500 (CDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

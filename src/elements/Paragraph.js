@@ -8,6 +8,7 @@ type Props = {
   children?: Node,
   color?: string,
   center?: boolean,
+  fontWeight?: number,
   fontSize?: number,
 };
 
@@ -19,9 +20,14 @@ class Paragraph extends Component<Props> {
   }
 
   render(): Node {
-    const { children, color, center, fontSize } = this.props;
+    const { children, color, center, fontWeight, fontSize } = this.props;
     return (
-      <Text color={color} center={center} fontSize={fontSize}>
+      <Text
+        color={color}
+        center={center}
+        fontWeight={fontWeight}
+        fontSize={fontSize}
+      >
         {children}
       </Text>
     );
@@ -37,7 +43,7 @@ const Text = styled.p`
   )};
 
   margin: 0;
-  font-weight: 500;
+  font-weight: ${prop("fontWeight", 500)};
   font-size: ${p => prop("fontSize", p.theme.fontSize.body)}px;
   color: ${p => p.color || p.theme.text.secondary};
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,

@@ -1,16 +1,11 @@
 import React, { Component, type Node } from "react";
-import { connect } from "react-redux";
 import { type Chat } from "../../types/chat";
-import { withTheme } from "styled-components";
-import Box from "../../elements/Box";
 import Subtitle from "../../elements/Subtitle";
 import Title from "../../elements/Title";
 import Spacing from "../../components/Spacing";
-import Card from "../../elements/Card";
-import { updateTabByUrl } from "../../ducks/tabs";
-import { type Tab } from "../../types/tab";
 import { type Group } from "../../types/group";
-import { bind } from "decko";
+import CardLink from "../../elements/CardLink";
+import { buildChatLink } from "../../utilities/urls";
 
 type Props = {
   chat: Chat,
@@ -18,49 +13,20 @@ type Props = {
   theme: Theme,
 };
 
-type State = {};
-
-class ChatCard extends Component<Props, State> {
-  @bind
-  onClick() {
-    // replace old group tab with new url that has clicked chat name
-    // /g/+group/#chat
-    const { group, chat, updateTabByUrl } = this.props;
-
-    updateTabByUrl(
-      `/g/+${group.username}`,
-      `/g/+${group.username}/${chat.name}`,
-      `/g/+${group.username}`,
-      `#chat`
-    );
-  }
-
+class ChatCard extends Component<Props> {
   render(): Node {
-    const { chat, theme } = this.props;
+    const { group, chat } = this.props;
 
     return (
-      <Card onClick={this.onClick}>
+      <CardLink to={buildChatLink(group, chat)}>
         <Title type="BOLD" size="MEDIUM">
           {chat.name}
         </Title>
         <Spacing size={5} />
         <Subtitle>{chat.description}</Subtitle>
-      </Card>
+      </CardLink>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    updateTabByUrl: (tabUrl, url, title, subtitle, iconUrl) =>
-      dispatch(updateTabByUrl(tabUrl, url, title, subtitle, iconUrl)),
-  };
-}
-
-export default withTheme(
-  connect(mapStateToProps, mapDispatchToProps)(ChatCard)
-);
+export default ChatCard;

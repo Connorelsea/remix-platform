@@ -11,13 +11,23 @@ import { createNewTab } from "../../ducks/tabs";
 
 type Props = {
   theme: Theme,
+  createNewTab: (
+    url: string,
+    title?: string,
+    subtitle?: string,
+    iconUrl?: string
+  ) => Promise<any>,
 };
 
 type State = {};
 
 class TabControls extends Component<Props, State> {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.tabs.toString() !== nextProps.tabs.toString()) return true;
+    return false;
+  }
   render(): Node {
-    const { theme } = this.props;
+    const { theme, createNewTab } = this.props;
 
     return (
       <Box justifyEnd>

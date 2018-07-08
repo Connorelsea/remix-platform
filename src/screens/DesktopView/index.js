@@ -1,39 +1,43 @@
 import React, { Component, type Node } from "react";
-import Box from "../../elements/Box.web";
+import SplitPane from "react-flex-split-pane";
 import TabView from "../TabView";
-import ConnectedRouter from "react-router-redux/ConnectedRouter";
-import { Route } from "react-router-dom";
-import history from "../../utilities/storage/history";
 import Dashboard from "../../screens/Dashboard/index";
-import SplitPane from "react-split-pane";
-import { withTheme } from "styled-components";
-import { type Theme } from "../../utilities/theme";
 
-type Props = {
-  theme: Theme,
-};
+type Props = {};
 
 type State = {
   showSidebar: boolean,
+  size: number,
+  isResizing: boolean,
 };
 
 class DesktopView extends Component<Props, State> {
   state = {
     showSidebar: true,
+    size: 450,
+    isResizing: false,
   };
 
-  render(): Node {
-    const { theme } = this.props;
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.showSidebar !== this.state.showSidebar) return true;
+    if (nextState.size !== this.state.size) return true;
+    if (nextState.isResizing === true) return true;
+    return false;
+  }
 
+  onResizeStart = () => this.setState({ isResizing: true });
+  onResizeEnd = () => this.setState({ isResizing: false });
+  onChange = size => this.setState({ size });
+
+  render(): Node {
     return (
       <SplitPane
-        split="vertical"
-        minSize={300}
-        defaultSize={350}
-        resizerStyle={{
-          backgroundColor: theme.background.secondary,
-          opacity: 1,
-        }}
+        type="vertical"
+        size={this.state.size}
+        isResizing={this.state.isResizing}
+        onResizeStart={this.onResizeStart}
+        onResizeEnd={this.onResizeEnd}
+        onChange={this.onChange}
       >
         <Dashboard />
         <TabView />
@@ -42,4 +46,4 @@ class DesktopView extends Component<Props, State> {
   }
 }
 
-export default withTheme(DesktopView);
+export default DesktopView;

@@ -21,8 +21,10 @@ import UAParser from "ua-parser-js";
 import {
   setCurrentDeviceId,
   addDevice,
-  loginWithCurrentDevice
+  loginWithCurrentDevice,
 } from "../ducks/auth";
+import ScrollContainer from "../elements/ScrollContainer";
+import ContentContainer from "../elements/ContentContainer";
 
 class UserLogin extends Component {
   getDeviceMeta() {
@@ -36,7 +38,7 @@ class UserLogin extends Component {
           agent.getDevice().vendor + " " + agent.getDevice().model,
         browser: agent.getBrowser().name + ";" + agent.getBrowser().version,
         cpu: agent.getCPU().architecture || "Unknown",
-        gpu: "Unknown"
+        gpu: "Unknown",
       };
     }
 
@@ -44,7 +46,7 @@ class UserLogin extends Component {
       operatingSystem: "Unknown",
       browser: "Unknown",
       cpu: "Unknown",
-      gpu: "Unknown"
+      gpu: "Unknown",
     };
   }
 
@@ -90,7 +92,7 @@ class UserLogin extends Component {
       .catch(err => {
         console.log("USER LOGIN ERROR ", err);
         this.setState({
-          error: err
+          error: err,
         });
       });
   }
@@ -100,7 +102,7 @@ class UserLogin extends Component {
     const {
       addDevice,
       setCurrentDeviceId,
-      loginWithCurrentDevice
+      loginWithCurrentDevice,
     } = this.props;
     const device = response.data.loginWithNewDevice;
 
@@ -114,7 +116,7 @@ class UserLogin extends Component {
   state = {
     loginCredential: undefined,
     loginPassword: undefined,
-    loginCredentialType: "email"
+    loginCredentialType: "email",
   };
 
   @bind
@@ -131,7 +133,7 @@ class UserLogin extends Component {
   async onLoginPress() {
     const {
       loginCredential,
-      loginPassword /* loginCredentialType */
+      loginPassword /* loginCredentialType */,
     } = this.state;
 
     this.attemptEmailLogin(loginCredential, loginPassword);
@@ -160,44 +162,48 @@ class UserLogin extends Component {
     const { devices, error } = this.state;
 
     return (
-      <AppScrollContainer title="Login">
-        <View>
-          {this.renderDevices()}
+      <ScrollContainer>
+        <ContentContainer>
+          <Box column padding="25px">
+            {this.renderDevices()}
 
-          <Text tier="thintitle">Login</Text>
-          <Spacing size={5} />
-          <Text tier="subtitle">
-            Login using your email address and password.
-          </Text>
-          <Spacing size={15} />
-          <Text tier="label">Email Address</Text>
-          <Spacing size={5} />
-          <Input
-            placeholder="Email Address"
-            value={this.state.loginCredential}
-            onChangeText={this.onChangeCredential}
-          />
-          <Spacing size={15} />
-          <Text tier="label">Password</Text>
-          <Spacing size={5} />
-          <Input
-            placeholder="Password"
-            secureTextEntry
-            value={this.state.loginPassword}
-            onChangeText={this.onChangePassword}
-          />
-          <Spacing size={30} />
-          {error && [
-            <Text tier="error">There was an error logging in, try again.</Text>,
-            <Spacing size={10} />,
-            <Text tier="body">{error.name}</Text>,
-            <Text tier="body">{error.message}</Text>,
-            <Text tier="body">{JSON.stringify(error, null, 2)}</Text>,
-            <Spacing size={20} />
-          ]}
-          <Button onClick={this.onLoginPress} title="Login" />
-        </View>
-      </AppScrollContainer>
+            <Text tier="thintitle">Login</Text>
+            <Spacing size={5} />
+            <Text tier="subtitle">
+              Login using your email address and password.
+            </Text>
+            <Spacing size={15} />
+            <Text tier="label">Email Address</Text>
+            <Spacing size={5} />
+            <Input
+              placeholder="Email Address"
+              value={this.state.loginCredential}
+              onChangeText={this.onChangeCredential}
+            />
+            <Spacing size={15} />
+            <Text tier="label">Password</Text>
+            <Spacing size={5} />
+            <Input
+              placeholder="Password"
+              secureTextEntry
+              value={this.state.loginPassword}
+              onChangeText={this.onChangePassword}
+            />
+            <Spacing size={30} />
+            {error && [
+              <Text tier="error">
+                There was an error logging in, try again.
+              </Text>,
+              <Spacing size={10} />,
+              <Text tier="body">{error.name}</Text>,
+              <Text tier="body">{error.message}</Text>,
+              <Text tier="body">{JSON.stringify(error, null, 2)}</Text>,
+              <Spacing size={20} />,
+            ]}
+            <Button onClick={this.onLoginPress} title="Login" />
+          </Box>
+        </ContentContainer>
+      </ScrollContainer>
     );
   }
 }
@@ -206,7 +212,7 @@ function mapDispatchToProps(dispatch) {
   return {
     addDevice: device => dispatch(addDevice(device)),
     setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
-    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice())
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
   };
 }
 

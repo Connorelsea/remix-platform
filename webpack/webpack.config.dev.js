@@ -28,6 +28,10 @@ module.exports = {
       },
 
       {
+        test: /\.svg$/,
+        loader: "svg-inline-loader",
+      },
+      {
         test: /\.mjs$/,
         include: /node_modules/,
         type: "javascript/auto",

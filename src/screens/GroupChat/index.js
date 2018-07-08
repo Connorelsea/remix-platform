@@ -1,11 +1,7 @@
 import React, { Component, type Node } from "react";
-import { connect } from "react-redux";
-import styled, { withTheme } from "styled-components";
-import { withRouter } from "react-router-dom";
-import SplitPane from "react-split-pane";
+import { withRouter } from "react-router";
+import SplitPane from "react-flex-split-pane";
 import { type Theme } from "../../utilities/theme";
-import { type Chat as ChatType } from "../../types/chat";
-
 import Group from "../Group/index";
 import Chat from "../Chat/index";
 import ProvideChat from "../../providers/ProvideChat";
@@ -15,28 +11,33 @@ type Props = {
   match: any,
 };
 
-type State = {};
+type State = {
+  size: number,
+  isResizing: boolean,
+};
 
 class GroupChat extends Component<Props, State> {
-  componentDidMount() {}
+  state = {
+    size: 450,
+    isResizing: false,
+  };
+
+  onResizeStart = () => this.setState({ isResizing: true });
+  onResizeEnd = () => this.setState({ isResizing: false });
+  onChange = size => this.setState({ size });
 
   render(): Node {
-    const { theme } = this.props;
-
     return (
       <ProvideChat
         render={props => {
-          // return <div>{JSON.stringify(props)}</div>;
-
           return (
             <SplitPane
-              split="vertical"
-              minSize={300}
-              defaultSize={350}
-              resizerStyle={{
-                backgroundColor: theme.border.primary,
-                opacity: 1,
-              }}
+              type="vertical"
+              size={this.state.size}
+              isResizing={this.state.isResizing}
+              onResizeStart={this.onResizeStart}
+              onResizeEnd={this.onResizeEnd}
+              onChange={this.onChange}
             >
               <Group />
               <Chat chat={props.chat} />
@@ -48,9 +49,4 @@ class GroupChat extends Component<Props, State> {
   }
 }
 
-const Container = styled.div`
-  height: 100%;
-  overflow-y: scroll;
-`;
-
-export default withTheme(withRouter(GroupChat));
+export default withRouter(GroupChat);

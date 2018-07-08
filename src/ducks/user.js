@@ -353,7 +353,9 @@ export default new Duck({
               message
               createdAt
               fromUser {
+                id
                 name
+                username
               }
             }
           }

@@ -1,0 +1,20 @@
+subscription newGroupInvitation($toUserId: ID!) {
+  newGroupInvitation(toUserId: $toUserId) {
+    id
+    fromUser {
+      id
+      name
+      username
+      color
+    }
+    toUser {
+      id
+    }
+    forGroup {
+      id
+      name
+    }
+    message
+    createdAt
+  }
+}

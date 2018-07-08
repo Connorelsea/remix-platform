@@ -1,0 +1,16 @@
+subscription newFriendRequest($toUserId: ID!) {
+  newFriendRequest(toUserId: $toUserId) {
+    id
+    fromUser {
+      id
+      name
+      username
+      color
+    }
+    toUser {
+      id
+    }
+    message
+    createdAt
+  }
+}

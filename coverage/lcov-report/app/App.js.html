@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/App.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">app</a> App.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/44</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React from "react"</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import Routing, { Router } from "./utilities/routing"</span>
+import { Platform, Text, View } from "react-native"
+<span class="cstat-no" title="statement not covered" >import styled from "styled-components"</span>
+<span class="cstat-no" title="statement not covered" >import Home from "../screens/Home"</span>
+<span class="cstat-no" title="statement not covered" >import Group from "../screens/Group"</span>
+<span class="cstat-no" title="statement not covered" >import Chat from "../screens/Chat"</span>
+<span class="cstat-no" title="statement not covered" >import Dashboard from "../screens/Dashboard"</span>
+<span class="cstat-no" title="statement not covered" >import UserLogin from "../screens/UserLogin"</span>
+<span class="cstat-no" title="statement not covered" >import UserCreate from "../screens/UserCreate"</span>
+<span class="cstat-no" title="statement not covered" >import FriendNew from "../screens/FriendNew"</span>
+<span class="cstat-no" title="statement not covered" >import GroupNew from "../screens/GroupNew"</span>
+<span class="cstat-no" title="statement not covered" >import GroupCreate from "../screens/GroupCreate"</span>
+<span class="cstat-no" title="statement not covered" >import { bind } from "decko"</span>
+<span class="cstat-no" title="statement not covered" >import { Switch } from "react-router"</span>
+<span class="cstat-no" title="statement not covered" >import MediaQuery from "react-responsive"</span>
+<span class="cstat-no" title="statement not covered" >import styles from "../utilities/styles"</span>
+<span class="cstat-no" title="statement not covered" >import { connect } from "react-redux"</span>
+<span class="cstat-no" title="statement not covered" >import User from "../ducks/user"</span>
+<span class="cstat-no" title="statement not covered" >import { spring, AnimatedSwitch } from "react-router-transition"</span>
+&nbsp;
+const Route = <span class="cstat-no" title="statement not covered" >Routing.Route</span>
+&nbsp;
+// we need to map the `scale` prop we define below
+// to the transform style property
+function <span class="fstat-no" title="function not covered" >mapStyles(styles) {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    opacity: styles.opacity,
+    transform: `scale(${styles.scale})`,
+  }
+}
+&nbsp;
+// wrap the `spring` helper to use a bouncy config
+function <span class="fstat-no" title="function not covered" >bounce(val) {</span>
+<span class="cstat-no" title="statement not covered" >  return spring(val, {</span>
+    stiffness: 330,
+    damping: 22,
+  })
+}
+&nbsp;
+// child matches will...
+const bounceTransition = <span class="cstat-no" title="statement not covered" >{</span>
+  // start in a transparent, upscaled state
+  atEnter: {
+    opacity: 0,
+    scale: 1.2,
+  },
+  // leave in a transparent, downscaled state
+  atLeave: {
+    opacity: bounce(0),
+    scale: bounce(0.8),
+  },
+  // and rest at an opaque, normally-scaled state
+  atActive: {
+    opacity: bounce(1),
+    scale: bounce(1),
+  },
+}
+&nbsp;
+class App extends React.Component {
+  @bind
+  renderWithoutUser() <span class="cstat-no" title="statement not covered" >{</span>
+    // const Stack = require("react-router-native-stack").default
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("WITHOUT USER")</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;Switch&gt;
+        &lt;Route exact path="/" component={Home} /&gt;
+        &lt;Route
+          exact
+          path="/login"
+          component={<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>&lt;UserLogin setUser={this.setUser} /&gt;}</span>
+        /&gt;
+        &lt;Route exact path="/create" component={UserCreate} /&gt;
+      &lt;/Switch&gt;
+    )
+  }
+&nbsp;
+  @bind
+  renderWithUser() {
+    const { user } = <span class="cstat-no" title="statement not covered" >this.props</span>
+    const Stack = <span class="cstat-no" title="statement not covered" >require("react-router-native-stack").default</span>
+    /* &lt;Route exact path="/@:id" component={User} /&gt; */
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("WITH USER")</span>
+&nbsp;
+    const routes = <span class="cstat-no" title="statement not covered" >[</span>
+      &lt;Route exact path="/+:group/" key="group_show" component={Group} /&gt;,
+      &lt;Route exact path="/+:group/:chat" key="chat_show" component={Chat} /&gt;,
+      &lt;Route exact path="/new/friend" key="new_friend" component={FriendNew} /&gt;,
+      &lt;Route exact path="/new/group" key="new_group" component={GroupNew} /&gt;,
+      &lt;Route
+        exact
+        path="/new/group/create"
+        key="new_group_create"
+        component={GroupCreate}
+      /&gt;,
+    ]
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;Stack&gt;
+        &lt;Route exact path="/" component={Dashboard} /&gt;
+        {routes}
+      &lt;/Stack&gt;
+    )
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;View style={{ flex: 1 }}&gt;
+        &lt;MediaQuery minDeviceWidth={1224}&gt;
+          &lt;View style={{ flex: 1, flexDirection: "row" }}&gt;
+            &lt;Side&gt;
+              &lt;Dashboard user={user} /&gt;
+            &lt;/Side&gt;
+            &lt;Body&gt;{routes}&lt;/Body&gt;
+          &lt;/View&gt;
+        &lt;/MediaQuery&gt;
+        &lt;MediaQuery maxDeviceWidth={1224}&gt;
+          &lt;Stack&gt;
+            &lt;Route exact path="/" component={Dashboard} /&gt;
+            {routes}
+          &lt;/Stack&gt;
+        &lt;/MediaQuery&gt;
+      &lt;/View&gt;
+    )
+  }
+&nbsp;
+  @bind
+  renderRouting() <span class="cstat-no" title="statement not covered" >{</span>
+    const { authenticated, loading } = <span class="cstat-no" title="statement not covered" >this.props</span>
+<span class="cstat-no" title="statement not covered" >    if (loading) <span class="cstat-no" title="statement not covered" >r</span>eturn &lt;Text&gt;Loading&lt;/Text&gt;</span>
+<span class="cstat-no" title="statement not covered" >    if (authenticated) <span class="cstat-no" title="statement not covered" >return this.renderWithUser()</span></span>
+    else <span class="cstat-no" title="statement not covered" >return this.renderWithoutUser()</span>
+  }
+&nbsp;
+  render() {
+<span class="cstat-no" title="statement not covered" >    return &lt;Router&gt;{this.renderRouting()}&lt;/Router&gt;</span>
+  }
+&nbsp;
+  // async registerPushNotifs() {
+  //   const { status: { existingStatus } } = await Permissions.getAsync(
+  //     Permissions.NOTIFICATIONS
+  //   )
+  //   let finalStatus = existingStatus
+&nbsp;
+  //   if (existingStatus !== "granted") {
+  //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+  //     finalStatus = status
+  //   }
+&nbsp;
+  //   if (finalStatus !== "granted") {
+  //     return
+  //   }
+&nbsp;
+  //   let token = await Notifications.getExpoPushTokenAsync()
+  // }
+}
+&nbsp;
+function mapStateToProps(state) {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    user: state.user,
+    loading: state.user.loading,
+    friendRequests: state.user.friendRequests,
+    groups: state.user.groups,
+    authenticated: state.auth.authenticated,
+  }
+}
+&nbsp;
+export default connect(mapStateToProps, undefined)(App)
+&nbsp;
+const Side = <span class="cstat-no" title="statement not covered" >styled.View`</span>
+  width: 400;
+  min-width: 400;
+  border-right-color: ${styles.colors.grey[200]};
+  border-right-width: 1px;
+`
+&nbsp;
+const Body = <span class="cstat-no" title="statement not covered" >styled.View`</span>
+  flex: 1;
+`
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 09 2018 14:38:45 GMT-0500 (CDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

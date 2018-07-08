@@ -11,8 +11,7 @@ import KeyboardSpacer from "../../components/KeyboardSpacer";
 import ChatInputArea from "../../components/ChatInputArea";
 import MessageList from "../../components/MessageList";
 import ScrollContainer from "../../elements/ScrollContainer";
-import ContentContainer from "../../elements/ContentContainer";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import Spacing from "../../components/Spacing";
 import ProvideUsers from "../../providers/ProvideUsers";
 import Message from "../../components/Message/index";
@@ -20,11 +19,13 @@ import ChatInput from "../../components/ChatInput";
 import Paragraph from "../../elements/Paragraph";
 import { CurrentDeviceSelector } from "../../ducks/auth";
 import { bind } from "decko";
+import { type Theme } from "../../utilities/theme";
 
 type Props = {
   chat: ChatType,
   messages: Array<MessageType>,
   currentUserId: string,
+  theme: Theme,
 };
 
 type State = {};
@@ -41,7 +42,7 @@ class Chat extends Component<Props, State> {
   }
 
   render(): Node {
-    const { messages, chat, currentUserId } = this.props;
+    const { messages, chat, currentUserId, theme } = this.props;
 
     if (messages === undefined || messages.length === 0)
       return <div>No messages</div>;
@@ -49,15 +50,13 @@ class Chat extends Component<Props, State> {
     return (
       <OuterContainer>
         <ScrollContainer innerRef={e => (this.scrollContainer = e)}>
-          <ContentContainer>
+          <ContentContainer
+            backgroundColor={theme.appColors.chat_background_color}
+          >
             <ProvideUsers
               userIds={messages.map(m => m.userId)}
               render={(props: ProvideUsersRenderProps) => {
                 const { users, usersLoading } = props;
-
-                console.log("MESSAGESSSSSSSS IN PROVIDE", messages);
-
-                console.log("USERS IN PROVIDE", users, usersLoading);
 
                 if (messages === undefined || messages.length === 0)
                   return <div>No messages</div>;
@@ -66,9 +65,11 @@ class Chat extends Component<Props, State> {
 
                 if (!users) return <div>Users undefined</div>;
 
-                return messages.map(m => (
+                return messages.map((m, i) => (
                   <Message
+                    key={m.id}
                     message={m}
+                    previousMessage={i === 0 ? {} : messages[i - 1]}
                     user={users.find(u => u.id === m.userId)}
                     currentUserId={currentUserId}
                   />
@@ -90,6 +91,16 @@ const OuterContainer = styled.div`
   width: 100%;
 `;
 
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: ${p => p.backgroundColor || p.theme.background.secondary};
+  min-height: 100%;
+  width: 100%;
+`;
+
 function mapStateToProps(state, props) {
   console.log("PROPS", props, props.chat.id);
   return {
@@ -102,4 +113,4 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default withTheme(connect(mapStateToProps, mapDispatchToProps)(Chat));

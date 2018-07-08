@@ -1,28 +1,29 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import { withRouter } from "react-router";
-import Button from "../components/Button";
-import AppScrollContainer from "../components/AppScrollContainer";
+import Button from "../elements/Button";
 import TextInput from "../components/Input";
 import { mutate } from "../utilities/gql_util";
 import { bind } from "decko";
 import ColorPicker from "../components/ColorPicker";
-import Text from "../components/Text";
 import Spacing from "../components/Spacing";
 import styles from "../utilities/styles";
 import MessageMock from "../components/MessageMock";
 import Card from "../components/Card";
 import FlexContainer from "../components/FlexContainer";
 import FlexContainerItem from "../components/FlexContainerItem";
-import { set, exists, setArray, addToArray } from "../utilities/storage";
 import { connect } from "react-redux";
 import {
   setCurrentDeviceId,
   setDevices,
   addDevice,
-  loginWithCurrentDevice
+  loginWithCurrentDevice,
 } from "../ducks/auth";
 import Box from "../elements/Box";
+import Title from "../elements/Title";
+import ScrollContainer from "../elements/ScrollContainer";
+import ContentContainer from "../elements/ContentContainer";
+import Subtitle from "../elements/Subtitle";
+import Paragraph from "../elements/Paragraph";
 
 class UserLogin extends Component {
   @bind
@@ -33,7 +34,7 @@ class UserLogin extends Component {
     name,
     description,
     color,
-    iconUrl
+    iconUrl,
   }) {
     mutate(
       `
@@ -73,7 +74,7 @@ class UserLogin extends Component {
         name,
         description,
         color,
-        iconUrl
+        iconUrl,
       }
     )
       .then(async res => {
@@ -82,7 +83,7 @@ class UserLogin extends Component {
         const {
           addDevice,
           setCurrentDeviceId,
-          loginWithCurrentDevice
+          loginWithCurrentDevice,
         } = this.props;
 
         addDevice(device);
@@ -97,9 +98,9 @@ class UserLogin extends Component {
             {
               key: "form",
               error:
-                "There was a server side error. Review your inputs and try again"
-            }
-          ]
+                "There was a server side error. Review your inputs and try again",
+            },
+          ],
         });
         console.log(error);
       });
@@ -114,14 +115,14 @@ class UserLogin extends Component {
     if (color === "") {
       errors.push({
         key: "color",
-        error: "Choose a personal color above"
+        error: "Choose a personal color above",
       });
     }
 
     if (!email) {
       errors.push({
         key: "email",
-        error: "Enter your email"
+        error: "Enter your email",
       });
     } else if (
       !email.match(
@@ -130,43 +131,43 @@ class UserLogin extends Component {
     ) {
       errors.push({
         key: "email",
-        error: "Enter a valid email address"
+        error: "Enter a valid email address",
       });
     }
 
     if (!username) {
       errors.push({
         key: "username",
-        error: "Enter a username"
+        error: "Enter a username",
       });
     } else if (username.includes(" ")) {
       errors.push({
         key: "username",
-        error: "Username cannot contain whitespace"
+        error: "Username cannot contain whitespace",
       });
     } else if (!username.match(/^[a-z0-9]+$/i)) {
       errors.push({
         key: "username",
-        error: "Username must only contain letters and numbers"
+        error: "Username must only contain letters and numbers",
       });
     }
 
     if (!name) {
       errors.push({
         key: "name",
-        error: "Enter your display name"
+        error: "Enter your display name",
       });
     }
 
     if (!password) {
       errors.push({
         key: "password",
-        error: "Enter a password"
+        error: "Enter a password",
       });
     } else if (password.trim().length < 4) {
       errors.push({
         key: "password",
-        error: "Enter a longer password"
+        error: "Enter a longer password",
       });
     }
 
@@ -183,7 +184,7 @@ class UserLogin extends Component {
   state = {
     color: "",
     messages: [],
-    errors: []
+    errors: [],
   };
 
   @bind
@@ -202,111 +203,139 @@ class UserLogin extends Component {
   render() {
     const { name, color, errors } = this.state;
     return (
-      <AppScrollContainer title="New User">
-        <Text tier="thintitle">Personal Color</Text>
-        <Spacing size={10} />
-        <Text tier="subtitle">What color are you?</Text>
-        <Spacing size={15} />
-        <ColorPicker onColorChange={this.onColorChange} />
-        <Spacing size={30} />
-
-        <FlexContainer>
-          <FlexContainerItem>
-            <Text tier="thintitle">Your Messages</Text>
+      <ScrollContainer>
+        <ContentContainer>
+          <Box column padding="25px">
+            <Title type="THIN" size="MEDIUM">
+              Personal Color
+            </Title>
             <Spacing size={10} />
-            <Text tier="subtitle">
-              This is what your messages will look like to other users
-            </Text>
+            <Subtitle>What color are you?</Subtitle>
             <Spacing size={15} />
+            <ColorPicker onColorChange={this.onColorChange} />
+            <Spacing size={30} />
 
-            <Card>
-              <Box full column>
-                <Spacing size={5} />
-                <Box padding={{ x: 15 }}>
-                  <Text tier="title">{name ? name : "Display Name"}</Text>
-                </Box>
+            <FlexContainer>
+              <FlexContainerItem>
+                <Title type="THIN" size="MEDIUM">
+                  Your Messages
+                </Title>
+
                 <Spacing size={10} />
-                <MessageMock
-                  text={"Welcome to Remix!"}
-                  color={styles.colors.grey[200]}
-                />
-                <MessageMock
-                  text={`Thank you ` + (name ? `- I'm ${name}` : "")}
-                  name={name}
-                  color={color}
-                  currentUser
-                />
+                <Subtitle>
+                  This is what your messages will look like to other users
+                </Subtitle>
+                <Spacing size={15} />
+
+                <Card>
+                  <Box full column>
+                    <Spacing size={5} />
+                    <Box padding={{ x: 15 }}>
+                      <Title type="BOLD" size="MEDIUM">
+                        {name ? name : "Display Name"}
+                      </Title>
+                    </Box>
+                    <Spacing size={10} />
+                    <MessageMock
+                      text={"Welcome to Remix!"}
+                      color={styles.colors.grey[200]}
+                    />
+                    <MessageMock
+                      text={`Thank you ` + (name ? `- I'm ${name}` : "")}
+                      name={name}
+                      color={color}
+                      currentUser
+                    />
+                    <Spacing size={5} />
+                  </Box>
+                </Card>
+              </FlexContainerItem>
+
+              <Spacing size={25} />
+
+              <FlexContainerItem>
+                <Title type="THIN" size="MEDIUM">
+                  Profile
+                </Title>
+                <Spacing size={10} />
+                <Subtitle>
+                  Enter some basic information to get started.
+                </Subtitle>
+
+                {errors.length > 0 && [
+                  <Spacing size={15} />,
+                  [errors.map(e => <Paragraph>{e.error}</Paragraph>)],
+                  <Spacing size={10} />,
+                  <Paragraph>Once fixed, try to join again</Paragraph>,
+                ]}
+
+                <Spacing size={15} />
+                <Title
+                  size="SMALL"
+                  type={this.fieldHasError("email") ? "SUB" : "ERROR"}
+                >
+                  Email
+                </Title>
                 <Spacing size={5} />
-              </Box>
-            </Card>
-          </FlexContainerItem>
+                <TextInput
+                  placeholder="Email"
+                  onChangeText={this.onTextChangeFor("email")}
+                  value={this.state.email}
+                  type="email"
+                />
 
-          <Spacing size={25} />
+                <Spacing size={15} />
+                <Title
+                  size="SMALL"
+                  type={this.fieldHasError("username") ? "SUB" : "ERROR"}
+                >
+                  Username
+                </Title>
+                <Spacing size={5} />
+                <TextInput
+                  placeholder="Username"
+                  onChangeText={this.onTextChangeFor("username")}
+                  value={this.state.username}
+                />
 
-          <FlexContainerItem>
-            <Text tier="thintitle">Profile</Text>
-            <Spacing size={10} />
-            <Text tier="subtitle">
-              Enter some basic information to get started.
-            </Text>
+                <Spacing size={15} />
+                <Title size="SMALL" type="SUB">
+                  Password
+                </Title>
+                <Spacing size={5} />
+                <TextInput
+                  placeholder="Password"
+                  secureTextEntry
+                  onChangeText={this.onTextChangeFor("password")}
+                  value={this.state.password}
+                />
 
-            {errors.length > 0 && [
-              <Spacing size={15} />,
-              [errors.map(e => <Text tier="error">{e.error}</Text>)],
-              <Spacing size={10} />,
-              <Text tier="body">Once fixed, try to join again</Text>
-            ]}
+                <Spacing size={15} />
+                <Title size="SMALL" type="SUB">
+                  Display Name
+                </Title>
+                <Spacing size={5} />
+                <TextInput
+                  placeholder="Display or Full Name"
+                  onChangeText={this.onTextChangeFor("name")}
+                  value={this.state.name}
+                />
 
-            <Spacing size={15} />
-            <Text tier="label">Email</Text>
-            <Spacing size={5} />
-            <TextInput
-              placeholder="Email"
-              onChangeText={this.onTextChangeFor("email")}
-              value={this.state.email}
-              type="email"
-            />
+                <Spacing size={20} />
+                <Button
+                  size="MEDIUM"
+                  type="EMPHASIS"
+                  onClick={this.onCreatePress}
+                  title="Join Remix"
+                />
+                <Spacing size={20} />
+              </FlexContainerItem>
+            </FlexContainer>
 
-            <Spacing size={15} />
-            <Text
-              tier={this.fieldHasError("username") ? "labelerror" : "label"}
-            >
-              Username
-            </Text>
-            <Spacing size={5} />
-            <TextInput
-              placeholder="Username"
-              onChangeText={this.onTextChangeFor("username")}
-              value={this.state.username}
-            />
-
-            <Spacing size={15} />
-            <Text tier="label">Password</Text>
-            <Spacing size={5} />
-            <TextInput
-              placeholder="Password"
-              secureTextEntry
-              onChangeText={this.onTextChangeFor("password")}
-              value={this.state.password}
-            />
-
-            <Spacing size={15} />
-            <Text tier="label">Display Name</Text>
-            <Spacing size={5} />
-            <TextInput
-              placeholder="Display or Full Name"
-              onChangeText={this.onTextChangeFor("name")}
-              value={this.state.name}
-            />
-
-            <Spacing size={20} />
-            <Button onPress={this.onCreatePress} title="Join Remix" />
-            <Spacing size={20} />
-          </FlexContainerItem>
-        </FlexContainer>
-
-        <Spacing size={35} />
-      </AppScrollContainer>
+            <Spacing size={35} />
+          </Box>
+        </ContentContainer>
+      </ScrollContainer>
     );
   }
 }
@@ -315,13 +344,13 @@ function mapDispatchToProps(dispatch) {
   return {
     addDevice: device => dispatch(addDevice(device)),
     setCurrentDeviceId: id => dispatch(setCurrentDeviceId(id)),
-    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice())
+    loginWithCurrentDevice: id => dispatch(loginWithCurrentDevice()),
   };
 }
 
 function mapStateToProps(state, props) {
   return {
-    devices: state.auth.devices
+    devices: state.auth.devices,
   };
 }
 

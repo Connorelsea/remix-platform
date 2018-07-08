@@ -2,17 +2,16 @@
 
 import React, { Component, type Node } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { bind } from "decko";
 import { type Tab as TabType } from "../../types/tab";
 import { createTab, replaceAllTabs, createNewTab } from "../../ducks/tabs";
 import Tab from "../Tab";
 import Button from "../../elements/Button";
 import Box from "../../elements/Box";
-import SpacingComponent from "../Spacing";
+import Spacing from "../Spacing";
 import styled, { withTheme } from "styled-components";
 import { type Theme } from "../../utilities/theme";
-
-import Icon from "react-native-vector-icons/dist/Feather";
 
 import {
   DragDropContext,
@@ -21,7 +20,6 @@ import {
   type DroppableProvided,
   type DroppableStateSnapshot,
 } from "react-beautiful-dnd";
-import Paragraph from "../../elements/Paragraph";
 
 type Props = {
   theme: Theme,
@@ -36,6 +34,11 @@ type Props = {
 };
 
 class TabBar extends Component<Props> {
+  // shouldComponentUpdate(nextProps) {
+  //   if (nextProps.tabs !== this.props.tabs) return true;
+  //   else return false;
+  // }
+
   @bind
   getListStyle(isDraggingOver) {
     const { theme } = this.props;
@@ -47,44 +50,32 @@ class TabBar extends Component<Props> {
       //   ? `1px solid ${theme.background.tertiary}`
       //   : `1px solid ${theme.background.secondary}`,
       // display: "flex",
-      overflow: "auto",
-      width: "100%",
+      overflowX: "scroll",
+      overflowY: "hidden",
+      minHeight: "80px",
     };
   }
 
   render(): Node {
-    const { tabs, theme, createNewTab } = this.props;
+    const { tabs } = this.props;
 
     return (
-      <Box
-        height="80px"
-        fullWidth
-        row
-        backgroundColor={theme.background.secondary}
-        alignEnd
-      >
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable" direction="horizontal">
-            {(
-              provided: DroppableProvided,
-              snapshot: DroppableStateSnapshot
-            ) => {
-              return (
-                <Box
-                  fullWidth
-                  innerRef={provided.innerRef}
-                  style={this.getListStyle(snapshot.isDraggingOver)}
-                  {...provided.droppableProps}
-                >
-                  {tabs.map((tab, i) => (
-                    <Tab tab={tab} index={i} key={tab.id} />
-                  ))}
-                </Box>
-              );
-            }}
-          </Droppable>
-        </DragDropContext>
-      </Box>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => {
+            return (
+              <TabContainer
+                innerRef={provided.innerRef}
+                style={this.getListStyle(snapshot.isDraggingOver)}
+                {...provided.droppableProps}
+              >
+                {tabs.map((tab, i) => <Tab tab={tab} index={i} key={tab.id} />)}
+                {provided.placeholder}
+              </TabContainer>
+            );
+          }}
+        </Droppable>
+      </DragDropContext>
     );
   }
 
@@ -117,13 +108,14 @@ const TabContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  align-items: flex-end;
 
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
-  /* &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
-  } */
+  }
 `;
 
 function mapStateToProps(state, props) {
@@ -146,4 +138,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withTheme(connect(mapStateToProps, mapDispatchToProps)(TabBar));
+export default withRouter(
+  withTheme(connect(mapStateToProps, mapDispatchToProps)(TabBar))
+);

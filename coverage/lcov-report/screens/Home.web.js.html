@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for screens/Home.web.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">screens</a> Home.web.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/15</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { Component } from "react";</span>
+<span class="cstat-no" title="statement not covered" >import Button from "../elements/Button";</span>
+<span class="cstat-no" title="statement not covered" >import Spacing from "../components/Spacing";</span>
+<span class="cstat-no" title="statement not covered" >import styled from "styled-components";</span>
+<span class="cstat-no" title="statement not covered" >import styles from "../utilities/styles";</span>
+<span class="cstat-no" title="statement not covered" >import Text from "../components/Text";</span>
+<span class="cstat-no" title="statement not covered" >import Logo from "../components/Logo";</span>
+&nbsp;
+export default class Home extends Component {
+  render() {
+<span class="cstat-no" title="statement not covered" >    return (</span>
+      &lt;Container&gt;
+        &lt;Bar color={styles.colors.grey[100]}&gt;
+          &lt;InnerContainerColumn&gt;
+            &lt;Logo /&gt;
+            &lt;Spacing size={20} /&gt;
+            &lt;Text tier="thintitle"&gt;
+              Join interesting groups, meet new friends, explore new places
+            &lt;/Text&gt;
+            &lt;Spacing size={25} /&gt;
+            &lt;ButtonContainer&gt;
+              &lt;Button to="/login" title="Login" /&gt;
+              &lt;Spacing size={15} /&gt;
+              &lt;Button to="/create" title="Create New User" type="emphasis" /&gt;
+            &lt;/ButtonContainer&gt;
+          &lt;/InnerContainerColumn&gt;
+        &lt;/Bar&gt;
+&nbsp;
+        &lt;Bar color="white"&gt;
+          &lt;InnerContainer&gt;
+            &lt;FeatureContainer&gt;
+              &lt;Text tier="thintitle"&gt;Groups&lt;/Text&gt;
+              &lt;Spacing size={10} /&gt;
+              &lt;Text tier="largebody"&gt;
+                Create groups with friends, find public groups on interesting
+                topics, or discuss daily life privately with your closest
+                friends - the possibilities are endless.
+              &lt;/Text&gt;
+            &lt;/FeatureContainer&gt;
+            &lt;FeatureContainer&gt;
+              &lt;Text tier="thintitle"&gt;Unique Profiles&lt;/Text&gt;
+              &lt;Spacing size={10} /&gt;
+              &lt;Text tier="largebody"&gt;
+                Express yourself by decorating your profile - add songs,
+                pictures, or text to make your profile unique.
+              &lt;/Text&gt;
+            &lt;/FeatureContainer&gt;
+            &lt;FeatureContainer&gt;
+              &lt;Text tier="thintitle"&gt;Made for You&lt;/Text&gt;
+              &lt;Spacing size={10} /&gt;
+              &lt;Text tier="largebody"&gt;
+                We focus on highlighting real discussions and meaningful human
+                interactions without the baggage of traditional social media.
+                Remix is for chatting with friends, loved ones, or interesting
+                strangers - no invasive advertisements, no spam-filled
+                timelines, no FarmVille invites.
+              &lt;/Text&gt;
+            &lt;/FeatureContainer&gt;
+            &lt;FeatureContainer&gt;
+              &lt;Text tier="thintitle"&gt;Private Messages&lt;/Text&gt;
+              &lt;Spacing size={10} /&gt;
+              &lt;Text tier="largebody"&gt;
+                Directly message your close friends and divide conversations
+                into named chats for different topics, such as #music, #random,
+                #gaming, etc.
+              &lt;/Text&gt;
+            &lt;/FeatureContainer&gt;
+          &lt;/InnerContainer&gt;
+        &lt;/Bar&gt;
+&nbsp;
+        &lt;Bar color={styles.colors.grey[200]}&gt;
+          &lt;InnerContainerColumn&gt;
+            &lt;Text tier="thintitle"&gt;A social network on your side&lt;/Text&gt;
+            &lt;Spacing size={10} /&gt;
+            &lt;Text tier="largebody"&gt;
+              Many of today's modern social media platforms use their power in
+              dubious ways, controlling what you see or don't see, optimizing
+              their interface and interactions for profit-increase instead of
+              user satisfaction, or selling your data to third parties. Instead,
+              we design in the best interest of the user.
+            &lt;/Text&gt;
+          &lt;/InnerContainerColumn&gt;
+        &lt;/Bar&gt;
+&nbsp;
+        &lt;Bar color={styles.colors.grey[100]}&gt;
+          &lt;InnerContainerColumn&gt;
+            &lt;Text tier="thintitle"&gt;A global graph of interesting groups&lt;/Text&gt;
+            &lt;Spacing size={10} /&gt;
+            &lt;Text tier="largebody" color={styles.colors.grey[500]}&gt;
+              Create groups with your close friends or join interesting groups
+              based on topic or location. Groups can decorate a custom profile
+              and divide conversations into topic-based chats that can be made
+              public or private. Public chats are searchable on a global chat
+              index and can be sorted using tags.
+            &lt;/Text&gt;
+          &lt;/InnerContainerColumn&gt;
+        &lt;/Bar&gt;
+&nbsp;
+        &lt;Bar color="white"&gt;
+          &lt;InnerContainerColumn&gt;
+            &lt;Text tier="thintitle"&gt;Smart Conversations&lt;/Text&gt;
+            &lt;Spacing size={10} /&gt;
+            &lt;Text tier="largebody" color={styles.colors.grey[500]}&gt;
+              To provide a rich social experience through chatting, we developed
+              a fast communication platform that will run consistently across
+              all devices. Updates are often, support is available, and the code
+              is open source - always being improved.
+            &lt;/Text&gt;
+          &lt;/InnerContainerColumn&gt;
+        &lt;/Bar&gt;
+&nbsp;
+        &lt;Bar color={styles.colors.grey[100]}&gt;
+          &lt;InnerContainerColumn&gt;
+            &lt;Text tier="thintitle"&gt;
+              Made in Louisiana, United States{" "}
+              &lt;span role="img" aria-label="American Flag Emoji"&gt;
+                🇺🇸
+              &lt;/span&gt;
+            &lt;/Text&gt;
+            &lt;Spacing size={10} /&gt;
+            &lt;Text tier="largebody" color={styles.colors.grey[500]}&gt;
+              Remix software is currently produced in Baton Rouge, Louisiana by
+              Elsea Labs. Elsea Labs was founded in 2012. The Remix project was
+              started in 2017 and will enter alpha in mid-2018.
+            &lt;/Text&gt;
+          &lt;/InnerContainerColumn&gt;
+        &lt;/Bar&gt;
+        &lt;Spacing size={50} /&gt;
+      &lt;/Container&gt;
+    );
+  }
+}
+&nbsp;
+const Container = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  flex: 1;
+  background-color: ${styles.colors.grey[100]};
+  height: 100vh;
+  width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+`;
+&nbsp;
+const Bar = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  display: flex;
+&nbsp;
+  flex-direction: row;
+  background-color: ${<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >props =&gt; </span>props.color};</span>
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+&nbsp;
+const InnerContainer = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 50px 0px;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    padding: 35px 25px;
+  }
+`;
+const InnerContainerColumn = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 50px 0px;
+  @media (max-width: 1000px) {
+    padding: 35px 25px;
+  }
+`;
+&nbsp;
+const FeatureContainer = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  width: 46%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+`;
+&nbsp;
+const ButtonContainer = <span class="cstat-no" title="statement not covered" >styled.div`</span>
+  display: flex;
+  flex-direction: row;
+  @media (max-width: 1000px) {
+    flex-direction: row;
+  }
+`;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 09 2018 14:38:45 GMT-0500 (CDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

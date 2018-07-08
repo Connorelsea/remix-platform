@@ -1,0 +1,45 @@
+<svg width="273" height="312" viewBox="0 0 273 312" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="camera">
+<path id="Rectangle 53 Copy" fill-rule="evenodd" clip-rule="evenodd" d="M0 48C0 31.1984 0 22.7976 3.2698 16.3803C6.14601 10.7354 10.7354 6.14601 16.3803 3.2698C22.7976 0 31.1984 0 48 0H209C225.802 0 234.202 0 240.62 3.2698C246.265 6.14601 250.854 10.7354 253.73 16.3803C257 22.7976 257 31.1984 257 48V260C257 276.802 257 285.202 253.73 291.62C250.854 297.265 246.265 301.854 240.62 304.73C234.202 308 225.802 308 209 308H48C31.1984 308 22.7976 308 16.3803 304.73C10.7354 301.854 6.14601 297.265 3.2698 291.62C0 285.202 0 276.802 0 260V48Z" transform="translate(8)" fill="#EAEAEA"/>
+<g id="lens">
+<path id="Oval 17" fill-rule="evenodd" clip-rule="evenodd" d="M60 120C93.1371 120 120 93.1371 120 60C120 26.8629 93.1371 0 60 0C26.8629 0 0 26.8629 0 60C0 93.1371 26.8629 120 60 120Z" transform="translate(77 25)" fill="#575B5F"/>
+<path id="Oval 17_2" fill-rule="evenodd" clip-rule="evenodd" d="M43.5 87C67.5244 87 87 67.5244 87 43.5C87 19.4756 67.5244 0 43.5 0C19.4756 0 0 19.4756 0 43.5C0 67.5244 19.4756 87 43.5 87Z" transform="translate(93 41)" fill="#80868E"/>
+<path id="Oval 17_3" fill-rule="evenodd" clip-rule="evenodd" d="M13 26C20.1797 26 26 20.1797 26 13C26 5.8203 20.1797 0 13 0C5.8203 0 0 5.8203 0 13C0 20.1797 5.8203 26 13 26Z" transform="translate(123 71)" fill="#ADB3BD"/>
+</g>
+<path id="Rectangle 54" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.5C0 5.59644 5.59644 0 12.5 0H24.5C31.4036 0 37 5.59644 37 12.5C37 19.4036 31.4036 25 24.5 25H12.5C5.59644 25 0 19.4036 0 12.5Z" transform="translate(203 25)" fill="#BBC2CA"/>
+<path id="Rectangle 55" fill-rule="evenodd" clip-rule="evenodd" d="M8.02763 0H264.972L273 52H0L8.02763 0Z" transform="translate(0 159)" fill="url(#camera_paint0_linear)"/>
+<path id="Rectangle 56" fill-rule="evenodd" clip-rule="evenodd" d="M0.00220079 0H273V64.3902C273 64.3902 273 82.2096 263.833 92.2772C262.581 93.6525 261.125 94.882 259.467 95.9655C253.031 100.17 230.982 101.988 230.982 101.988H42.9252C42.9252 101.988 25.4695 101.988 13.226 91.2748C0.982416 80.5618 0.00220079 64.3902 0.00220079 64.3902V0Z" transform="translate(0 210)" fill="url(#camera_paint1_linear)"/>
+<path id="Rectangle 57" fill-rule="evenodd" clip-rule="evenodd" d="M0 0H208V11H0V0Z" transform="translate(32 231)" fill="#ADB3BD"/>
+<g id="Rectangle 58" filter="url(#filter0_d)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.13119 0H169.59L174.867 33.2669C174.867 33.2669 174.793 42.3767 169.59 47.2872C164.387 52.1977 155.295 52 155.295 52H113.61H17.2916C17.2916 52 8.59318 51.5336 3.82707 45.8116C-0.93905 40.0897 0.230415 33.2669 0.230415 33.2669L6.13119 0Z" transform="translate(49 231)" fill="url(#camera_paint2_linear)"/>
+</g>
+<path id="Rectangle 58_2" fill-rule="evenodd" clip-rule="evenodd" d="M2.5977 0H119.299L121.928 18.55C121.928 18.55 121.876 23.6297 118.246 26.3678C114.616 29.106 108.273 28.9957 108.273 28.9957H79.1899H11.9915C11.9915 28.9957 5.92288 28.7357 2.5977 25.545C-0.727485 22.3544 0.0884176 18.55 0.0884176 18.55L2.5977 0Z" transform="translate(75.0723 231)" fill="url(#camera_paint3_linear)"/>
+</g>
+<defs>
+<filter id="filter0_d" x="37.1035" y="230" width="198.764" height="76.0011" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dy="11"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.0623868 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="camera_paint0_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(55.0517) scale(284.891 54.2649) rotate(73.3878)">
+<stop offset="0.0230311" stop-color="#E2E0E6"/>
+<stop offset="1" stop-color="#D8D6DD"/>
+</linearGradient>
+<linearGradient id="camera_paint1_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(98.0183 4.71159) scale(442.236 165.211) rotate(79.8192)">
+<stop stop-color="#D8D6DD"/>
+<stop offset="1" stop-color="#ADB3BD"/>
+</linearGradient>
+<linearGradient id="camera_paint2_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(69.8351 -27.8878) scale(255.948 76.122) rotate(86.1637)">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#FDFEFF"/>
+</linearGradient>
+<linearGradient id="camera_paint3_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(49.3153 -11.074) scale(118.414 28.1475) rotate(62.6699)">
+<stop offset="0.154961" stop-color="#6EB0FC"/>
+<stop offset="1" stop-color="#A5D8FF"/>
+</linearGradient>
+</defs>
+</svg>

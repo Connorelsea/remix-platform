@@ -10,7 +10,7 @@ import App from "./NewApp";
 import { loginWithCurrentDevice } from "../ducks/auth";
 import { fetchRelevantUsers } from "../ducks/identity/index.js";
 import { GlobalState } from "../reducers/rootReducer";
-import ConnectedRouter from "react-router-redux/ConnectedRouter";
+import { ConnectedRouter } from "connected-react-router";
 import history from "../utilities/storage/history";
 import ResponsiveManager from "./ResponsiveManager";
 import AuthManager from "./AuthManager";

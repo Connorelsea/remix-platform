@@ -1,0 +1,1991 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ducks/auth.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">ducks</a> auth.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/164</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/50</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/36</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/139</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// @flow
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import Duck from "extensible-duck";</span>
+<span class="cstat-no" title="statement not covered" >import { client, errorLink, subEndpoint, httpLink } from "../utilities/apollo";</span>
+<span class="cstat-no" title="statement not covered" >import gql from "graphql-tag";</span>
+<span class="cstat-no" title="statement not covered" >import { query, mutate } from "../utilities/gql_util";</span>
+<span class="cstat-no" title="statement not covered" >import createCachedSelector from "re-reselect";</span>
+<span class="cstat-no" title="statement not covered" >import initialUserQuery from "./user.graphql";</span>
+<span class="cstat-no" title="statement not covered" >import { remove, get, getArray } from "../utilities/storage";</span>
+<span class="cstat-no" title="statement not covered" >import { ApolloClient } from "apollo-client";</span>
+<span class="cstat-no" title="statement not covered" >import jwt from "jsonwebtoken";</span>
+<span class="cstat-no" title="statement not covered" >import { GlobalState } from "../reducers/rootReducer";</span>
+<span class="cstat-no" title="statement not covered" >import { setContext } from "apollo-link-context";</span>
+<span class="cstat-no" title="statement not covered" >import { ApolloLink, split } from "apollo-link";</span>
+<span class="cstat-no" title="statement not covered" >import { SubscriptionClient } from "subscriptions-transport-ws";</span>
+<span class="cstat-no" title="statement not covered" >import { WebSocketLink } from "apollo-link-ws";</span>
+<span class="cstat-no" title="statement not covered" >import { getMainDefinition } from "apollo-utilities";</span>
+<span class="cstat-no" title="statement not covered" >import { InMemoryCache } from "apollo-cache-inmemory";</span>
+<span class="cstat-no" title="statement not covered" >import { type Device } from "../types/device";</span>
+<span class="cstat-no" title="statement not covered" >import { initData, invalidateActiveSubsriptions } from "./app";</span>
+<span class="cstat-no" title="statement not covered" >import { setCurrentUserId } from "./identity";</span>
+&nbsp;
+// Default non-authenticated apollo client for use before user
+// is logged in
+&nbsp;
+const link = <span class="cstat-no" title="statement not covered" >ApolloLink.from([errorLink, httpLink]);</span>
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >defaultApolloClient = new ApolloClient({</span>
+  link,
+  cache: new InMemoryCache(),
+});
+&nbsp;
+// INITIAL STATE
+&nbsp;
+export type State = {
+  +devices: Array&lt;Device&gt;,
+  +currentDeviceId: string | void,
+  +apolloClient: ApolloClient,
+  +authenticated: boolean,
+  +expiredRefreshToken: boolean,
+};
+&nbsp;
+const initialState: State = <span class="cstat-no" title="statement not covered" >{</span>
+  devices: [],
+  currentDeviceId: undefined,
+  authenticated: false,
+  apolloClient: defaultApolloClient,
+  expiredRefreshToken: false,
+};
+&nbsp;
+// Setting the auth device represents a logged in user. Removing
+// the auth device represents logging out of a user account.
+&nbsp;
+// A device can have or not have tokens. If a device does not have
+// tokens, or if the refresh token is expired, they will need to
+// enter their password before continuing.
+&nbsp;
+// Before setting device,
+// Check if access token is expired or not present (short life)
+// If so, request a new access token using the refresh token
+&nbsp;
+// Check if the refresh token is expired (long life)
+// If so, call `refreshDeviceWithPassword` on the server side
+&nbsp;
+// ACTION TYPE DEFINITIONS
+&nbsp;
+type SetDevicesAction = {
+  type: "SET_DEVICES",
+  payload: { devices: Array&lt;Device&gt; },
+};
+&nbsp;
+type AddDeviceAction = {
+  type: "ADD_DEVICE",
+  payload: { device: Device },
+};
+&nbsp;
+type ReplaceDeviceAction = {
+  type: "REPLACE_DEVICE",
+  payload: { device: Device },
+};
+&nbsp;
+type SetCurrentDeviceIdAction = {
+  type: "SET_CURRENT_DEVICE_ID",
+  payload: { deviceId: string },
+};
+&nbsp;
+type LoginWithCurrentDeviceAction = {
+  type: "LOGIN_WITH_CURRENT_DEVICE",
+};
+&nbsp;
+type LoginWithDevicePasswordAction = {
+  type: "LOGIN_WITH_DEVICE_PASSWORD",
+  payload: { deviceId: string, password: string },
+};
+&nbsp;
+type SetApolloClientAction = {
+  type: "SET_APOLLO_CLIENT",
+  payload: {
+    apolloClient: any,
+  },
+};
+&nbsp;
+type LogoutAction = { type: "LOGOUT" };
+&nbsp;
+type SetExpiredRefreshTokenAction = {
+  type: "SET_EXPIRED_REFRESH_TOKEN",
+  payload: {
+    expired: boolean,
+  },
+};
+&nbsp;
+type SetAuthStatusAction = {
+  type: "SET_AUTH_STATUS",
+  payload: { status: boolean },
+};
+&nbsp;
+type UpdateCurrentRefreshTokenType = {
+  type: "UPDATE_CURRENT_REFRESH_TOKEN",
+  payload: { password: string },
+};
+&nbsp;
+type UpdateCurrentAccessTokenType = { type: "UPDATE_CURRENT_ACCESS_TOKEN" };
+&nbsp;
+type Action =
+  | AddDeviceAction
+  | ReplaceDeviceAction
+  | SetCurrentDeviceIdAction
+  | LoginWithCurrentDeviceAction
+  | LoginWithDevicePasswordAction
+  | SetApolloClientAction
+  | LogoutAction
+  | SetExpiredRefreshTokenAction
+  | SetAuthStatusAction
+  | UpdateCurrentRefreshTokenType
+  | UpdateCurrentAccessTokenType;
+&nbsp;
+// Middleware action types
+type PromiseAction = Promise&lt;Action&gt;;
+type ThunkAction = (dispatch: Dispatch, getState: () =&gt; GlobalState) =&gt; any;
+&nbsp;
+type Dispatch = (
+  action: Action | ThunkAction | PromiseAction | Array&lt;Action&gt;
+) =&gt; any;
+&nbsp;
+// ACTION CREATORS
+&nbsp;
+/**
+ * Add device to the existing array
+ */
+export function <span class="fstat-no" title="function not covered" >addDevice(device: Device): AddDeviceAction {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "ADD_DEVICE",
+    payload: { device },
+  };
+}
+&nbsp;
+/**
+ * Replace the device with the same id in store with the new device
+ */
+export function <span class="fstat-no" title="function not covered" >replaceDevice(device: Device): ReplaceDeviceAction {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "REPLACE_DEVICE",
+    payload: { device },
+  };
+}
+/**
+ * Set the device that is currently being used for authentication. This device's
+ * information will be used to create an apollo client and initialize the
+ * application with that device's user's information.
+ */
+export function <span class="fstat-no" title="function not covered" >setCurrentDeviceId(deviceId: string): SetCurrentDeviceIdAction {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "SET_CURRENT_DEVICE_ID",
+    payload: { deviceId },
+  };
+}
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >CurrentDeviceSelector = <span class="cstat-no" title="statement not covered" >(</span>state: GlobalState): Device =&gt;</span></span>
+  state.auth.devices.find(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >device =&gt; </span>device.id === state.auth.currentDeviceId);</span>
+&nbsp;
+const <span class="cstat-no" title="statement not covered" >getNewAccessTokenSource = `</span>
+  mutation getNewAccessToken(
+    $refreshToken: String!
+  ) {
+    getNewAccessToken(
+      refreshToken: $refreshToken
+    ) {
+      id
+      name
+      accessToken
+      refreshToken
+      valid
+      user {
+        id
+      }
+    }
+  }
+`;
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async function getNewAccessToken(dispatch: Dispatch, refreshToken) {</span></span></span>
+  const <span class="cstat-no" title="statement not covered" >response = await mutate(getNewAccessTokenSource, { refreshToken });</span>
+  const <span class="cstat-no" title="statement not covered" >newDevice = response.data.getNewAccessToken;</span>
+<span class="cstat-no" title="statement not covered" >  dispatch(replaceDevice(newDevice));</span>
+  return newDevice;
+}
+&nbsp;
+export type TokenMeta = {
+  isExpired: boolean,
+  expiresIn: number,
+  updateAfterMs: number,
+};
+&nbsp;
+function <span class="fstat-no" title="function not covered" >decodeToken(token: string): TokenMeta {</span>
+  const currentTime: number = <span class="cstat-no" title="statement not covered" >Date.now().valueOf() / 1000;</span>
+  const decoded = <span class="cstat-no" title="statement not covered" >jwt.decode(token);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    isExpired: decoded.exp &lt; currentTime,
+    expiresIn: decoded.exp - currentTime,
+    updateAfterMs: (decoded.exp - currentTime - 3) * 1000,
+  };
+}
+&nbsp;
+/**
+ * Login using the current device ID
+ */
+export function <span class="fstat-no" title="function not covered" >loginWithCurrentDevice(): ThunkAction {</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >  return <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span>async function(</span>dispatch, getState) {</span></span></span></span></span></span></span></span></span>
+    // Note: Decode ignores whether the token is valid against the private
+    // key. They are being decoded unsafetly here just to test expiration
+    // times. If it is fake or edited, it would still fail since
+    // these are also checked server-side.
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log(</span>
+      "[LWCD:LoginWithCurrentDevice] Attempting to fetch tokens from storage"
+    );
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >state = getState();</span>
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >accessToken = CurrentDeviceSelector(state).accessToken;</span>
+    const <span class="cstat-no" title="statement not covered" >refreshToken = CurrentDeviceSelector(state).refreshToken;</span>
+&nbsp;
+    let <span class="cstat-no" title="statement not covered" >accessTokenMeta: TokenMeta = decodeToken(accessToken);</span>
+    const <span class="cstat-no" title="statement not covered" >refreshTokenMeta: TokenMeta = decodeToken(refreshToken);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log(</span>
+      "[LWCD:Event] Recieved and decoded tokens for the current device"
+    );
+<span class="cstat-no" title="statement not covered" >    console.log("[LWCD:Data] Access Token: ", accessTokenMeta);</span>
+<span class="cstat-no" title="statement not covered" >    console.log("[LWCD:Data] Refresh Token: ", refreshTokenMeta);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log(</span>
+      "[LWCD:Data] Access token expires in ~" +
+        Math.round(accessTokenMeta.expiresIn) +
+        "s"
+    );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log(</span>
+      "[LWCD:Data] Refresh token expires in ~" +
+        Math.round(refreshTokenMeta.expiresIn) +
+        "s"
+    );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (refreshTokenMeta.isExpired) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log("[LWCD:Data] Refresh token is expired");</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(setRefreshTokenExpired(true));</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      console.log(</span>
+        `[LWCD:Timer] ${
+          refreshTokenMeta.expiresIn
+        }s until updating refresh token`
+      );
+      let <span class="cstat-no" title="statement not covered" >updateAfterMs = (refreshTokenMeta.expiresIn - 3) * 1000;</span>
+<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>dispatch(setRefreshTokenExpired(true)), updateAfterMs);</span></span>
+    }
+&nbsp;
+    if (accessTokenMeta.isExpired &amp;&amp; !refreshTokenMeta.isExpired) {
+      // request new access token
+      // update device's access token
+      // set authenticated to true
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log("[LWCD:Data] Access token is expired");</span>
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >response = await mutate(getNewAccessTokenSource, { refreshToken });</span>
+      const <span class="cstat-no" title="statement not covered" >newDevice = response.data.getNewAccessToken;</span>
+<span class="cstat-no" title="statement not covered" >      accessTokenMeta = decodeToken(newDevice.accessToken);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      dispatch(replaceDevice(newDevice));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log(</span>
+        "[LWCD:Event] Got new device, updated access token",
+        newDevice
+      );
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (!accessTokenMeta.isExpired &amp;&amp; !refreshTokenMeta.isExpired) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log(</span>
+        "[LWCD:Data] Both tokens unexpired. Creating authenticated apollo client"
+      );
+&nbsp;
+      // Update the access token a few seconds before it expires. Check the
+      // new expiration time on each new device and make a new timer for the
+      // new time accordingly.
+&nbsp;
+      let <span class="cstat-no" title="statement not covered" >updateAfterMs = (accessTokenMeta.expiresIn - 3) * 1000;</span>
+&nbsp;
+      function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >genTimeoutFn(dispatch, refreshToken) {</span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        return <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span>async function <span class="fstat-no" title="function not covered" ></span>timeoutCallback() {</span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >          console.log(</span>
+            "[UpdateAccessToken:Data] Attempting to get updated device"
+          );
+&nbsp;
+          const <span class="cstat-no" title="statement not covered" >device = await getNewAccessToken(dispatch, refreshToken);</span>
+          const <span class="cstat-no" title="statement not covered" >accessToken = device.accessToken;</span>
+          const <span class="cstat-no" title="statement not covered" >decodedAccessToken: TokenMeta = decodeToken(accessToken);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          console.log(</span>
+            "[UpdateAccessToken:Event] Got device and decoded access token",
+            decodedAccessToken
+          );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          setTimeout(timeoutCallback, decodedAccessToken.updateAfterMs);</span>
+        };
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log(</span>
+        `[LWCD:Timer] ${accessTokenMeta.expiresIn}s until updating access token`
+      );
+<span class="cstat-no" title="statement not covered" >      setTimeout(genTimeoutFn(dispatch, refreshToken), updateAfterMs);</span>
+&nbsp;
+      // Configure new apollo client specifically for this
+      // authenticated user
+&nbsp;
+      // Add user's access token
+      let <span class="cstat-no" title="statement not covered" >authLink = setContext(<span class="fstat-no" title="function not covered" >(</span>operation, prevContext) =&gt; {</span>
+        let state = <span class="cstat-no" title="statement not covered" >getState();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        console.log("Auth Link - Setting Header Context");</span>
+<span class="cstat-no" title="statement not covered" >        console.log("Auth Link - Current Device", CurrentDeviceSelector(state));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          headers: {
+            ...prevContext.headers,
+            authorization: CurrentDeviceSelector(state).accessToken,
+          },
+        };
+      });
+&nbsp;
+      // Setup subscription client and subscription access
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >subOptions = {</span>
+        reconnect: true,
+        connectionParams: <span class="fstat-no" title="function not covered" >function() </span>{
+          let state = <span class="cstat-no" title="statement not covered" >getState();</span>
+&nbsp;
+          let params = <span class="cstat-no" title="statement not covered" >{</span>
+            token: CurrentDeviceSelector(state).accessToken,
+          };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          console.log("Sub Connection Params", params);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          return params;</span>
+        },
+        connectionCallback: <span class="fstat-no" title="function not covered" >function(</span>error) {
+<span class="cstat-no" title="statement not covered" >          if (error) {</span>
+<span class="cstat-no" title="statement not covered" >            console.log("Sub Connection - Error");</span>
+<span class="cstat-no" title="statement not covered" >            console.error(error);</span>
+          } else {
+<span class="cstat-no" title="statement not covered" >            console.log("Sub Connection - No Error", error);</span>
+          }
+        },
+      };
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >subClient = new SubscriptionClient(subEndpoint, subOptions);</span>
+      const <span class="cstat-no" title="statement not covered" >subLink = new WebSocketLink(subClient);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      subClient.onError(<span class="fstat-no" title="function not covered" >error =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >        console.log("Sub Client - Error", error);</span>
+      });
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >connectionLink = split(</span>
+        // split based on operation type
+<span class="fstat-no" title="function not covered" >        ({ query }) =&gt; <span class="cstat-no" title="statement not covered" ></span>{</span>
+          const { kind, operation } = <span class="cstat-no" title="statement not covered" >getMainDefinition(query);</span>
+<span class="cstat-no" title="statement not covered" >          return kind === "OperationDefinition" &amp;&amp; operation === "subscription";</span>
+        },
+        subLink,
+        httpLink
+      );
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >link = ApolloLink.from([errorLink, authLink, connectionLink]);</span>
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >apolloClient = new ApolloClient({</span>
+        link,
+        cache: new InMemoryCache(),
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log(</span>
+        "[LWCD:Data] Created client successfully, setting authentication status."
+      );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      dispatch(setApolloClient(apolloClient));</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(setAuthStatus(true));</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(setRefreshTokenExpired(false));</span>
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >state = getState();</span>
+&nbsp;
+      const <span class="cstat-no" title="statement not covered" >device: Device = CurrentDeviceSelector(state);</span>
+      const { <span class="cstat-no" title="statement not covered" >accessToken, user } = device;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      dispatch(invalidateActiveSubsriptions());</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(setCurrentUserId(user.id));</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(initData(user.id));</span>
+    }
+  };
+}
+&nbsp;
+export function <span class="fstat-no" title="function not covered" >getNewRefreshToken(</span>
+  deviceId: string,
+  email: string,
+  password: string
+): ThunkAction <span class="cstat-no" title="statement not covered" >{</span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >  return <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span>async (</span>dispatch, getState) =&gt; {</span></span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    console.log(</span>
+      "[NewRefreshToken] Attempting to get a new refresh token for " + email
+    );
+&nbsp;
+    // Get redux state
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >state: GlobalState = getState();</span>
+&nbsp;
+    // Find device in redux store that matches provided deviceId
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >device: Device | void = state.auth.devices.find(</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      d =&gt; </span>d.id === deviceId</span>
+    );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("[NewRefreshToken] Found device by id in local state", device);</span>
+&nbsp;
+    if (!device) return false;
+&nbsp;
+    // Request new refresh token from the server
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >getNewRefreshTokenSource = `</span>
+      mutation getNewRefreshToken(
+        $refreshToken: String!
+        $email: String!
+        $password: String!
+      ) {
+        getNewRefreshToken(
+          refreshToken: $refreshToken
+          email: $email
+          password: $password
+        ) {
+          id
+          name
+          accessToken
+          refreshToken
+          user {
+            id
+          }
+        }
+      }
+    `;
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >variables = {</span>
+      refreshToken: device.refreshToken,
+      email,
+      password,
+    };
+&nbsp;
+    let <span class="cstat-no" title="statement not covered" >getNewRefreshTokenResponse: {</span>
+      data: {
+        getNewRefreshToken: Device,
+      },
+    } | void;
+&nbsp;
+    try {
+<span class="cstat-no" title="statement not covered" >      getNewRefreshTokenResponse = await mutate(</span>
+        getNewRefreshTokenSource,
+        variables
+      );
+    } catch (e) {
+      // fires when server is offline or incorrect query, etc
+<span class="cstat-no" title="statement not covered" >      console.error(e);</span>
+    }
+&nbsp;
+    if (!getNewRefreshTokenResponse) return false;
+&nbsp;
+    const <span class="cstat-no" title="statement not covered" >newDevice: Device =</span>
+      getNewRefreshTokenResponse.data.getNewRefreshToken;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    console.log("[NewRefreshToken] Recieved new device", newDevice);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    dispatch(replaceDevice(newDevice));</span>
+    return true;
+  };
+}
+&nbsp;
+/**
+ * Login using a specific inactive device from the device array.
+ */
+function <span class="fstat-no" title="function not covered" >loginWithDevicePassword(</span>
+  deviceId: string,
+  password: string
+): LoginWithDevicePasswordAction {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "LOGIN_WITH_DEVICE_PASSWORD",
+    payload: { deviceId, password },
+  };
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >setApolloClient(apolloClient: any): SetApolloClientAction {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "SET_APOLLO_CLIENT",
+    payload: {
+      apolloClient,
+    },
+  };
+}
+&nbsp;
+/**
+ * Update the refresh token of the current auth device if the
+ * refresh token has expired. This requires the user to enter
+ * their password.
+ */
+function <span class="fstat-no" title="function not covered" >updateCurrentRefreshToken(</span>
+  password: string
+): UpdateCurrentRefreshTokenType {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "UPDATE_CURRENT_REFRESH_TOKEN",
+    payload: { password },
+  };
+}
+&nbsp;
+/**
+ * Update the access token of the current auth device before it expires
+ * while the user is using Remix. To get a new access token, a valid
+ * refresh token is required.
+ */
+function <span class="fstat-no" title="function not covered" >updateCurrentAccessToken(): UpdateCurrentAccessTokenType {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "UPDATE_CURRENT_ACCESS_TOKEN",
+  };
+}
+&nbsp;
+/**
+ *  Set whether the refresh token is expired or not. If it is, a special
+ *  UI state will be shown.
+ */
+function <span class="fstat-no" title="function not covered" >setRefreshTokenExpired(</span>
+  expired: boolean
+): SetExpiredRefreshTokenAction {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "SET_EXPIRED_REFRESH_TOKEN",
+    payload: { expired },
+  };
+}
+&nbsp;
+/**
+ * Logout of the device you logged into. This leaves the device data stored
+ * in an unauthenticated state by removing the tokens.
+ *
+ * You can log back in using an unauthenticated device and the password
+ * for that device's account.
+ */
+function <span class="fstat-no" title="function not covered" >logout(): LogoutAction {</span>
+<span class="cstat-no" title="statement not covered" >  return { type: "LOGOUT" };</span>
+}
+&nbsp;
+/**
+ * Set authentication status
+ */
+export function <span class="fstat-no" title="function not covered" >setAuthStatus(status: boolean): SetAuthStatusAction {</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: "SET_AUTH_STATUS",
+    payload: { status },
+  };
+}
+&nbsp;
+// REDUCER
+&nbsp;
+export function reducer(
+  state: State = {
+    devices: [],
+    currentDeviceId: undefined,
+    authenticated: false,
+    apolloClient: defaultApolloClient,
+    expiredRefreshToken: false,
+  },
+  action: Action
+): State <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >  switch (action.type) {</span>
+    case "ADD_DEVICE": {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        devices: [...state.devices, action.payload.device],
+      };
+    }
+&nbsp;
+    case "REPLACE_DEVICE": {
+      const { device } = <span class="cstat-no" title="statement not covered" >action.payload;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        devices: [...state.devices.filter(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >d =&gt; </span>d.id !== device.id), device],</span>
+      };
+    }
+&nbsp;
+    case "SET_CURRENT_DEVICE_ID": {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        currentDeviceId: action.payload.deviceId,
+        authenticated: false, // needs to check validity first, then true
+      };
+    }
+&nbsp;
+    case "SET_AUTH_STATUS": {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        authenticated: action.payload.status,
+      };
+    }
+&nbsp;
+    case "SET_APOLLO_CLIENT": {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        apolloClient: action.payload.apolloClient,
+      };
+    }
+&nbsp;
+    case "SET_EXPIRED_REFRESH_TOKEN": {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        expiredRefreshToken: action.payload.expired,
+      };
+    }
+&nbsp;
+    default:
+<span class="cstat-no" title="statement not covered" >      return state;</span>
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 09 2018 14:38:45 GMT-0500 (CDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

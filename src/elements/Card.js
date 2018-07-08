@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { ifProp } from "styled-tools";
 
 export default styled.div`
   background-color: ${p => p.theme.background.primary};
@@ -10,7 +11,14 @@ export default styled.div`
   transition: all 0.3s;
 
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
     border: 1px solid ${p => p.theme.border.secondary};
   }
+
+  ${ifProp(
+    "full",
+    css`
+      width: 100%;
+    `
+  )};
 `;

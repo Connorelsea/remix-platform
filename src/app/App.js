@@ -1,26 +1,26 @@
-import React from "react"
+import React from "react";
 
-import Routing, { Router } from "./utilities/routing"
-import { Platform, Text, View } from "react-native"
-import styled from "styled-components"
-import Home from "../screens/Home"
-import Group from "../screens/Group"
-import Chat from "../screens/Chat"
-import Dashboard from "../screens/Dashboard"
-import UserLogin from "../screens/UserLogin"
-import UserCreate from "../screens/UserCreate"
-import FriendNew from "../screens/FriendNew"
-import GroupNew from "../screens/GroupNew"
-import GroupCreate from "../screens/GroupCreate"
-import { bind } from "decko"
-import { Switch } from "react-router"
-import MediaQuery from "react-responsive"
-import styles from "../utilities/styles"
-import { connect } from "react-redux"
-import User from "../ducks/user"
-import { spring, AnimatedSwitch } from "react-router-transition"
+import Routing, { Router } from "./utilities/routing";
+import { Platform, Text, View } from "react-native";
+import styled from "styled-components";
+import Home from "../screens/Home";
+import Group from "../screens/Group";
+import Chat from "../screens/Chat";
+import Dashboard from "../screens/Dashboard";
+import UserLogin from "../screens/UserLogin";
+import UserCreate from "../screens/UserCreate";
+import FriendNew from "../screens/FriendNew";
+import GroupNew from "../screens/GroupNew";
+import GroupCreate from "../screens/GroupCreate";
+import { bind } from "decko";
+import { Switch } from "react-router";
+import MediaQuery from "react-responsive";
+import styles from "../utilities/styles";
+import { connect } from "react-redux";
+import User from "../ducks/user";
+import { spring, AnimatedSwitch } from "react-router-transition";
 
-const Route = Routing.Route
+const Route = Routing.Route;
 
 // we need to map the `scale` prop we define below
 // to the transform style property
@@ -28,7 +28,7 @@ function mapStyles(styles) {
   return {
     opacity: styles.opacity,
     transform: `scale(${styles.scale})`,
-  }
+  };
 }
 
 // wrap the `spring` helper to use a bouncy config
@@ -36,7 +36,7 @@ function bounce(val) {
   return spring(val, {
     stiffness: 330,
     damping: 22,
-  })
+  });
 }
 
 // child matches will...
@@ -56,14 +56,14 @@ const bounceTransition = {
     opacity: bounce(1),
     scale: bounce(1),
   },
-}
+};
 
 class App extends React.Component {
   @bind
   renderWithoutUser() {
     // const Stack = require("react-router-native-stack").default
 
-    console.log("WITHOUT USER")
+    console.log("WITHOUT USER");
 
     return (
       <Switch>
@@ -75,16 +75,16 @@ class App extends React.Component {
         />
         <Route exact path="/create" component={UserCreate} />
       </Switch>
-    )
+    );
   }
 
   @bind
   renderWithUser() {
-    const { user } = this.props
-    const Stack = require("react-router-native-stack").default
+    const { user } = this.props;
+    const Stack = require("react-router-native-stack").default;
     /* <Route exact path="/@:id" component={User} /> */
 
-    console.log("WITH USER")
+    console.log("WITH USER");
 
     const routes = [
       <Route exact path="/+:group/" key="group_show" component={Group} />,
@@ -97,14 +97,14 @@ class App extends React.Component {
         key="new_group_create"
         component={GroupCreate}
       />,
-    ]
+    ];
 
     return (
       <Stack>
         <Route exact path="/" component={Dashboard} />
         {routes}
       </Stack>
-    )
+    );
 
     return (
       <View style={{ flex: 1 }}>
@@ -123,19 +123,19 @@ class App extends React.Component {
           </Stack>
         </MediaQuery>
       </View>
-    )
+    );
   }
 
   @bind
   renderRouting() {
-    const { authenticated, loading } = this.props
-    if (loading) return <Text>Loading</Text>
-    if (authenticated) return this.renderWithUser()
-    else return this.renderWithoutUser()
+    const { authenticated, loading } = this.props;
+    if (loading) return <Text>Loading</Text>;
+    if (authenticated) return this.renderWithUser();
+    else return this.renderWithoutUser();
   }
 
   render() {
-    return <Router>{this.renderRouting()}</Router>
+    return <Router>{this.renderRouting()}</Router>;
   }
 
   // async registerPushNotifs() {
@@ -164,18 +164,18 @@ function mapStateToProps(state) {
     friendRequests: state.user.friendRequests,
     groups: state.user.groups,
     authenticated: state.auth.authenticated,
-  }
+  };
 }
 
-export default connect(mapStateToProps, undefined)(App)
+export default connect(mapStateToProps, undefined)(App);
 
 const Side = styled.View`
   width: 400;
   min-width: 400;
   border-right-color: ${styles.colors.grey[200]};
   border-right-width: 1px;
-`
+`;
 
 const Body = styled.View`
   flex: 1;
-`
+`;

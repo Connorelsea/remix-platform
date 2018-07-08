@@ -1,5 +1,5 @@
-import React, { Component, PureComponent } from "react";
-import styled from "styled-components/native";
+import React, { Component } from "react";
+import styled from "styled-components";
 import styles from "../utilities/styles";
 import { withRouter } from "react-router";
 import { bind } from "decko";
@@ -29,7 +29,7 @@ class Header extends Component {
       position: "absolute",
       bottom: 0,
       width: "100%",
-      height: 200
+      height: 200,
     };
   }
 
@@ -38,7 +38,7 @@ class Header extends Component {
     return (
       <Motion
         style={{
-          x: spring(large ? 120 : 60)
+          x: spring(large ? 120 : 60),
         }}
       >
         {({ x }) => (
@@ -78,7 +78,7 @@ class Header extends Component {
 
 export default withRouter(Header);
 
-const Bar = styled.View`
+const Bar = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -88,33 +88,38 @@ const Bar = styled.View`
   height: ${props => props.height};
 `;
 
-const Back = styled.TouchableOpacity`
+const Back = styled.a`
   flex-direction: row;
   align-items: center;
 `;
 
-const BackText = styled.Text`
+const BackText = styled.p`
   color: ${backColor};
   font-size: 16px;
   font-weight: 500;
 `;
 
-const Upper = styled.View`
+const Upper = styled.div`
   background-color: transparent;
   padding-right: 25px;
   padding-left: 25px;
   ${props => (!props.large ? "flex-direction: row; align-items: center" : "")};
 `;
 
-const Container = styled.View`
+const Container = styled.div`
   background-color: transparent;
   width: 100%;
   max-width: 1000px;
 `;
 
-const Title = styled.Text`
+const Title = styled.p`
   font-weight: 900;
   font-size: ${props => (props.large ? 35 : 25)}px;
   letter-spacing: -0.5;
   color: black;
+
+  &:[min-width~="500px"] {
+    font-size: 10px;
+    background-color: red;
+  }
 `;

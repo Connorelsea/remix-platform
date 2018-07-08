@@ -2,13 +2,13 @@
 
 import React, { Component, type Node } from "react";
 import { withRouter } from "react-router";
-import styled, { withTheme } from "styled-components";
+import styled, { withTheme, css } from "styled-components";
 import Paragraph from "./Paragraph";
 import prop from "styled-tools/dist/cjs/prop";
 import { bind, memoize } from "decko";
 
 type ButtonSize = "SMALL" | "MEDIUM";
-type ButtonType = "DISABLED" | "DEFAULT" | "EMPHASIS";
+type ButtonType = "DISABLED" | "CLEAR" | "DEFAULT" | "EMPHASIS";
 
 type Props = {
   title: string,
@@ -26,6 +26,15 @@ type State = {};
 
 class Button extends Component<Props, State> {
   state = {};
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.title !== nextProps.title) return true;
+    if (this.props.children !== nextProps.children) return true;
+    if (this.props.to !== nextProps.to) return true;
+    if (this.props.disabled !== nextProps.disabled) return true;
+
+    return false;
+  }
 
   @bind
   onLinkClick() {
@@ -49,6 +58,7 @@ class Button extends Component<Props, State> {
     const {
       title,
       size,
+      type,
       children,
       theme,
       to,
@@ -66,9 +76,10 @@ class Button extends Component<Props, State> {
         onClick={to === undefined ? onClick : this.onLinkClick}
         borderRadius={size === "SMALL" ? 8 : 200}
         padding={size === "SMALL" ? "0px 10px" : "0px 15px"}
-        minHeight={size === "SMALL" ? 35 : 50}
+        minHeight={size === "SMALL" ? 30 : 50}
         disabled={disabled}
         getButtonTheme={getButtonTheme}
+        type={type}
       >
         {icon ? icon : undefined}
         <Paragraph
@@ -77,6 +88,7 @@ class Button extends Component<Props, State> {
               ? theme.fontSize.button_sm
               : theme.fontSize.button_md
           }
+          fontWeight={type === "CLEAR" && "inherit"}
           color={getButtonTheme().text}
         >
           {title || children}
@@ -102,10 +114,19 @@ const Container = styled.button`
   align-items: center;
   justify-content: space-around;
 
+  font-weight: 500;
+
   &:hover {
     background-color: ${p => p.getButtonTheme().hover};
     border-bottom: 4px solid ${p => p.getButtonTheme().hover_bottom};
     transform: scale(1.05);
+    cursor: pointer;
+
+    ${p =>
+      p.type === "CLEAR" &&
+      css`
+        font-weight: 700;
+      `};
   }
 
   &:active {

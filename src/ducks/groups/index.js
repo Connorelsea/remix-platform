@@ -105,8 +105,8 @@ export const getGroups = createCachedSelector(
         console.log("groups", groups);
         console.log("SELECTING FROM ALL GROUPS", allUsers);
         const otherUserId = group.members.find(m => currentUserId !== m.id).id;
-        const otherUser = allUsers.find(u => otherUserId === u.id);
-
+        let otherUser = allUsers.find(u => otherUserId === u.id);
+        if (otherUser === undefined) otherUser = {};
         console.log("CURRENT USER VS OTHER ", currentUserId, otherUserId);
         console.log(otherUser);
 
@@ -123,6 +123,14 @@ export const getGroups = createCachedSelector(
     });
   }
 )((state: GlobalState, itemName) => hash(state.groups.groups));
+
+export const getDirectMessageGroup = createCachedSelector(
+  getGroups,
+  (state, otherUsername) => otherUsername,
+  (groups: Array<Group>, otherUsername) => {
+    return groups.find(g => g.username === otherUsername);
+  }
+)((state: GlobalState, otherUserName: string) => otherUserName);
 
 export function fetchGroupsById(groupIds: Array<string>): ThunkAction {
   return async function(dispatch, getState) {

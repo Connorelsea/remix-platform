@@ -10,12 +10,13 @@ import adapter from "redux-localstorage/lib/adapters/localStorage";
 import filter from "redux-localstorage-filter";
 import { defaultApolloClient } from "../../ducks/auth";
 import history from "./history";
-import { routerMiddleware } from "react-router-redux";
+import { connectRouter, routerMiddleware } from "connected-react-router";
 
 let initialState = {};
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = compose(
+  connectRouter(history),
   mergePersistedState((initialState, persistState) => {
     console.log(
       "[Store] Merging in persisted state",
@@ -47,12 +48,8 @@ const storage = compose(
   ])
 )(adapter(window.localStorage));
 
-const routerMid = routerMiddleware(history);
-
-console.log(routerMid);
-
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, routerMid),
+  applyMiddleware(routerMiddleware(history), thunk),
   persistState(storage, "remix-local-storage")
 );
 

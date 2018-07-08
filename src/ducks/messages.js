@@ -68,7 +68,7 @@ export function subscribeToMessages(userId: string): ThunkAction {
     const state: GlobalState = getState();
     const { apolloClient } = state.auth;
 
-    console.log("SUBSCRIBING TO NEW MESSAGES");
+    console.log("Messages - Init Subscriptions");
 
     const observable = apolloClient.subscribe({
       query: gql`

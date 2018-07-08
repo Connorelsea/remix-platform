@@ -4,9 +4,7 @@ import { bind } from "decko";
 import { type GlobalState } from "../reducers/rootReducer";
 import { type Device } from "../types/device";
 import ExpiredRefreshToken from "../screens/ExpiredRefreshToken";
-import { ConnectedRouter } from "react-router-redux";
 import { Route, Switch, withRouter } from "react-router-dom";
-import history from "../utilities/storage/history";
 import Home from "../screens/Home";
 import UserLogin from "../screens/UserLogin";
 import UserCreate from "../screens/UserCreate";
@@ -29,7 +27,6 @@ class AuthManager extends Component<Props, State> {
       authenticated,
       currentDevice,
       children,
-      location,
     } = this.props;
 
     if (expiredRefreshToken) {
@@ -38,7 +35,7 @@ class AuthManager extends Component<Props, State> {
 
     if (!authenticated) {
       return (
-        <Switch location={location}>
+        <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={UserLogin} />
           <Route exact path="/create" component={UserCreate} />

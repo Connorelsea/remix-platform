@@ -2,10 +2,16 @@ import React from "react";
 import ReactNative from "react-native";
 import { AppContainer as HotContainer } from "react-hot-loader";
 import AppProviders from "./AppProviders";
+import iconFont from "react-native-vector-icons/Fonts/Feather.ttf";
+
+// Init element queries
+
+import ResizeSensor from "css-element-queries/src/ResizeSensor";
+import ElementQueries from "css-element-queries/src/ElementQueries";
+
+ElementQueries.listen();
 
 // Uses the webpack cache url to set the font family
-
-import iconFont from "react-native-vector-icons/Fonts/Feather.ttf";
 
 const iconFontStyles = `
   @font-face {

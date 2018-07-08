@@ -18,6 +18,7 @@ import { prop } from "styled-tools";
 
 type Props = {
   message: MessageType,
+  previousMessage: MessageType,
   user: User,
   currentUserId: string,
 };
@@ -26,27 +27,31 @@ type State = {};
 
 class Message extends Component<Props, State> {
   render(): Node {
-    const { message, user, currentUserId } = this.props;
+    const { message, previousMessage, user, currentUserId } = this.props;
 
     const isCurrentUser = currentUserId === user.id;
+    const isSameUserAsPrev = message.userId === previousMessage.userId;
 
     return (
       <MessageContainer isCurrentUser={isCurrentUser}>
         <Box>
-          {!isCurrentUser && [
-            <Spacing size={10} />,
-            <Box>
-              <Icon iconUrl={user.iconUrl} iconSize={40} />
-              <Spacing size={10} />
-            </Box>,
-          ]}
-          <Box>
+          {!isCurrentUser &&
+            !isSameUserAsPrev && [
+              <Spacing size={10} />,
+              <Box>
+                <Icon iconUrl={user.iconUrl} iconSize={40} />
+                <Spacing size={10} />
+              </Box>,
+            ]}
+          {!isCurrentUser && isSameUserAsPrev && <EmptyIconSpace />}
+          <Box alignCenter>
             <Bubble backgroundColor={user.color}>
               {message.content.data.text}
             </Bubble>
           </Box>
           {isCurrentUser && <Spacing size={10} />}
         </Box>
+        <Spacing size={5} />
       </MessageContainer>
     );
   }
@@ -54,13 +59,16 @@ class Message extends Component<Props, State> {
 
 export default Message;
 
+const EmptyIconSpace = styled.div`
+  width: 60px;
+  height: 40px;
+`;
+
 const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: ${p => (p.isCurrentUser ? "flex-end" : "flex-start")};
-
   width: 100%;
-  padding: 8px 0 0 15px;
 `;
 
 const Bubble = styled.div`

@@ -5,6 +5,7 @@ import { bind } from "decko";
 import { fetchUsersById, fetchUsersByName } from "../ducks/identity/index.js";
 import { connect } from "react-redux";
 import { type User } from "../types/user";
+import { withRouter } from "react-router-dom";
 
 type State = {
   users: Array<User>,
@@ -44,6 +45,25 @@ const initialState: State = {
 class ProvideUsers extends Component<Props, State> {
   state: State = initialState;
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.userIds !== undefined &&
+      prevProps.userIds.toString() !== this.props.userIds.toString()
+    )
+      this.init();
+    if (
+      this.props.userNames !== undefined &&
+      prevProps.userNames.toString() !== this.props.userNames.toString()
+    )
+      this.init();
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.init();
+  }
+
   @bind
   async init() {
     const {
@@ -78,10 +98,6 @@ class ProvideUsers extends Component<Props, State> {
     console.log("AFTRER SET STATE IN PROVIDE USERS", this.state);
   }
 
-  componentDidMount() {
-    this.init();
-  }
-
   render(): Node {
     const { props, state } = this;
     return props.render(state);
@@ -101,4 +117,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProvideUsers);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ProvideUsers)
+);

@@ -1,4 +1,4 @@
-#import "../types/fragments.graphql"
+#import "../../../types/fragments.graphql"
 
 query fetchFriendsData($userId: ID!) {
   User(id: $userId) {

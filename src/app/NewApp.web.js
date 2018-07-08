@@ -3,7 +3,7 @@
 import React, { Component, Fragment, type Node } from "react";
 import { connect } from "react-redux";
 import { GlobalState } from "../reducers/rootReducer";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link } from "react-router";
 import Home from "../screens/Home";
 import { bind } from "decko";
 import ExpiredRefreshToken from "../screens/ExpiredRefreshToken";

@@ -8,6 +8,7 @@ import { type Group } from "../../types/group";
 import Icon from "../../components/Icon/index";
 import SpacingComponent from "../../components/Spacing";
 import TouchableNewTab from "../../elements/TouchableNewTab";
+import { buildUserUrl, buildGroupUrl } from "../../utilities/urls";
 
 type Props = {
   group: Group,
@@ -18,8 +19,8 @@ class MessageDisplayCard extends Component<Props> {
     const { group } = this.props;
 
     const url = group.isDirectMessage
-      ? `/u/+${group.username}`
-      : `/g/+${group.username}`;
+      ? buildUserUrl(group)
+      : buildGroupUrl(group);
 
     if (!group) return <div>failed</div>;
 

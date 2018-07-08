@@ -10,7 +10,7 @@ import { reducer as authReducer, type State as AuthState } from "../ducks/auth";
 import {
   reducer as friendReducer,
   type State as FriendState,
-} from "../ducks/friends";
+} from "../ducks/friends/index";
 import {
   reducer as groupReducer,
   type State as GroupState,
@@ -22,6 +22,10 @@ import {
 } from "../ducks/messages";
 
 import { reducer as tabsReducer, type State as TabsState } from "../ducks/tabs";
+import {
+  reducer as onboardingReducer,
+  type State as OnboardingState,
+} from "../ducks/onboarding";
 
 export type GlobalState = {
   identity: IdentityState,
@@ -32,6 +36,7 @@ export type GlobalState = {
   groups: GroupState,
   messages: MessagesState,
   tabs: TabsState,
+  onboarding: OnboardingState,
 };
 
 export default combineReducers({
@@ -43,5 +48,7 @@ export default combineReducers({
   groups: groupReducer,
   messages: messagesReducer,
   tabs: tabsReducer,
+  onboarding: onboardingReducer,
+
   router: routerReducer,
 });

@@ -10,8 +10,12 @@ type Props = {
 };
 
 class Icon extends Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
+    if (this.props.iconUrl !== nextProps.iconUrl) return true;
+    return false;
+  }
   render(): Node {
-    const { iconUrl, iconSize = 60, altText = "a round icon" } = this.props;
+    const { iconUrl, iconSize = 60, altText = "" } = this.props;
     return (
       <ImageContainer iconSize={iconSize}>
         <img src={iconUrl} alt={altText} />

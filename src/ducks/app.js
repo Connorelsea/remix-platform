@@ -1,9 +1,8 @@
 import { themes, Theme } from "../utilities/theme";
-import { fetchFriendsData } from "./friends";
+import { fetchFriendsData, subscribeToRequests } from "./friends/index";
 import { fetchGroupsData } from "./groups/index.js";
 import { fetchMessagesData, subscribeToMessages } from "./messages";
 import { type GlobalState } from "../reducers/rootReducer";
-import { Thunk } from "graphql";
 
 // Middleware action types
 type PromiseAction = Promise<Action>;
@@ -50,6 +49,7 @@ export function initData(userId) {
 
     const subscriptions = await Promise.all([
       dispatch(subscribeToMessages(userId)),
+      dispatch(subscribeToRequests(userId)),
     ]);
 
     dispatch(setActiveSubscriptions(subscriptions));
