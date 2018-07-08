@@ -161,7 +161,6 @@
     "serve": "^6.5.3",
     "svg-inline-loader": "^0.8.0",
     "uglifyjs-webpack-plugin": "^1.2.3",
-    "webapp-webpack-plugin": "^1.1.2",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-bundle-size-analyzer": "^2.7.0",
     "webpack-cli": "^2.0.11",
