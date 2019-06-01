@@ -1,0 +1,19 @@
+fragment groupInvitation on GroupInvitation {
+  id
+  fromUser {
+    id
+    name
+    username
+    color
+  }
+  toUser {
+    id
+  }
+  forGroup {
+    id
+    name
+    username
+  }
+  message
+  createdAt
+}

@@ -67,6 +67,13 @@ class ChatInput extends Component<Props, State> {
     });
   }
 
+  @bind
+  onInputKeyPress(event) {
+    if (event.key === "Enter") {
+      this.onPressSend();
+    }
+  }
+
   render(): Node {
     return (
       <InputContainer>
@@ -75,6 +82,7 @@ class ChatInput extends Component<Props, State> {
           placeholder="Message"
           secure
           onChange={this.onChange}
+          onKeyPress={this.onInputKeyPress}
         />
         <Spacing size={10} />
         <Button title="Send" onClick={this.onPressSend} />
@@ -84,9 +92,6 @@ class ChatInput extends Component<Props, State> {
 }
 
 const InputContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   padding: 15px;
   background-color: ${p =>
     tinycolor(p.theme.background.secondary)
@@ -98,6 +103,9 @@ const InputContainer = styled.div`
 
   display: flex;
   flex-direction: row;
+  flex: 1;
+  flex-basis: 0px;
+  min-height: 0px;
 `;
 
 function mapStateToProps(state) {

@@ -52,7 +52,6 @@ class TabBar extends Component<Props> {
       // display: "flex",
       overflowX: "scroll",
       overflowY: "hidden",
-      minHeight: "80px",
     };
   }
 
@@ -106,6 +105,7 @@ class TabBar extends Component<Props> {
 
 const TabContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-wrap: nowrap;
   overflow-x: auto;
   align-items: flex-end;

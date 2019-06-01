@@ -1,4 +1,5 @@
 // @flow
+import gql from "graphql-tag";
 
 import { type User } from "../../types/user";
 import { mutate, query } from "../../utilities/gql_util";
@@ -36,7 +37,21 @@ type AddOrUpdateUser = {
   payload: { user: any },
 };
 
-type Action = SetCurrentUserId | AddOrUpdateUser;
+type ReplaceUserById = {
+  type: "REPLACE_USER_BY_ID",
+  payload: { userId: string, newUser: User },
+};
+
+type ReplaceAllUsers = {
+  type: "REPLACE_ALL_USERS",
+  payload: { users: Array<User> },
+};
+
+type Action =
+  | SetCurrentUserId
+  | AddOrUpdateUser
+  | ReplaceUserById
+  | ReplaceAllUsers;
 
 // Middleware action types
 
@@ -63,6 +78,23 @@ export function addOrUpdateUser(user: any): AddOrUpdateUser {
   };
 }
 
+export function replaceUserById(
+  userId: string,
+  newUser: User
+): ReplaceUserById {
+  return {
+    type: "REPLACE_USER_BY_ID",
+    payload: { userId, newUser },
+  };
+}
+
+export function replaceAllUsers(users: Array<User>): ReplaceAllUsers {
+  return {
+    type: "REPLACE_ALL_USERS",
+    payload: { users },
+  };
+}
+
 // Selectors
 
 /**
@@ -71,7 +103,6 @@ export function addOrUpdateUser(user: any): AddOrUpdateUser {
  * Returns all users in the redux store
  */
 export function getAllUsers(state: GlobalState): Array<User> {
-  console.log("GETALLUSERS", state);
   return state.identity.users;
 }
 
@@ -82,8 +113,10 @@ export function getAllUsers(state: GlobalState): Array<User> {
  * user's meta information.
  */
 export const getUserById = createCachedSelector(
-  getAllUsers,
+  state => state.identity.users,
+  (state, userId) => userId,
   (users: Array<User>, userId: string) => {
+    console.log("USERZZZZZZZZ", users, userId);
     return users.find(user => user.id === userId);
   }
 )((state: GlobalState, userId: string) => userId);
@@ -122,6 +155,50 @@ export function fetchRelevantUsers(): ThunkAction {
     }
 
     return serverFoundUsers;
+  };
+}
+
+// Subscriptions
+
+export function subscribeToInvitations(userId: string): ThunkAction {
+  return async function(dispatch, getState) {
+    const state: GlobalState = getState();
+    const { apolloClient } = state.auth;
+
+    console.log("Group Invitations - Init Subscriptions");
+
+    const observable = apolloClient.subscribe({
+      query: gql`
+        subscription newUserUpdate($forUserId: ID!) {
+          newUserUpdate(forUserId: $forUserId) {
+            id
+            name
+            username
+            email
+            iconUrl
+            color
+            description
+          }
+        }
+      `,
+      variables: {
+        forUserId: userId,
+      },
+    });
+
+    return observable.subscribe({
+      next(result) {
+        console.log("Group Invitations - Sub Result", result);
+        const user = result.data.newUserUpdate;
+        dispatch(replaceUserById(user.id, user));
+      },
+      error(error) {
+        console.error("Group Invitations - Sub Error", error);
+      },
+      complete() {
+        console.log("Group Invitations - Sub Complete");
+      },
+    });
   };
 }
 
@@ -164,20 +241,28 @@ export function fetchUsersById(userIds: Array<string>): ThunkAction {
       else missingUserIds.push(id);
     }
 
+    console.log("FETCH USERS BY ID");
+    console.log("FOUND USERS", foundUsers);
+    console.log("MISSING USER IDS", missingUserIds);
+
     // Fetch missing metadata from the server
 
     const getUsersVariables = {
       userIdentifiers: missingUserIds,
     };
 
-    const response = await query(getUsersByIdSource, getUsersVariables);
-    const serverFoundUsers: Array<User> = response.data.getUsersById;
+    let serverFoundUsers: Array<User> = [];
 
-    // Metadata for each user found on the server will be merged
-    // with the existing user metadata in the redux store.
+    if (missingUserIds.length > 0) {
+      const response = await query(getUsersByIdSource, getUsersVariables);
+      serverFoundUsers = response.data.getUsersById;
 
-    for (let user of serverFoundUsers) {
-      dispatch(addOrUpdateUser(user));
+      // Metadata for each user found on the server will be merged
+      // with the existing user metadata in the redux store.
+
+      for (let user of serverFoundUsers) {
+        dispatch(addOrUpdateUser(user));
+      }
     }
 
     // Return all required users from both sources as one array
@@ -204,31 +289,88 @@ export function fetchUsersByName(userNames: Array<string>): ThunkAction {
     // locally, if not, add that identifier to the array of missing
     // identifiers.
 
-    for (let id of userNames) {
-      const foundUser: User | void = allUsers.find(u => u.id === id);
+    for (let name of userNames) {
+      const foundUser: User | void = allUsers.find(u => u.username === name);
       if (foundUser) foundUsers.push(foundUser);
-      else missingUserNames.push(id);
+      else missingUserNames.push(name);
     }
+
+    console.log("FETCH USERS BY NAME");
+    console.log("FOUND USERS", foundUsers);
+    console.log("MISSING USER NAMES", missingUserNames);
 
     // Fetch missing metadata from the server
 
     const getUsersVariables = {
       userIdentifiers: missingUserNames,
     };
+    let serverFoundUsers: Array<User> = [];
 
-    const response = await query(getUsersByNameSource, getUsersVariables);
-    const serverFoundUsers: Array<User> = response.data.getUsersByName;
+    if (missingUserNames.length > 0) {
+      const response = await query(getUsersByNameSource, getUsersVariables);
+      serverFoundUsers = response.data.getUsersByName;
 
-    // Metadata for each user found on the server will be merged
-    // with the existing user metadata in the redux store.
+      // Metadata for each user found on the server will be merged
+      // with the existing user metadata in the redux store.
 
-    for (let user of serverFoundUsers) {
-      dispatch(addOrUpdateUser(user));
+      for (let user of serverFoundUsers) {
+        dispatch(addOrUpdateUser(user));
+      }
     }
 
     // Return all required users from both sources as one array
 
     return [...foundUsers, ...serverFoundUsers];
+  };
+}
+
+export function updateUser(
+  newName: string,
+  newUsername: string,
+  newDescription: string
+): ThunkAction {
+  return async (dispatch, getState) => {
+    const state: GlobalState = getState();
+    const allUsers: Array<User> = state.identity.users;
+    const apolloClient = state.auth.apolloClient;
+
+    console.log("UPDATE USER", newName, newUsername, newDescription);
+
+    const updateSrc = gql`
+      mutation updateUser(
+        $newName: String
+        $newUsername: String
+        $newDescription: String
+      ) {
+        updateUser(
+          newName: $newName
+          newUsername: $newUsername
+          newDescription: $newDescription
+        ) {
+          id
+          name
+          username
+          email
+          iconUrl
+          color
+          description
+        }
+      }
+    `;
+
+    const updateVars = { newName, newUsername, newDescription };
+
+    const response = await mutate(updateSrc, updateVars, apolloClient);
+    console.log(response);
+    const newUser = response.data.updateUser;
+    console.log("NEW USERZZZ");
+    console.log(newUser);
+
+    const foundUserIndex = allUsers.findIndex(u => u.id === newUser.id);
+    let newUsers = allUsers;
+    newUsers.splice(foundUserIndex, 1, newUser);
+
+    dispatch(replaceAllUsers(newUsers));
   };
 }
 
@@ -244,9 +386,41 @@ function reducer(state: State = initialState, action: Action): State {
     }
 
     case "ADD_OR_UPDATE_USER": {
+      const foundUserIndex = state.users.findIndex(
+        u => u.id === action.payload.user.id
+      );
+      if (foundUserIndex >= 0) {
+        let newUsers = state.users;
+        newUsers.splice(foundUserIndex, 1, action.payload.user);
+        return {
+          ...state,
+          users: newUsers,
+        };
+      }
+
       return {
         ...state,
         users: [...state.users, action.payload.user],
+      };
+    }
+
+    case "REPLACE_USER_BY_ID": {
+      const foundUserIndex = state.users.findIndex(
+        u => u.id === action.payload.userId
+      );
+      let newUsers = state.users;
+      newUsers.splice(foundUserIndex, 1, action.payload.newUser);
+      return {
+        ...state,
+        users: newUsers,
+      };
+    }
+
+    case "REPLACE_ALL_USERS": {
+      console.log("REPLACE_ALL_USERS", action.payload.users);
+      return {
+        ...state,
+        users: action.payload.users,
       };
     }
 

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, Fragment, type Node } from "react";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import AppScrollContainer from "../../components/AppScrollContainer";
 import Subtitle from "../../elements/Subtitle";
@@ -70,6 +70,7 @@ class Dashboard extends Component<Props> {
 
   @bind
   renderBody(bodyProps: ProvideUsersRenderProps): Node {
+    const { theme } = this.props;
     const { users, usersLoading } = bodyProps;
     const {
       friends,
@@ -83,70 +84,84 @@ class Dashboard extends Component<Props> {
     if (usersLoading) return "loading users";
 
     return (
-      <ScrollContainer>
-        <ContentContainer>
-          <Box column padding="25px" fullWidth>
-            <TabControls />
-            <SpacingComponent size={20} />
-            <Subtitle>Notifications</Subtitle>
-            <SpacingComponent size={15} />
-            {shouldShowProfilePicNotif && (
-              <Fragment>
-                <Notification
-                  type="ONBOARDING"
-                  title="Upload a profile picture"
-                  acceptText="Continue"
-                  denyText="Later"
-                  createdAt={new Date()}
-                />
-                <SpacingComponent size={15} />
-              </Fragment>
-            )}
-            {friendRequests.map(fr => (
-              <Fragment>
-                <Notification
-                  fromUser={fr.fromUser}
-                  type="FRIEND_REQUEST"
-                  createdAt={fr.createdAt}
-                />
-                <SpacingComponent size={15} />
-              </Fragment>
-            ))}
-            {groupInvitations.map(fr => (
-              <Fragment>
-                <Notification
-                  fromUser={fr.fromUser}
-                  forGroup={fr.forGroup}
-                  type="GROUP_INVITATION"
-                  createdAt={fr.createdAt}
-                />
-                <SpacingComponent size={15} />
-              </Fragment>
-            ))}
-            <SpacingComponent size={25} />
-            <Subtitle>Online Friends</Subtitle>
-            <SpacingComponent size={15} />
-            {friends.map(f => {
-              const foundUser: ?User = users.find(u => f.id === u.id);
-              if (!foundUser) return "not found";
-              return <Icon key={f.id} iconUrl={foundUser.iconUrl} />;
-            })}
-            <SpacingComponent size={25} />
-            <Subtitle>Recent Messages</Subtitle>
-            <SpacingComponent size={15} />
-            <SelfUserDisplayCard />
-            <SpacingComponent size={20} />
-            {groups.map(g => [
-              <MessageDisplayCard key={g.id} group={g} />,
-              <SpacingComponent key={g.id + "space"} size={20} />,
-            ])}
-            <SpacingComponent size={25} />
-          </Box>
-        </ContentContainer>
-      </ScrollContainer>
+      <Scroller>
+        <Page>
+          <TabControls />
+          <SpacingComponent size={20} />
+          <Subtitle>Notifications</Subtitle>
+          <SpacingComponent size={15} />
+          {shouldShowProfilePicNotif && (
+            <Fragment>
+              <Notification
+                type="ONBOARDING"
+                title="Upload a profile picture"
+                acceptText="Continue"
+                denyText="Later"
+                createdAt={new Date()}
+              />
+              <SpacingComponent size={15} />
+            </Fragment>
+          )}
+          {friendRequests.map(fr => (
+            <Fragment>
+              <Notification
+                fromUser={fr.fromUser}
+                type="FRIEND_REQUEST"
+                createdAt={fr.createdAt}
+              />
+              <SpacingComponent size={15} />
+            </Fragment>
+          ))}
+          {groupInvitations.map(fr => (
+            <Fragment>
+              <Notification
+                fromUser={fr.fromUser}
+                forGroup={fr.forGroup}
+                type="GROUP_INVITATION"
+                createdAt={fr.createdAt}
+              />
+              <SpacingComponent size={15} />
+            </Fragment>
+          ))}
+          <SpacingComponent size={25} />
+          <Subtitle>Online Friends</Subtitle>
+          <SpacingComponent size={15} />
+          {friends.map(f => {
+            const foundUser: ?User = users.find(u => f.id === u.id);
+            if (!foundUser) return "not found";
+            return <Icon key={f.id} iconUrl={foundUser.iconUrl} />;
+          })}
+          <SpacingComponent size={25} />
+          <Subtitle>Recent Messages</Subtitle>
+          <SpacingComponent size={15} />
+          <SelfUserDisplayCard />
+          <SpacingComponent size={20} />
+          {groups.map(g => [
+            <MessageDisplayCard key={g.id} group={g} />,
+            <SpacingComponent key={g.id + "space"} size={20} />,
+          ])}
+          <SpacingComponent size={25} />
+        </Page>
+      </Scroller>
     );
   }
 }
+
+const Scroller = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+const Page = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  background-color: ${p => p.theme.background.secondary};
+  min-height: 100%;
+`;
 
 function mapStateToProps(state) {
   return {
@@ -162,4 +177,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default withTheme(connect(mapStateToProps)(Dashboard));

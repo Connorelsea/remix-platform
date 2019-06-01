@@ -2,7 +2,7 @@
 
 import React, { Component, type Node } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import { bind } from "decko";
 
 import Title from "../../elements/Title";
@@ -48,7 +48,7 @@ class GroupComponent extends Component<Props> {
     return (
       <ScrollContainer>
         <ContentContainer>
-          <Box fullWidth column>
+          <Box full column>
             <HeaderContainer>
               <Box minWidth={150}>
                 <Icon iconUrl={group.iconUrl} iconSize={150} />
@@ -131,6 +131,4 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default withTheme(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupComponent))
-);
+export default withTheme(withRouter(GroupComponent));

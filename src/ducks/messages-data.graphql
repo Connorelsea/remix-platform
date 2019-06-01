@@ -1,4 +1,5 @@
-#import "../types/fragments.graphql"
+#import "../types/fragments/message.graphql"
+#import "../types/fragments/readPosition.graphql"
 
 query fetchMessagesData($userId: ID!) {
   User(id: $userId) {

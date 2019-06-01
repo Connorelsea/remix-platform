@@ -1,17 +1,20 @@
-import React, { Component, type Node } from "react";
+import React, { Component, Fragment, type Node } from "react";
 import { connect } from "react-redux";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+import styled, { withTheme } from "styled-components";
+import animateScrollTo from "animated-scroll-to";
+import scrollToElement from "scroll-to-element";
+
 import { type Message as MessageType } from "../../types/message";
 import { type Chat as ChatType } from "../../types/message";
 import { getChatMessages } from "../../ducks/messages";
 import Box from "../../elements/Box";
 
 import Header from "../../components/Header";
-import { View } from "react-native";
 import KeyboardSpacer from "../../components/KeyboardSpacer";
 import ChatInputArea from "../../components/ChatInputArea";
 import MessageList from "../../components/MessageList";
 import ScrollContainer from "../../elements/ScrollContainer";
-import styled, { withTheme } from "styled-components";
 import Spacing from "../../components/Spacing";
 import ProvideUsers from "../../providers/ProvideUsers";
 import Message from "../../components/Message/index";
@@ -31,14 +34,11 @@ type Props = {
 type State = {};
 
 class Chat extends Component<Props, State> {
-  @bind
-  scrollToBottom() {
-    if (this.scrollContainer === undefined) return;
-    this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
-  }
-
   componentDidUpdate() {
-    this.scrollToBottom();
+    console.log("DID UPDATE", document.querySelector(".last"));
+    document.querySelector(".last").scrollIntoView();
+    // animateScrollTo(document.querySelector(".last"));
+    // scrollToElement(".last");
   }
 
   render(): Node {
@@ -48,11 +48,10 @@ class Chat extends Component<Props, State> {
       return <div>No messages</div>;
 
     return (
-      <OuterContainer>
-        <ScrollContainer innerRef={e => (this.scrollContainer = e)}>
-          <ContentContainer
-            backgroundColor={theme.appColors.chat_background_color}
-          >
+      <ReflexContainer orientation="horizontal">
+        <ReflexElement>
+          <Scroller>
+            <Spacing size={20} />
             <ProvideUsers
               userIds={messages.map(m => m.userId)}
               render={(props: ProvideUsersRenderProps) => {
@@ -76,33 +75,32 @@ class Chat extends Component<Props, State> {
                 ));
               }}
             />
-            <Spacing size={80} />;
-          </ContentContainer>
-        </ScrollContainer>
+            <div className="last" />
+            <Spacing size={20} />
+          </Scroller>
+        </ReflexElement>
 
-        <ChatInput chat={chat} />
-      </OuterContainer>
+        <ReflexSplitter />
+
+        <ReflexElement minSize="75" maxSize="200">
+          <ChatInput chat={chat} />
+        </ReflexElement>
+      </ReflexContainer>
     );
   }
 }
 
-const OuterContainer = styled.div`
+const Scroller = styled.div`
+  width: 100%;
   height: 100%;
-  width: 100%;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  background-color: ${p => p.backgroundColor || p.theme.background.secondary};
-  min-height: 100%;
-  width: 100%;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 function mapStateToProps(state, props) {
-  console.log("PROPS", props, props.chat.id);
+  console.log("PROPS", props);
+
   return {
     messages: getChatMessages(state, props.chat.id),
     currentUserId: CurrentDeviceSelector(state).user.id,

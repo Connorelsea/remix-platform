@@ -1,0 +1,7 @@
+fragment readPosition on ReadPosition {
+  id
+  chatId
+  userId
+  messageId
+  atChatTime
+}

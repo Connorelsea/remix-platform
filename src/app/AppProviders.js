@@ -14,10 +14,16 @@ import { ConnectedRouter } from "connected-react-router";
 import history from "../utilities/storage/history";
 import ResponsiveManager from "./ResponsiveManager";
 import AuthManager from "./AuthManager";
+import Modal from "react-modal";
+
+import "react-reflex/styles.css";
+import "react-image-crop/dist/ReactCrop.css";
 
 class Container extends React.Component<{}> {
   // needs to run after store is init from localstorage
   onAppStart() {
+    Modal.setAppElement("#root");
+
     console.log("[AppStart] Checking for current device");
 
     const state: GlobalState = store.getState();

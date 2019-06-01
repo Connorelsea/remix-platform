@@ -39,6 +39,7 @@ class GroupChat extends Component<Props, State> {
               onResizeEnd={this.onResizeEnd}
               onChange={this.onChange}
             >
+              <p>test</p>
               <Group />
               <Chat chat={props.chat} />
             </SplitPane>

@@ -1,0 +1,16 @@
+#import "./chat.graphql"
+
+fragment group on Group {
+  id
+  iconUrl
+  name
+  username
+  description
+  isDirectMessage
+  chats {
+    ...chat
+  }
+  members {
+    id
+  }
+}

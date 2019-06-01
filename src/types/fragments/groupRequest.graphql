@@ -1,0 +1,14 @@
+fragment groupRequest on GroupRequest {
+  id
+  fromUser {
+    id
+  }
+  toUser {
+    id
+  }
+  forGroup {
+    id
+  }
+  message
+  createdAt
+}

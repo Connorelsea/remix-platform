@@ -48,14 +48,36 @@ class ProvideUsers extends Component<Props, State> {
   componentDidUpdate(prevProps) {
     if (
       this.props.userIds !== undefined &&
-      prevProps.userIds.toString() !== this.props.userIds.toString()
+      JSON.stringify(prevProps.userIds) !== JSON.stringify(this.props.userIds)
     )
       this.init();
+
     if (
       this.props.userNames !== undefined &&
-      prevProps.userNames.toString() !== this.props.userNames.toString()
+      JSON.stringify(prevProps.userNames) !==
+        JSON.stringify(this.props.userNames)
     )
       this.init();
+
+    if (this.props.location.pathname !== prevProps.location.pathname)
+      this.init();
+
+    if (JSON.stringify(this.props.users) !== JSON.stringify(prevProps.users))
+      this.init();
+
+    console.log("PROVIDE USERS - COMP DID UPDATE");
+    console.log(
+      JSON.stringify(prevProps.users),
+      JSON.stringify(this.props.users)
+    );
+    console.log("DIFFERENCE FOUND?");
+    console.log(
+      JSON.stringify(this.props.users) !== JSON.stringify(prevProps.users)
+    );
+    console.log(
+      JSON.stringify(prevProps.userIds),
+      JSON.stringify(this.props.userIds)
+    );
   }
 
   constructor(props) {
@@ -73,13 +95,14 @@ class ProvideUsers extends Component<Props, State> {
       dispatchFetchUsersByName,
     } = this.props;
 
+    console.log("PROVIDE USERS INIT");
+    console.log("INPUT", userIds, userNames);
+
     let promises = [];
     if (userIds) promises.push(dispatchFetchUsersById(userIds));
     if (userNames) promises.push(dispatchFetchUsersByName(userNames));
 
     const result: Array<Array<User>> = await Promise.all(promises);
-
-    console.log("INPUT", userIds, userNames);
 
     console.log("PROVIDE USERS RESULT", result);
 
@@ -105,7 +128,9 @@ class ProvideUsers extends Component<Props, State> {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    users: state.identity.users,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

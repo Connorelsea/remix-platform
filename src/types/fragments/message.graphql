@@ -1,0 +1,11 @@
+#import "./content.graphql"
+
+fragment message on Message {
+  id
+  chatId
+  userId
+  createdAt
+  content {
+    ...content
+  }
+}

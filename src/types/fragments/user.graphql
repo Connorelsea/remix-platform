@@ -1,0 +1,9 @@
+fragment user on User {
+  id
+  name
+  username
+  email
+  iconUrl
+  color
+  description
+}

@@ -16,5 +16,5 @@ export function buildChatLink(group: Group, chat: Chat) {
 }
 
 export function buildEditUserUrl(user: User) {
-  return `/edit/u/@${user.username}`;
+  return `/u/@${user.username}/edit`;
 }

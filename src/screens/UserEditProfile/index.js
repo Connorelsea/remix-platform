@@ -2,6 +2,7 @@ import React, { Component, Fragment, type Node } from "react";
 import { withTheme } from "styled-components";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { bind } from "decko";
 
 import ProvideUsers from "../../providers/ProvideUsers";
 
@@ -20,6 +21,8 @@ import { type User } from "../../types/user";
 
 import { buildEditUserUrl, buildUserUrl } from "../../utilities/urls";
 import EditableText from "../../elements/EditableText";
+import { updateUser } from "../../ducks/identity";
+import { updateTab } from "../../ducks/tabs";
 
 type Props = {
   user: User,
@@ -37,6 +40,19 @@ class UserEditProfile extends Component<Props, State> {
     newUsername: undefined,
     newDescription: undefined,
   };
+
+  @bind
+  updateUser() {
+    const { user, updateUser, updateTab, currentTabId } = this.props;
+    const { newName, newUsername, newDescription } = this.state;
+    updateUser(newName, newUsername, newDescription);
+
+    const finalUsername =
+      newUsername !== undefined ? newUsername : user.username;
+    const url = buildUserUrl({ username: finalUsername });
+
+    updateTab(currentTabId, url, url);
+  }
 
   render(): Node {
     const { match, theme, group, currentUserId } = this.props;
@@ -129,7 +145,8 @@ class UserEditProfile extends Component<Props, State> {
                             size="MEDIUM"
                             type="EMPHASIS"
                             title="Save Profile"
-                            to={buildUserUrl(user)}
+                            // to={buildUserUrl(user)}
+                            onClick={() => this.updateUser()}
                           />
                         )}
                       </Box>
@@ -147,12 +164,19 @@ class UserEditProfile extends Component<Props, State> {
 function mapStateToProps(state, props) {
   return {
     currentUserId: state.identity.currentUserId,
+    user: state.identity.users.find(u => u.id === state.identity.currentUserId),
     apolloClient: state.auth.apolloClient,
+    currentTabId: state.tabs.currentTabId,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    updateUser: (newName, newUsername, newDescription) =>
+      dispatch(updateUser(newName, newUsername, newDescription)),
+    updateTab: (tabId, url, title, subtitle, iconUrl) =>
+      dispatch(updateTab(tabId, url, title, subtitle, iconUrl)),
+  };
 }
 
 export default withTheme(

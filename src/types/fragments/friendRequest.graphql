@@ -1,0 +1,14 @@
+fragment friendRequest on FriendRequest {
+  id
+  fromUser {
+    id
+    name
+    username
+    color
+  }
+  toUser {
+    id
+  }
+  message
+  createdAt
+}

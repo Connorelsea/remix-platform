@@ -4,6 +4,9 @@ import React, { Component, Fragment, type Node } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { bind } from "decko";
+import gql from "graphql-tag";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+import styled, { withTheme } from "styled-components";
 
 import Title from "../../elements/Title";
 import Paragraph from "../../elements/Paragraph";
@@ -20,7 +23,6 @@ import ProvideUsers, {
 import Subtitle from "../../elements/Subtitle";
 import ScrollContainer from "../../elements/ScrollContainer";
 import ContentContainer from "../../elements/ContentContainer";
-import { withTheme } from "styled-components";
 import { type Theme } from "../../utilities/theme";
 import ChatCard from "../Group/ChatCard";
 import { getDirectMessageGroup } from "../../ducks/groups";
@@ -28,6 +30,10 @@ import { type Group } from "../../types/group";
 import { mutate } from "../../utilities/gql_util";
 import { ApolloClient } from "apollo-client";
 import UserActionButtons from "./UserActionButtons";
+
+import FeatherIcon from "react-native-vector-icons/dist/Feather";
+
+import AzureStorage from "../../utilities/azure-storage.blob.js";
 
 type Props = {
   match: {
@@ -40,6 +46,27 @@ type Props = {
 };
 
 class UserComponent extends Component<Props> {
+  @bind
+  async newIcon() {
+    const { apolloClient } = this.props;
+
+    const src = gql`
+      mutation createStorage {
+        createStorage {
+          sasUrl
+        }
+      }
+    `;
+
+    const response = await mutate(src, undefined, apolloClient);
+
+    const url = response.data.createStorage.sasUrl;
+
+    const blobService = AzureStorage.createBlobService(url);
+
+    console.log("NEW ICON RESPONSE", response);
+  }
+
   @bind
   sendFriendRequest(toUserId: string) {
     const createFriendRequestQuery = `
@@ -86,17 +113,39 @@ class UserComponent extends Component<Props> {
 
           let user: User = users[0];
 
+          let iconCircles = [];
+
+          if (user.id === currentUserId) {
+            iconCircles.push({
+              color: theme.colors.blue,
+              onClick: this.newIcon,
+              right: -5,
+              bottom: 1,
+              children: (
+                <FeatherIcon
+                  name="plus"
+                  size={22}
+                  color={theme.background.primary}
+                />
+              ),
+            });
+          }
+
           return (
-            <ScrollContainer>
-              <ContentContainer>
-                <Box fullWidth column>
+            <ReflexContainer orientation="horizontal">
+              <ReflexElement>
+                <Scroller>
                   <Box
                     fullWidth
                     padding="20px"
                     backgroundColor={theme.background.primary}
                   >
                     <Box minWidth={150}>
-                      <Icon iconUrl={user.iconUrl} iconSize={150} />
+                      <Icon
+                        iconUrl={user.iconUrl}
+                        iconSize={150}
+                        circles={iconCircles}
+                      />
                     </Box>
 
                     <Spacing size={25} />
@@ -119,27 +168,51 @@ class UserComponent extends Component<Props> {
                       </Box>
                     </Box>
                   </Box>
-                  {group !== undefined ? (
-                    <Box column padding="20px">
+                </Scroller>
+              </ReflexElement>
+              <ReflexSplitter />
+              <ReflexElement>
+                {group !== undefined ? (
+                  <Scroller>
+                    <Box
+                      fullWidth
+                      minHeight
+                      column
+                      padding="20px"
+                      backgroundColor={theme.background.secondary}
+                    >
                       {group.chats.map(chat => [
                         <ChatCard group={group} chat={chat} key={chat.id} />,
                         <Spacing size={20} />,
                       ])}
                     </Box>
-                  ) : (
-                    <Box column padding="20px">
-                      <Paragraph>To begin chatting, add as a friend</Paragraph>
-                    </Box>
-                  )}
-                </Box>
-              </ContentContainer>
-            </ScrollContainer>
+                  </Scroller>
+                ) : (
+                  <Box
+                    fullWidth
+                    column
+                    padding="20px"
+                    backgroundColor={theme.background.secondary}
+                  >
+                    <Paragraph>To begin chatting, add as a friend</Paragraph>
+                  </Box>
+                )}
+              </ReflexElement>
+            </ReflexContainer>
           );
         }}
       />
     );
   }
 }
+
+const Scroller = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
 
 function mapStateToProps(state, props) {
   return {

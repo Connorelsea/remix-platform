@@ -1,4 +1,4 @@
-#import "../../../types/fragments.graphql"
+#import "../../../types/fragments/group.graphql"
 
 query getGroupsByName($groupIdentifiers: [String]) {
   getGroupsByName(groupIdentifiers: $groupIdentifiers) {

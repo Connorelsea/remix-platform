@@ -30,7 +30,7 @@ class ResponsiveManager extends Component<Props, State> {
     const { width } = this.state;
 
     return (
-      <div ref={measureRef} style={{ height: "100%", width: "100%" }}>
+      <div ref={measureRef} className="viewport">
         {width >= 800 ? <DesktopView /> : <MobileView />}
       </div>
     );

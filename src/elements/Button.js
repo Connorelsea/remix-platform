@@ -39,6 +39,7 @@ class Button extends Component<Props, State> {
   @bind
   onLinkClick() {
     this.props.history.push(this.props.to);
+    if (this.props.onClick !== undefined) this.props.onClick();
   }
 
   onClick() {

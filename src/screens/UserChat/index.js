@@ -2,7 +2,9 @@ import React, { Component, type Node } from "react";
 import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
 import { withRouter } from "react-router";
-import SplitPane from "react-split-pane";
+
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+
 import { type Theme } from "../../utilities/theme";
 import { type Chat as ChatType } from "../../types/chat";
 
@@ -15,28 +17,35 @@ type Props = {
   match: any,
 };
 
-type State = {};
+type State = {
+  size: number,
+  isResizing: boolean,
+};
 
 class UserChat extends Component<Props, State> {
-  render(): Node {
-    const { theme } = this.props;
+  state = {
+    size: 450,
+    isResizing: false,
+  };
 
+  onResizeStart = () => this.setState({ isResizing: true });
+  onResizeEnd = () => this.setState({ isResizing: false });
+  onChange = size => this.setState({ size: Math.max(size, 250) });
+
+  render(): Node {
     return (
       <ProvideChat
         render={props => {
           return (
-            <SplitPane
-              split="vertical"
-              minSize={300}
-              defaultSize={350}
-              resizerStyle={{
-                backgroundColor: theme.border.primary,
-                opacity: 1,
-              }}
-            >
-              <User />
-              <Chat chat={props.chat} />
-            </SplitPane>
+            <ReflexContainer orientation="vertical">
+              <ReflexElement minSize="300" maxSize="450">
+                <User />
+              </ReflexElement>
+              <ReflexSplitter />
+              <ReflexElement>
+                <Chat chat={props.chat} />
+              </ReflexElement>
+            </ReflexContainer>
           );
         }}
       />
@@ -44,9 +53,4 @@ class UserChat extends Component<Props, State> {
   }
 }
 
-const Container = styled.div`
-  height: 100%;
-  overflow-y: scroll;
-`;
-
-export default withTheme(withRouter(UserChat));
+export default withRouter(UserChat);

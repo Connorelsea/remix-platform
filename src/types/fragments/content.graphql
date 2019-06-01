@@ -1,0 +1,4 @@
+fragment content on Content {
+  type
+  data
+}

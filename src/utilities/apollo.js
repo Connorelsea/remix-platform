@@ -3,6 +3,7 @@ import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
+import { createUploadLink } from "apollo-upload-client";
 
 // Meta info for development
 
@@ -38,7 +39,7 @@ export const subEndpoint = useLocal
   ? `ws://${localServerUrl}/subscriptions`
   : "wss://remix-platform-server.herokuapp.com/subscriptions";
 
-const link = ApolloLink.from([errorLink, httpLink]);
+const link = ApolloLink.from([errorLink, httpLink, createUploadLink()]);
 
 export const client = new ApolloClient({
   link,

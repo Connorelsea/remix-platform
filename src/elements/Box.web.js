@@ -64,6 +64,13 @@ export default styled.div`
     `
   )}
 
+  ${ifProp(
+    "minHeight",
+    css`
+      min-height: 100%;
+    `
+  )}
+
   ${props => determinePadding(props.padding)}
   ${props => determinePadding(props.margin, "margin")}
   /********************************* display *********************************/

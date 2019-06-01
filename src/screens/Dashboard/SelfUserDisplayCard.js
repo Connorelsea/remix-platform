@@ -9,6 +9,7 @@ import SpacingComponent from "../../components/Spacing";
 import TouchableNewTab from "../../elements/TouchableNewTab";
 import { buildUserUrl, buildGroupUrl } from "../../utilities/urls";
 import { type User } from "../../types/user";
+import { getUserById } from "../../ducks/identity";
 
 type Props = {
   user: User,
@@ -18,9 +19,8 @@ class SelfUserDisplayCard extends Component<Props> {
   render(): Node {
     const { user } = this.props;
 
-    const url = buildUserUrl(user);
-
     if (!user) return <div>failed</div>;
+    const url = buildUserUrl(user);
 
     return (
       <TouchableNewTab url={url} iconUrl={user.iconUrl}>
@@ -46,6 +46,7 @@ class SelfUserDisplayCard extends Component<Props> {
 
 function mapStateToProps(state, props) {
   return {
+    users: state.identity.users,
     user: state.identity.users.find(u => u.id === state.identity.currentUserId),
   };
 }

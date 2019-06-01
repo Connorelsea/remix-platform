@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 
 type Props = {
   children: Node,
+  placeholder: string,
   editing: boolean,
   onChange?: any => any,
   themeColor?: string,
@@ -16,6 +17,7 @@ class EditableText extends Component<Props> {
   render(): Node {
     const {
       children,
+      placeholder,
       editing,
       onChange,
       themeColor,
@@ -29,6 +31,7 @@ class EditableText extends Component<Props> {
 
     return (
       <Container
+        placeholder={placeholder}
         editing={editing}
         onChange={onChange}
         themeColor={themeColor}

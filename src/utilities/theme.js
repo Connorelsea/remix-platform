@@ -27,6 +27,12 @@ export type Theme = {
     cardShadow: string,
     chat_background_color: string,
   },
+  colors: {
+    blue: "#0F72E0",
+    darkBlue: "#2B1ECE",
+    indigo: "#0C158D",
+    violet: "#751489",
+  },
   text: {
     primary: string,
     secondary: string,
@@ -87,6 +93,13 @@ const sharedTextColors = {
   failure: "#D12424",
 };
 
+const sharedColors = {
+  blue: "#0F72E0",
+  darkBlue: "#2B1ECE",
+  indigo: "#0C158D",
+  violet: "#751489",
+};
+
 // THEME INSTANCES
 
 const LightTheme: Theme = {
@@ -105,6 +118,7 @@ const LightTheme: Theme = {
     cardShadow: "black",
     chat_background_color: "white",
   },
+  colors: sharedColors,
   text: {
     primary: styles.colors.grey[900],
     secondary: styles.colors.grey[800],
@@ -139,7 +153,6 @@ const LightTheme: Theme = {
       active: styles.colors.grey[400],
       active_bottom: styles.colors.grey[600],
     },
-
     emphasis: {
       text: "#0F72E0",
       background: "#C7E0FB",
@@ -172,6 +185,7 @@ const DarkTheme: Theme = {
     inputOutline: "#4A90E2",
     cardShadow: "black",
   },
+  colors: sharedColors,
   text: {
     primary: styles.colors.darkblackblue[700],
     secondary: styles.colors.darkblackblue[500],
@@ -187,6 +201,15 @@ const DarkTheme: Theme = {
       hover_bottom: styles.colors.darkblackblue[200],
       active: styles.colors.grey[400],
       active_bottom: styles.colors.grey[200],
+    },
+    clear: {
+      text: styles.colors.grey[800],
+      background: "transparent",
+      bottom: "transparent",
+      hover: "transparent",
+      hover_bottom: "transparent",
+      active: "transparent",
+      active_bottom: "transparent",
     },
     default: {
       text: styles.colors.darkblackblue[600],
@@ -228,6 +251,7 @@ const SolarizedLightTheme: Theme = {
     inputOutline: "#4A90E2",
     cardShadow: "black",
   },
+  colors: sharedColors,
   text: {
     primary: styles.colors.solarizedlight[700],
     secondary: styles.colors.solarizedlight[500],
@@ -285,6 +309,7 @@ const SolarizedDarkTheme: Theme = {
     inputOutline: "#4A90E2",
     cardShadow: "black",
   },
+  colors: sharedColors,
   text: {
     primary: styles.colors.solarizeddark[700],
     secondary: styles.colors.solarizeddark[500],

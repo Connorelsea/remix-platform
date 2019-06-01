@@ -17,6 +17,7 @@ class Title extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     if (this.props.type !== nextProps.type) return true;
     if (this.props.size !== nextProps.size) return true;
+    if (this.props.children !== nextProps.children) return true;
     return false;
   }
 

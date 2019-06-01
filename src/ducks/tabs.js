@@ -1,5 +1,6 @@
-import { type Tab, createTabObject } from "../types/tab";
 import { push } from "react-router-redux";
+import history from "../utilities/storage/history";
+import { type Tab, createTabObject } from "../types/tab";
 import { type GlobalState } from "../reducers/rootReducer";
 
 // @flow
@@ -114,6 +115,7 @@ export function createNewTab(
 ): ThunkAction {
   return async function(dispatch, getState) {
     const state: GlobalState = getState();
+
     const currentTabs: Array<Tab> = state.tabs.tabs;
     const matchingTab: ?Tab = currentTabs.find(t => t.url === url);
 
@@ -143,8 +145,30 @@ export function setCurrentTabId(currentTabId: string): SetCurrentTabId {
   };
 }
 
-export function updateTabByUrl(
-  tabUrl: string,
+// UNUSED, probably remove soon
+
+// export function updateTabByUrl(
+//   tabUrl: string,
+//   url: string,
+//   title: string,
+//   subtitle: string,
+//   iconUrl: string
+// ): ThunkAction {
+
+//   return async function(dispatch, getState) {
+
+//     const state: GlobalState = getState();
+//     const foundTab: ?Tab = state.tabs.tabs.find(t => t.url === tabUrl);
+
+//     if (foundTab) {
+//       dispatch(push(url));
+//       dispatch(updateTab(foundTab.id, url, title, subtitle, iconUrl));
+//     }
+//   };
+// }
+
+export function updateTab(
+  tabId: string,
   url: string,
   title: string,
   subtitle: string,
@@ -152,16 +176,17 @@ export function updateTabByUrl(
 ): ThunkAction {
   return async function(dispatch, getState) {
     const state: GlobalState = getState();
-    const foundTab: ?Tab = state.tabs.tabs.find(t => t.url === tabUrl);
 
-    if (foundTab) {
-      dispatch(push(url));
-      dispatch(updateTab(foundTab.id, url, title, subtitle, iconUrl));
-    }
+    const tabIndex = state.tabs.tabs.findIndex(t => t.id === tabId);
+    const oldTab = state.tabs.tabs[tabIndex];
+
+    history.replace(url ? url : oldTab.url);
+
+    dispatch(setTab(tabId, url, title, subtitle, iconUrl));
   };
 }
 
-function updateTab(
+function setTab(
   tabId: string,
   url: string,
   title: string,
@@ -216,9 +241,13 @@ export function reducer(state: State = initialState, action: Action): State {
 
     case "UPDATE_TAB": {
       const { payload: { tabId, url, title, subtitle, iconUrl } } = action;
+
       const tabIndex = state.tabs.findIndex(t => t.id === tabId);
+
       const oldTab = state.tabs[tabIndex];
       const otherTabs = state.tabs.filter(t => t.id !== tabId);
+
+      console.log("UPDAET TAB ACTION", action, tabIndex, oldTab);
 
       return {
         ...state,
@@ -232,6 +261,7 @@ export function reducer(state: State = initialState, action: Action): State {
             iconUrl: iconUrl ? iconUrl : oldTab.iconUrl,
           },
         ],
+        currentTabId: oldTab.id,
       };
     }
 
@@ -243,58 +273,113 @@ export function reducer(state: State = initialState, action: Action): State {
     }
 
     case "@@router/LOCATION_CHANGE": {
-      const location = action.payload.location;
+      const newLocation = action.payload.location;
+
+      const newPath = newLocation.pathname;
       const { tabs } = state;
 
-      const foundMatchTabIndex = tabs.findIndex(
-        t => t.url === location.pathname
-      );
-      const foundMatchTab =
-        foundMatchTabIndex !== -1 ? tabs[foundMatchTabIndex] : undefined;
+      console.log("NEW PATH", newPath);
 
-      const foundStartTabIndex = tabs.findIndex(t =>
-        location.pathname.includes(t.url)
-      );
+      // Check if tab with exact same URL already exists
 
-      console.log("START TAB INDEX", foundStartTabIndex, tabs);
+      let matchingTab = tabs.find(t => t.url === newPath);
+      if (matchingTab) return { ...state, currentTabId: matchingTab.id };
 
-      const foundStartTab =
-        foundStartTabIndex !== -1 ? tabs[foundStartTabIndex] : undefined;
+      // Check if tab is a chat of a user tab that already exists
 
-      console.log("FOUND TAB INFO");
-      console.log(tabs, foundMatchTab, foundStartTab);
+      matchingTab = tabs.find(t => t.url.startsWith());
 
-      if (foundMatchTab) {
-        return { ...state, currentTabId: foundMatchTab.id };
+      console.log("CONDITIONAL", newPath.startsWith("/u"));
+
+      if (newPath.startsWith("/u")) {
+        const parts = newPath.split("/");
+        const prefix = `/u/${parts[2]}`;
+
+        console.log("PREFIX", prefix);
+
+        let matchingTabIndex = tabs.findIndex(t => t.url.startsWith(prefix));
+
+        if (matchingTabIndex !== -1) {
+          const newTab = { ...matchingTab, url: newPath, title: newPath };
+          let newTabs = tabs;
+          tabs[matchingTabIndex] = newTab;
+          return { ...state, tabs: newTabs, currentTabId: newTab.id };
+        }
       }
 
-      if (foundStartTab) {
-        console.log("FOUND START TAB", foundStartTab, tabs);
-        let updatedTabs = tabs;
-        const newTab = {
-          ...foundStartTab,
-          url: location.pathname,
-        };
-        console.log("NEW TAB", newTab);
-        updatedTabs.splice(foundStartTabIndex, 1, newTab);
+      // Create new tab
 
-        console.log("UPDATED TABS", updatedTabs);
+      const newTab = createTabObject(newPath, newPath);
+      const updatedTabs = [...state.tabs, newTab];
 
-        return { ...state, tabs: updatedTabs, currentTabId: newTab.id };
-      }
-
-      if (foundStartTab === undefined && foundMatchTab === undefined) {
-        console.log("CREATING NEW TAB FOR ", location);
-        const newTab = createTabObject(location.pathname, location.pathname);
-        return {
-          ...state,
-          tabs: [...state.tabs, newTab],
-          currentTabId: newTab.id,
-        };
-      }
-
-      return state;
+      return { ...state, tabs: updatedTabs, currentTabId: newTab.id };
     }
+
+    // case "@@router/LOCATION_CHANGE": {
+
+    //   const newLocation = action.payload.location;
+
+    //   const newPath = newLocation.pathname;
+    //   const { tabs } = state;
+
+    //   console.log(
+    //     "ROUTER LOCATION CHANGE",
+    //     action.payload.location,
+    //     newLocation.pathname
+    //   );
+
+    //   const foundMatchTabIndex = tabs.findIndex(t => t.url === newPath);
+    //   const foundMatchTab =
+    //     foundMatchTabIndex !== -1 ? tabs[foundMatchTabIndex] : undefined;
+
+    //   const foundStartTabIndex = tabs.findIndex(
+    //     t => newPath.includes(t.url) || t.url.includes(newPath)
+    //   );
+
+    //   console.log("START TAB INDEX", foundStartTabIndex, tabs);
+
+    //   const foundStartTab =
+    //     foundStartTabIndex !== -1 ? tabs[foundStartTabIndex] : undefined;
+
+    //   console.log("FOUND TAB INFO");
+    //   console.log(tabs, foundMatchTab, foundStartTab);
+
+    //   if (foundMatchTab) {
+    //     return { ...state, currentTabId: foundMatchTab.id };
+    //   }
+
+    //   if (foundStartTab) {
+    //     console.log("FOUND START TAB", foundStartTab, tabs);
+
+    //     let updatedTabs = [...tabs];
+    //     const newTab = {
+    //       ...foundStartTab,
+    //       url: newLocation.pathname,
+    //     };
+    //     console.log("NEW TAB", newTab);
+    //     updatedTabs.splice(foundStartTabIndex, 1, newTab);
+
+    //     console.log("UPDATED TABS", updatedTabs);
+
+    //     return { ...state, tabs: updatedTabs, currentTabId: newTab.id };
+    //   }
+
+    //   if (foundStartTab === undefined && foundMatchTab === undefined) {
+
+    //     console.log("CREATING NEW TAB FOR ", newLocation);
+    //     const newTab = createTabObject(
+    //       newLocation.pathname,
+    //       newLocation.pathname
+    //     );
+    //     return {
+    //       ...state,
+    //       tabs: [...state.tabs, newTab],
+    //       currentTabId: newTab.id,
+    //     };
+    //   }
+
+    //   return state;
+    // }
 
     default: {
       return state;
