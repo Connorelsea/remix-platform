@@ -88,7 +88,7 @@
     "react-apollo": "^2.0.4",
     "react-art": "^16.4.0",
     "react-beautiful-dnd": "^8.0.2",
-    "react-dev-utils": "^5.0.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.4.0",
     "react-flex-split-pane": "instea/react-flex-split-pane",
     "react-hot-loader": "^4.0.0-rc.0",
